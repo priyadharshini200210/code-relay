@@ -6,9 +6,9 @@ from pathlib import Path
 
 import pytest
 
-from free_claude_code.application.model_catalog import CatalogModel
-from free_claude_code.core.model_capabilities import ModelInputModality
-from free_claude_code.harnesses.dsh_config import build_dsh_launch_config
+from code_relay.application.model_catalog import CatalogModel
+from code_relay.core.model_capabilities import ModelInputModality
+from code_relay.harnesses.dsh_config import build_dsh_launch_config
 
 
 def _models() -> tuple[CatalogModel, ...]:
@@ -66,9 +66,9 @@ def test_dsh_config_pins_responses_models_retries_and_private_state(
     }
 
     llm = _row_by_id(launch, "llm-pi-ai")
-    provider = llm["config"]["providers"]["free-claude-code"]
+    provider = llm["config"]["providers"]["code-relay"]
     assert provider == {
-        "displayName": "Free Claude Code",
+        "displayName": "Code Relay",
         "apiKeyEnv": "FCC_DSH_API_KEY",
         "api": "openai-responses",
         "baseURL": "http://127.0.0.1:9191/v1",
@@ -120,7 +120,7 @@ def test_dsh_config_pins_responses_models_retries_and_private_state(
         "id": "agent-default-model",
         "name": "@deepseek-ai/dsh-agent-default-model",
         "config": {
-            "provider": "free-claude-code",
+            "provider": "code-relay",
             "model": "nvidia_nim/vendor/model",
         },
     }
@@ -153,7 +153,7 @@ def test_dsh_config_rounds_fractional_progress_timeout_up() -> None:
     )
 
     provider = _row_by_id(launch, "llm-pi-ai")["config"]["providers"][
-        "free-claude-code"
+        "code-relay"
     ]
     assert provider["streamIdleTimeoutMs"] == 60_001
 

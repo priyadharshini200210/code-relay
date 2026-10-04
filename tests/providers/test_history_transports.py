@@ -10,19 +10,19 @@ import httpx
 import httpx2
 import pytest
 
-from free_claude_code.application.execution import ProviderExecutor
-from free_claude_code.core.anthropic import aggregate_anthropic_sse_to_message
-from free_claude_code.core.anthropic.models import MessagesRequest
-from free_claude_code.core.anthropic.stream_contracts import parse_sse_text
-from free_claude_code.core.failures import ExecutionFailure, FailureKind
-from free_claude_code.core.history_replay import (
+from code_relay.application.execution import ProviderExecutor
+from code_relay.core.anthropic import aggregate_anthropic_sse_to_message
+from code_relay.core.anthropic.models import MessagesRequest
+from code_relay.core.anthropic.stream_contracts import parse_sse_text
+from code_relay.core.failures import ExecutionFailure, FailureKind
+from code_relay.core.history_replay import (
     decode_replay,
     encode_replay,
     resolve_messages_replay,
 )
-from free_claude_code.core.openai_responses import OpenAIResponsesRequest
-from free_claude_code.core.reasoning import ReasoningPolicy
-from free_claude_code.providers.open_router import OpenRouterProvider
+from code_relay.core.openai_responses import OpenAIResponsesRequest
+from code_relay.core.reasoning import ReasoningPolicy
+from code_relay.providers.open_router import OpenRouterProvider
 from tests.application.test_execution import (
     ControlledProvider,
     _routed_request,
@@ -171,7 +171,7 @@ async def _harness(
             provider = responses_transport(client, max_attempts=max_attempts)
         else:
             with patch(
-                "free_claude_code.providers.openai_chat.client.AsyncOpenAI",
+                "code_relay.providers.openai_chat.client.AsyncOpenAI",
                 return_value=client,
             ):
                 provider = (
@@ -448,7 +448,7 @@ async def test_successful_fallback_stamps_its_own_origin_and_gets_unmodified_inp
         )
 
     with patch(
-        "free_claude_code.providers.openai_chat.client.AsyncOpenAI",
+        "code_relay.providers.openai_chat.client.AsyncOpenAI",
         return_value=_client(reply),
     ):
         provider = OpenRouterProvider(

@@ -9,15 +9,15 @@ from typing import Any
 import httpx2
 import pytest
 
-from free_claude_code.core.anthropic.models import MessagesRequest
-from free_claude_code.core.anthropic.stream_contracts import (
+from code_relay.core.anthropic.models import MessagesRequest
+from code_relay.core.anthropic.stream_contracts import (
     parse_sse_text,
     text_content,
 )
-from free_claude_code.core.failures import ExecutionFailure
-from free_claude_code.core.openai_responses import OpenAIResponsesRequest
-from free_claude_code.core.reasoning import ReasoningPolicy
-from free_claude_code.providers.openai_api.provider import OpenAIAPIProvider
+from code_relay.core.failures import ExecutionFailure
+from code_relay.core.openai_responses import OpenAIResponsesRequest
+from code_relay.core.reasoning import ReasoningPolicy
+from code_relay.providers.openai_api.provider import OpenAIAPIProvider
 from tests.providers.test_openai_api_provider import (
     _collect,
     _complete_stream,

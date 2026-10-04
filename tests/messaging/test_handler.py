@@ -4,10 +4,10 @@ from unittest.mock import ANY, AsyncMock, MagicMock, call, patch
 
 import pytest
 
-from free_claude_code.messaging.command_context import ReplyClearResult, StopOutcome
-from free_claude_code.messaging.models import MessageScope
-from free_claude_code.messaging.platforms.ports import MessagingStartupNotice
-from free_claude_code.messaging.trees import (
+from code_relay.messaging.command_context import ReplyClearResult, StopOutcome
+from code_relay.messaging.models import MessageScope
+from code_relay.messaging.platforms.ports import MessagingStartupNotice
+from code_relay.messaging.trees import (
     CancellationReason,
     CancellationResult,
     CancellationUiOwner,
@@ -23,9 +23,9 @@ from free_claude_code.messaging.trees import (
     TreeQueueManager,
     TreeSnapshot,
 )
-from free_claude_code.messaging.trees.transitions import CancellationEffect
-from free_claude_code.messaging.voice import VoiceCancellationResult
-from free_claude_code.messaging.workflow import MessagingWorkflow
+from code_relay.messaging.trees.transitions import CancellationEffect
+from code_relay.messaging.voice import VoiceCancellationResult
+from code_relay.messaging.workflow import MessagingWorkflow
 
 _SCOPE = MessageScope(platform="telegram", chat_id="chat_1")
 _OTHER_SCOPE = MessageScope(platform="telegram", chat_id="other_chat")
@@ -116,7 +116,7 @@ async def test_handle_message_turn_trace_always_includes_full_message_text(
     incoming = incoming_message_factory(text=text)
     with (
         patch.object(workflow.turn_intake, "handle_message", new_callable=AsyncMock),
-        patch("free_claude_code.messaging.workflow.trace_event") as trace_mock,
+        patch("code_relay.messaging.workflow.trace_event") as trace_mock,
     ):
         await workflow.handle_message(incoming)
 
@@ -900,7 +900,7 @@ async def test_terminal_close_waits_past_interactive_drain_timeout(
     incoming_message_factory,
 ) -> None:
     monkeypatch.setattr(
-        "free_claude_code.messaging.trees.manager.CANCEL_TASK_DRAIN_TIMEOUT_S",
+        "code_relay.messaging.trees.manager.CANCEL_TASK_DRAIN_TIMEOUT_S",
         0.01,
     )
     runner_started = asyncio.Event()
@@ -1066,7 +1066,7 @@ async def test_session_info_rejects_unregistered_real_session_without_recording_
     handler,
     mock_cli_manager,
 ) -> None:
-    from free_claude_code.messaging.node_event_pipeline import (
+    from code_relay.messaging.node_event_pipeline import (
         handle_session_info_event,
     )
 

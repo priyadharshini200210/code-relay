@@ -10,16 +10,16 @@ from urllib.parse import parse_qs, urlparse
 import httpx
 import pytest
 
-from free_claude_code.application.connected_accounts import (
+from code_relay.application.connected_accounts import (
     ConnectedAccountLoginMode,
 )
-from free_claude_code.providers.openai_codex import auth as openai_auth
-from free_claude_code.providers.openai_codex import login as openai_login
-from free_claude_code.providers.openai_codex.auth import (
+from code_relay.providers.openai_codex import auth as openai_auth
+from code_relay.providers.openai_codex import login as openai_login
+from code_relay.providers.openai_codex.auth import (
     OpenAIAuthManager,
     OpenAIReconnectRequired,
 )
-from free_claude_code.providers.openai_codex.login import BrowserAuthorization
+from code_relay.providers.openai_codex.login import BrowserAuthorization
 
 
 def _jwt(payload: dict[str, object]) -> str:

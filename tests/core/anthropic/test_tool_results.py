@@ -1,4 +1,4 @@
-from free_claude_code.core.anthropic.tool_results import (
+from code_relay.core.anthropic.tool_results import (
     ToolResultImage,
     ToolResultText,
     decompose_tool_result_content,

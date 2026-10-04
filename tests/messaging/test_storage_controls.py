@@ -7,10 +7,10 @@ from unittest.mock import patch
 import pytest
 import pytest_asyncio
 
-from free_claude_code.messaging.models import IncomingMessage
-from free_claude_code.messaging.platforms.ports import MessagingStartupNotice
-from free_claude_code.messaging.trees import MessagingStorageError, TreeQueueManager
-from free_claude_code.messaging.workflow import MessagingWorkflow
+from code_relay.messaging.models import IncomingMessage
+from code_relay.messaging.platforms.ports import MessagingStartupNotice
+from code_relay.messaging.trees import MessagingStorageError, TreeQueueManager
+from code_relay.messaging.workflow import MessagingWorkflow
 
 pytestmark = pytest.mark.asyncio
 
@@ -140,7 +140,7 @@ async def interrupted_workflow(
     messaging_store_factory, mock_platform, mock_cli_manager, monkeypatch
 ):
     monkeypatch.setattr(
-        "free_claude_code.messaging.trees.manager.CANCEL_TASK_DRAIN_TIMEOUT_S", 0.01
+        "code_relay.messaging.trees.manager.CANCEL_TASK_DRAIN_TIMEOUT_S", 0.01
     )
     storage = await messaging_store_factory()
     workflow = MessagingWorkflow(mock_platform, mock_cli_manager, storage)

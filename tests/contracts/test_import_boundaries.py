@@ -7,8 +7,8 @@ from dataclasses import dataclass
 from pathlib import Path
 
 _REPO_ROOT = Path(__file__).resolve().parents[2]
-_PACKAGE_ROOT = _REPO_ROOT / "src" / "free_claude_code"
-_PACKAGE_NAME = "free_claude_code"
+_PACKAGE_ROOT = _REPO_ROOT / "src" / "code_relay"
+_PACKAGE_NAME = "code_relay"
 
 ALLOWED_PACKAGE_DEPENDENCIES: dict[str, set[str]] = {
     "updater": set(),
@@ -34,15 +34,15 @@ ALLOWED_PACKAGE_DEPENDENCIES: dict[str, set[str]] = {
 
 IMPORT_EXCEPTIONS: dict[tuple[str, str], str] = {
     (
-        "free_claude_code.cli.doctor",
-        "free_claude_code.runtime.diagnostics",
+        "code_relay.cli.doctor",
+        "code_relay.runtime.diagnostics",
     ): (
         "Owner: installed diagnostic command. "
         "Reason: read-only report composition owns provider and harness inspection."
     ),
     (
-        "free_claude_code.cli.commands",
-        "free_claude_code.runtime.bootstrap",
+        "code_relay.cli.commands",
+        "code_relay.runtime.bootstrap",
     ): (
         "Owner: installed server command. "
         "Reason: the command delegates construction to the process composition root."
@@ -50,16 +50,16 @@ IMPORT_EXCEPTIONS: dict[tuple[str, str], str] = {
 }
 
 FACADE_ONLY_BOUNDARIES = {
-    "free_claude_code.core.openai_responses",
-    "free_claude_code.messaging.trees",
-    "free_claude_code.providers.openai_chat",
+    "code_relay.core.openai_responses",
+    "code_relay.messaging.trees",
+    "code_relay.providers.openai_chat",
 }
 
 DEFERRED_IMPORT_OWNERS = {
-    "librosa": "free_claude_code.messaging.transcription",
-    "torch": "free_claude_code.messaging.transcription",
-    "transformers": "free_claude_code.messaging.transcription",
-    "riva": "free_claude_code.providers.nvidia_nim.voice",
+    "librosa": "code_relay.messaging.transcription",
+    "torch": "code_relay.messaging.transcription",
+    "transformers": "code_relay.messaging.transcription",
+    "riva": "code_relay.providers.nvidia_nim.voice",
 }
 
 
@@ -134,14 +134,14 @@ class _ImportVisitor(ast.NodeVisitor):
 
 def test_api_configuration_access_goes_through_runtime() -> None:
     storage_modules = {
-        "free_claude_code.config.loader",
-        "free_claude_code.config.env_files",
-        "free_claude_code.config.env_migrations",
+        "code_relay.config.loader",
+        "code_relay.config.env_files",
+        "code_relay.config.env_migrations",
     }
     offenders = [
         record.describe()
         for record in _scan_imports(_PACKAGE_ROOT)
-        if record.importer.startswith("free_claude_code.api.")
+        if record.importer.startswith("code_relay.api.")
         and record.imported in storage_modules
     ]
     assert not offenders, (
@@ -398,16 +398,16 @@ def test_provider_backchannel_detector_reports_untyped_private_access(
 
 def test_legacy_first_party_import_detector_rejects_bare_owner_names() -> None:
     record = ImportRecord(
-        importer="free_claude_code.api.routes",
+        importer="code_relay.api.routes",
         imported="core.anthropic",
-        path="free_claude_code/api/routes.py",
+        path="code_relay/api/routes.py",
         line=7,
         inside_function=False,
     )
 
     assert _legacy_first_party_import_offenders([record], {"api", "core"}) == [
-        "free_claude_code/api/routes.py:7: "
-        "free_claude_code.api.routes -> core.anthropic"
+        "code_relay/api/routes.py:7: "
+        "code_relay.api.routes -> core.anthropic"
     ]
 
 
@@ -614,8 +614,8 @@ def test_core_does_not_import_provider_transport_sdks() -> None:
         record.describe()
         for record in _scan_imports(_PACKAGE_ROOT)
         if (
-            record.importer == "free_claude_code.core"
-            or record.importer.startswith("free_claude_code.core.")
+            record.importer == "code_relay.core"
+            or record.importer.startswith("code_relay.core.")
         )
         and record.imported.split(".", 1)[0] in forbidden_roots
     ]
@@ -624,8 +624,8 @@ def test_core_does_not_import_provider_transport_sdks() -> None:
 
 
 def test_web_tool_workflow_has_no_http_adapter_owner() -> None:
-    former_owner = "free_claude_code.api.web_tools"
-    application_owner = "free_claude_code.application.web_tools"
+    former_owner = "code_relay.api.web_tools"
+    application_owner = "code_relay.application.web_tools"
     forbidden_clients = {"aiohttp", "httpx", "requests", "socket"}
     offenders = [
         record.describe()
@@ -696,8 +696,8 @@ def test_runtime_imports_without_loading_transcription_dependencies() -> None:
             "            raise ModuleNotFoundError(fullname)",
             "        return None",
             "sys.meta_path.insert(0, Blocker())",
-            "import free_claude_code.runtime.bootstrap",
-            "import free_claude_code.api.app",
+            "import code_relay.runtime.bootstrap",
+            "import code_relay.api.app",
         )
     )
 
@@ -712,13 +712,13 @@ def test_runtime_imports_without_loading_transcription_dependencies() -> None:
 
 
 def test_supported_messaging_facade_is_explicit() -> None:
-    import free_claude_code.messaging as facade
-    from free_claude_code.messaging.managed_protocols import (
+    import code_relay.messaging as facade
+    from code_relay.messaging.managed_protocols import (
         ManagedClaudeSessionManagerProtocol,
         ManagedClaudeSessionProtocol,
     )
-    from free_claude_code.messaging.models import IncomingMessage, MessageScope
-    from free_claude_code.messaging.platforms.ports import OutboundMessenger
+    from code_relay.messaging.models import IncomingMessage, MessageScope
+    from code_relay.messaging.platforms.ports import OutboundMessenger
 
     expected = {
         "IncomingMessage": IncomingMessage,
@@ -733,7 +733,7 @@ def test_supported_messaging_facade_is_explicit() -> None:
 
 
 def test_message_tree_mutability_stays_behind_its_facade() -> None:
-    import free_claude_code.messaging.trees as facade
+    import code_relay.messaging.trees as facade
 
     for internal_owner in {
         "MessageNode",

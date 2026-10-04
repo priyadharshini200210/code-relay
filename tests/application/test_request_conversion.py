@@ -7,9 +7,9 @@ import httpx2
 import pytest
 from openai import AsyncOpenAI
 
-from free_claude_code.application.execution import ProviderExecutor
-from free_claude_code.core.anthropic import ReasoningReplayMode
-from free_claude_code.providers.openai_chat import (
+from code_relay.application.execution import ProviderExecutor
+from code_relay.core.anthropic import ReasoningReplayMode
+from code_relay.providers.openai_chat import (
     NO_REASONING,
     OpenAIChatProfile,
     OpenAIChatProvider,

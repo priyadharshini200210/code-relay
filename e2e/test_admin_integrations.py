@@ -5,7 +5,7 @@ from itertools import groupby, pairwise
 import pytest
 from playwright.sync_api import expect
 
-from free_claude_code.harnesses import claude_integration
+from code_relay.harnesses import claude_integration
 
 
 @pytest.mark.parametrize(

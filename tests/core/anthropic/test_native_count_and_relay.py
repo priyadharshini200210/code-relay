@@ -4,13 +4,13 @@ from copy import deepcopy
 
 import pytest
 
-from free_claude_code.core.anthropic import (
+from code_relay.core.anthropic import (
     MessagesRequest,
     NativeTokenCountRequest,
     get_token_count,
 )
-from free_claude_code.core.anthropic.native import NativeMessagesError
-from free_claude_code.core.anthropic.passthrough import NativeMessagesPassthrough
+from code_relay.core.anthropic.native import NativeMessagesError
+from code_relay.core.anthropic.passthrough import NativeMessagesPassthrough
 
 
 @pytest.mark.parametrize(

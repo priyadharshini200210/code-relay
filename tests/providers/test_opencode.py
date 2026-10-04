@@ -12,35 +12,35 @@ import pytest
 from jsonschema import Draft202012Validator
 from openai import AsyncOpenAI
 
-from free_claude_code.application.errors import InvalidRequestError
-from free_claude_code.application.execution import ProviderExecutor
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.application.routing import (
+from code_relay.application.errors import InvalidRequestError
+from code_relay.application.execution import ProviderExecutor
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.application.routing import (
     ProviderModelTarget,
     ResolvedModelRoute,
     RoutedMessagesRequest,
     RoutedResponsesRequest,
 )
-from free_claude_code.config.reasoning import ReasoningPreference
-from free_claude_code.core.anthropic.models import MessagesRequest
-from free_claude_code.core.anthropic.stream_contracts import (
+from code_relay.config.reasoning import ReasoningPreference
+from code_relay.core.anthropic.models import MessagesRequest
+from code_relay.core.anthropic.stream_contracts import (
     assert_anthropic_stream_contract,
     parse_sse_text,
     text_content,
 )
-from free_claude_code.core.failures import ExecutionFailure
-from free_claude_code.core.model_capabilities import ModelInputModality
-from free_claude_code.core.openai_responses import OpenAIResponsesRequest
-from free_claude_code.core.reasoning import (
+from code_relay.core.failures import ExecutionFailure
+from code_relay.core.model_capabilities import ModelInputModality
+from code_relay.core.openai_responses import OpenAIResponsesRequest
+from code_relay.core.reasoning import (
     DEFAULT_REASONING_POLICY,
     ReasoningCapability,
 )
-from free_claude_code.providers.model_listing import ModelListResponseError
-from free_claude_code.providers.opencode import (
+from code_relay.providers.model_listing import ModelListResponseError
+from code_relay.providers.opencode import (
     OpenCodeProvider,
     create_opencode_provider,
 )
-from free_claude_code.providers.opencode.catalog import (
+from code_relay.providers.opencode.catalog import (
     OPENCODE_CATALOG_URL,
     OpenCodeCatalog,
     OpenCodeUpstreamTransport,
@@ -260,7 +260,7 @@ def _provider_with_wire_transports(
         ),
     )
     with patch(
-        "free_claude_code.providers.openai_chat.client.AsyncOpenAI",
+        "code_relay.providers.openai_chat.client.AsyncOpenAI",
         return_value=generation_client,
     ):
         provider = create_opencode_provider(
@@ -311,7 +311,7 @@ def test_client_identifies_as_first_party_opencode_user_agent(
 ) -> None:
     with (
         patch(
-            "free_claude_code.providers.openai_chat.client.AsyncOpenAI"
+            "code_relay.providers.openai_chat.client.AsyncOpenAI"
         ) as mock_openai,
         patch("httpx.AsyncClient"),
     ):
@@ -1253,7 +1253,7 @@ def test_build_request_body_replays_tool_reasoning_natively(
     provider_id: str,
 ) -> None:
     with (
-        patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"),
+        patch("code_relay.providers.openai_chat.client.AsyncOpenAI"),
         patch("httpx.AsyncClient"),
     ):
         provider = create_opencode_provider(
@@ -1316,7 +1316,7 @@ async def test_tool_only_history_sends_empty_reasoning_content_on_wire(
     provider_id: str,
 ) -> None:
     with (
-        patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"),
+        patch("code_relay.providers.openai_chat.client.AsyncOpenAI"),
         patch("httpx.AsyncClient"),
     ):
         provider = create_opencode_provider(

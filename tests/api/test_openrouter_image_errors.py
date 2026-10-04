@@ -4,7 +4,7 @@ from unittest.mock import AsyncMock, patch
 import pytest
 from fastapi.testclient import TestClient
 
-from free_claude_code.providers.open_router import OpenRouterProvider
+from code_relay.providers.open_router import OpenRouterProvider
 from tests.api.support import create_test_app
 from tests.providers.support import immediate_admission, make_provider_config
 from tests.providers.test_open_router import image_routing_error_body, routing_error
@@ -54,7 +54,7 @@ def test_openrouter_image_error_reaches_client_without_losing_image(
     try:
         with (
             patch(
-                "free_claude_code.api.routes.resolve_provider", return_value=provider
+                "code_relay.api.routes.resolve_provider", return_value=provider
             ),
             patch.object(provider._client.chat.completions, "create", create),
             TestClient(create_test_app()) as client,

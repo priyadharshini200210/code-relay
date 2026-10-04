@@ -14,34 +14,34 @@ from playwright.sync_api import Page
 
 from e2e.code_support import CodeControl
 from e2e.server_shutdown import join_server
-from free_claude_code.api.app import create_app
-from free_claude_code.api.ports import ApiServices
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.config import env_migrations, paths
-from free_claude_code.config.env_migrations import recognized_env_keys
-from free_claude_code.config.loader import (
+from code_relay.api.app import create_app
+from code_relay.api.ports import ApiServices
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.config import env_migrations, paths
+from code_relay.config.env_migrations import recognized_env_keys
+from code_relay.config.loader import (
     ManagedConfigStore,
     clear_settings_cache,
     get_settings,
 )
-from free_claude_code.config.settings import Settings
-from free_claude_code.core.anthropic.models import MessagesRequest
-from free_claude_code.core.openai_responses import OpenAIResponsesRequest
-from free_claude_code.core.reasoning import DEFAULT_REASONING_POLICY, ReasoningPolicy
-from free_claude_code.harnesses import (
+from code_relay.config.settings import Settings
+from code_relay.core.anthropic.models import MessagesRequest
+from code_relay.core.openai_responses import OpenAIResponsesRequest
+from code_relay.core.reasoning import DEFAULT_REASONING_POLICY, ReasoningPolicy
+from code_relay.harnesses import (
     claude_desktop_integration,
     claude_integration,
     codex_integration,
     jetbrains_acp_integration,
     vscode_chat_integration,
 )
-from free_claude_code.providers.base import BaseProvider, ProviderConfig
-from free_claude_code.providers.runtime import ProviderRuntime
-from free_claude_code.runtime.application import ApplicationRuntime
-from free_claude_code.runtime.asgi import RuntimeASGIApp
-from free_claude_code.runtime.configuration import ConfigurationService
-from free_claude_code.runtime.folder_picker import NativeFolderPicker
-from free_claude_code.runtime.provider_manager import ProviderRuntimeManager
+from code_relay.providers.base import BaseProvider, ProviderConfig
+from code_relay.providers.runtime import ProviderRuntime
+from code_relay.runtime.application import ApplicationRuntime
+from code_relay.runtime.asgi import RuntimeASGIApp
+from code_relay.runtime.configuration import ConfigurationService
+from code_relay.runtime.folder_picker import NativeFolderPicker
+from code_relay.runtime.provider_manager import ProviderRuntimeManager
 from tests.web_tools_support import StubWebToolsClient
 
 
@@ -140,7 +140,7 @@ def provider_load_guard(monkeypatch: pytest.MonkeyPatch) -> Iterator[None]:
         raise AssertionError(f"Browser fixture loaded real provider: {provider_id}")
 
     monkeypatch.setattr(
-        "free_claude_code.providers.runtime.runtime._load_constructor", forbidden
+        "code_relay.providers.runtime.runtime._load_constructor", forbidden
     )
     yield
     assert attempted == [], f"Browser fixture loaded real providers: {attempted}"
@@ -305,7 +305,7 @@ def admin_base_url(
         }
 
     monkeypatch.setattr(
-        "free_claude_code.api.admin_routes._check_local_provider",
+        "code_relay.api.admin_routes._check_local_provider",
         local_provider_result,
     )
 

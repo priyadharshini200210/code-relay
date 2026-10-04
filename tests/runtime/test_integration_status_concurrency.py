@@ -4,9 +4,9 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from free_claude_code.application.errors import ApplicationUnavailableError
-from free_claude_code.harnesses import claude_integration as claude
-from free_claude_code.harnesses import vscode_chat_integration as vscode
+from code_relay.application.errors import ApplicationUnavailableError
+from code_relay.harnesses import claude_integration as claude
+from code_relay.harnesses import vscode_chat_integration as vscode
 from tests.runtime.test_integration_startup import runtime as runtime
 
 

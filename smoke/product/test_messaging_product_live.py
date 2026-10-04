@@ -3,9 +3,9 @@ import asyncio
 import pytest
 import pytest_asyncio
 
-from free_claude_code.messaging.models import MessageScope
-from free_claude_code.messaging.platforms.ports import MessagingStartupNotice
-from free_claude_code.messaging.trees import MessageState, TreeIdentity
+from code_relay.messaging.models import MessageScope
+from code_relay.messaging.platforms.ports import MessagingStartupNotice
+from code_relay.messaging.trees import MessageState, TreeIdentity
 from smoke.lib.e2e import FakeCLISession, FakePlatformDriver, default_cli_events
 
 pytestmark = [pytest.mark.live, pytest.mark.smoke_target("messaging")]

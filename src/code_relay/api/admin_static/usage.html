@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FCC Usage</title>
+    <style>
+      :root {
+        --bg: #f7f7f5; --panel: #fff; --text: #1d1d1b; --muted: #6b6b66;
+        --line: #e4e4df; --accent: #2f6fde; --ok: #2e7d32; --bad: #c62828;
+        --warn: #b26a00;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #161615; --panel: #1f1f1d; --text: #ececea; --muted: #a0a09a;
+          --line: #33332f; --accent: #7aa7ff; --ok: #66bb6a; --bad: #ef5350;
+          --warn: #ffb74d;
+        }
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0; background: var(--bg); color: var(--text);
+        font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+      }
+      main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 48px; }
+      header { display: flex; flex-wrap: wrap; gap: 12px; align-items: baseline;
+        justify-content: space-between; margin-bottom: 20px; }
+      h1 { font-size: 22px; margin: 0; }
+      h2 { font-size: 15px; margin: 28px 0 10px; }
+      a { color: var(--accent); }
+      .muted { color: var(--muted); }
+      .tiles { display: grid; gap: 12px;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+      .tile { background: var(--panel); border: 1px solid var(--line);
+        border-radius: 10px; padding: 14px; }
+      .tile .label { color: var(--muted); font-size: 12px; }
+      .tile .value { font-size: 22px; font-weight: 600;
+        font-variant-numeric: tabular-nums; margin-top: 4px; }
+      .scroll { overflow-x: auto; background: var(--panel);
+        border: 1px solid var(--line); border-radius: 10px; }
+      table { width: 100%; border-collapse: collapse; min-width: 640px; }
+      th, td { padding: 8px 10px; text-align: right; white-space: nowrap;
+        border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+      th:first-child, td:first-child { text-align: left; }
+      th { font-size: 12px; color: var(--muted); font-weight: 500; }
+      tr:last-child td { border-bottom: 0; }
+      .pill { display: inline-block; padding: 1px 8px; border-radius: 99px;
+        font-size: 12px; border: 1px solid currentColor; }
+      .up { color: var(--ok); } .down { color: var(--bad); }
+      .unknown { color: var(--muted); }
+      .bar { width: 120px; height: 6px; background: var(--line);
+        border-radius: 3px; display: inline-block; vertical-align: middle; }
+      .bar > span { display: block; height: 100%; border-radius: 3px;
+        background: var(--accent); }
+      .bar.hot > span { background: var(--warn); }
+      .bar.full > span { background: var(--bad); }
+      textarea { width: 100%; min-height: 220px; font: 12px/1.4 ui-monospace,
+        Menlo, monospace; background: var(--panel); color: var(--text);
+        border: 1px solid var(--line); border-radius: 10px; padding: 10px; }
+      button { font: inherit; padding: 6px 14px; border-radius: 8px;
+        border: 1px solid var(--line); background: var(--panel);
+        color: var(--text); cursor: pointer; }
+      button.primary { background: var(--accent); border-color: var(--accent);
+        color: #fff; }
+      .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+        margin-top: 8px; }
+      #status { min-height: 1.4em; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Usage</h1>
+        <span class="muted">
+          <span id="since"></span> · <a href="/admin">Back to Admin</a>
+        </span>
+      </header>
+
+      <section class="tiles" id="tiles"></section>
+
+      <h2>Providers</h2>
+      <div class="scroll"><table id="providers"></table></div>
+
+      <h2>Models</h2>
+      <div class="scroll"><table id="models"></table></div>
+
+      <h2>Prices and free-quota limits</h2>
+      <p class="muted">
+        Prices are USD per 1M tokens and are only estimates you enter yourself.
+        <code>baseline</code> is what you would pay without free providers, used
+        for the savings figure. <code>daily_token_limits</code> are per provider
+        and feed smart routing when <code>SMART_ROUTING</code> is on.
+      </p>
+      <textarea id="config" spellcheck="false" aria-label="Usage settings JSON"></textarea>
+      <div class="row">
+        <button class="primary" id="save">Save settings</button>
+        <button id="reset">Reset usage</button>
+        <span id="status" class="muted" role="status"></span>
+      </div>
+    </main>
+
+    <script>
+      const fmt = new Intl.NumberFormat();
+      const usd = (v) => "$" + (v || 0).toFixed(v >= 1 ? 2 : 4);
+      const el = (id) => document.getElementById(id);
+      const esc = (s) => String(s).replace(/[&<>"]/g, (c) =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+      const tokens = (t) => t.input_tokens + t.output_tokens +
+        t.cache_read_input_tokens + t.cache_creation_input_tokens;
+      let configLoaded = false;
+
+      function quotaCell(p) {
+        if (!p.daily_token_limit) return '<span class="muted">—</span>';
+        const pct = Math.min(100, (p.tokens_today / p.daily_token_limit) * 100);
+        const cls = pct >= 100 ? "full" : pct >= 80 ? "hot" : "";
+        return `<span class="bar ${cls}" title="${pct.toFixed(0)}% used">` +
+          `<span style="width:${pct}%"></span></span> ` +
+          `${fmt.format(p.quota_remaining_today)} left`;
+      }
+
+      function render(data) {
+        const o = data.overall;
+        el("since").textContent = data.since ? "Since " + data.since : "";
+        const tiles = [
+          ["Requests", fmt.format(o.requests)],
+          ["Tokens", fmt.format(tokens(o))],
+          ["Success rate", o.requests ? ((o.successes / o.requests) * 100).toFixed(1) + "%" : "—"],
+          ["Rate limited", fmt.format(o.rate_limited)],
+          ["Est. cost", usd(o.cost_usd)],
+          ["Est. savings", usd(o.savings_usd)],
+        ];
+        el("tiles").innerHTML = tiles.map(([l, v]) =>
+          `<div class="tile"><div class="label">${l}</div><div class="value">${v}</div></div>`).join("");
+
+        const providers = Object.entries(data.providers).sort((a, b) => tokens(b[1]) - tokens(a[1]));
+        el("providers").innerHTML =
+          "<tr><th>Provider</th><th>Requests</th><th>Failures</th><th>429s</th>" +
+          "<th>Tokens</th><th>Today</th><th>Free quota today</th><th>Est. cost</th></tr>" +
+          (providers.length ? providers.map(([id, p]) => `<tr><td>${esc(id)}</td>` +
+            `<td>${fmt.format(p.requests)}</td><td>${fmt.format(p.failures)}</td>` +
+            `<td>${fmt.format(p.rate_limited)}</td><td>${fmt.format(tokens(p))}</td>` +
+            `<td>${fmt.format(p.tokens_today)}</td><td>${quotaCell(p)}</td>` +
+            `<td>${usd(p.cost_usd)}</td></tr>`).join("")
+            : '<tr><td colspan="8" class="muted">No requests yet.</td></tr>');
+
+        const models = Object.entries(data.models).sort((a, b) => tokens(b[1]) - tokens(a[1]));
+        el("models").innerHTML =
+          "<tr><th>Model</th><th>Health</th><th>Avg latency</th><th>Requests</th>" +
+          "<th>Input</th><th>Output</th><th>Cached</th><th>Est. cost</th><th>Last used</th></tr>" +
+          (models.length ? models.map(([id, m]) => {
+            const h = m.health || { status: "unknown" };
+            return `<tr><td>${esc(id)}</td>` +
+              `<td><span class="pill ${h.status}">${h.status}</span></td>` +
+              `<td>${h.avg_latency_ms != null ? fmt.format(Math.round(h.avg_latency_ms)) + " ms" : "—"}</td>` +
+              `<td>${fmt.format(m.requests)}</td><td>${fmt.format(m.input_tokens)}</td>` +
+              `<td>${fmt.format(m.output_tokens)}</td><td>${fmt.format(m.cache_read_input_tokens)}</td>` +
+              `<td>${usd(m.cost_usd)}</td><td class="muted">${esc(m.last_used || "—")}</td></tr>`;
+          }).join("") : '<tr><td colspan="9" class="muted">No requests yet.</td></tr>');
+
+        if (!configLoaded) {
+          const c = data.config;
+          if (!Object.keys(c.baseline).length && !Object.keys(c.provider_prices).length &&
+              !Object.keys(c.model_prices).length && !Object.keys(c.daily_token_limits).length) {
+            c.baseline = { input: 0, output: 0 };
+            c.provider_prices = { "example_provider": { input: 0, output: 0 } };
+            c.daily_token_limits = { "example_provider": 1000000 };
+          }
+          el("config").value = JSON.stringify(c, null, 2);
+          configLoaded = true;
+        }
+      }
+
+      async function refresh() {
+        try {
+          const res = await fetch("/admin/api/usage", { cache: "no-store" });
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          render(await res.json());
+        } catch (err) {
+          el("status").textContent = "Could not load usage: " + err.message;
+        }
+      }
+
+      el("save").addEventListener("click", async () => {
+        let body;
+        try { body = JSON.parse(el("config").value); }
+        catch { el("status").textContent = "Settings are not valid JSON."; return; }
+        const res = await fetch("/admin/api/usage/config", {
+          method: "PUT", headers: { "content-type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        if (res.ok) {
+          el("config").value = JSON.stringify(await res.json(), null, 2);
+          el("status").textContent = "Saved.";
+          refresh();
+        } else {
+          el("status").textContent = "Save failed: HTTP " + res.status;
+        }
+      });
+
+      el("reset").addEventListener("click", async () => {
+        if (!confirm("Reset all usage counters? Prices and limits are kept.")) return;
+        const res = await fetch("/admin/api/usage/reset", { method: "POST" });
+        el("status").textContent = res.ok ? "Usage reset." : "Reset failed: HTTP " + res.status;
+        if (res.ok) render(await res.json());
+      });
+
+      refresh();
+      setInterval(refresh, 5000);
+    </script>
+  </body>
+</html>

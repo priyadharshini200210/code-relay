@@ -4,9 +4,9 @@ import json
 
 import pytest
 
-from free_claude_code.application.model_catalog import CatalogModel
-from free_claude_code.cli.launchers.aider_config import build_aider_config
-from free_claude_code.core.model_capabilities import ModelInputModality
+from code_relay.application.model_catalog import CatalogModel
+from code_relay.cli.launchers.aider_config import build_aider_config
+from code_relay.core.model_capabilities import ModelInputModality
 
 
 def _models() -> tuple[CatalogModel, ...]:

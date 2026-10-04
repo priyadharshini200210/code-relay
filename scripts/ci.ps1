@@ -108,7 +108,7 @@ function Test-ShouldRunCheck {
 
 function Assert-UvAvailable {
     if (-not (Get-Command uv -ErrorAction SilentlyContinue)) {
-        throw "uv is required but was not found on PATH. Install uv first (see README or scripts/install.ps1)."
+        throw "uv is required but was not found on PATH. Install uv first (see README)."
     }
 }
 

@@ -4,9 +4,9 @@ import math
 import pytest
 from fastapi.testclient import TestClient
 
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.config.settings import Settings
-from free_claude_code.core.model_capabilities import ModelInputModality
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.config.settings import Settings
+from code_relay.core.model_capabilities import ModelInputModality
 from tests.api.support import create_test_app, provider_manager_for_app
 
 
@@ -42,9 +42,9 @@ def _cache_models(app, provider_id: str, *model_ids: str) -> None:
 
 @pytest.mark.parametrize("view", ["messages", "responses"])
 def test_context_fallback_round_trip_preserves_reported_capabilities(view):
-    from free_claude_code.application.model_catalog import read_model_catalog
-    from free_claude_code.cli.launchers.catalog_http import model_catalog_from_response
-    from free_claude_code.cli.launchers.opencode_config import build_opencode_config
+    from code_relay.application.model_catalog import read_model_catalog
+    from code_relay.cli.launchers.catalog_http import model_catalog_from_response
+    from code_relay.cli.launchers.opencode_config import build_opencode_config
 
     app = create_test_app(_settings(model_opus=None))
     manager = provider_manager_for_app(app)
@@ -65,7 +65,7 @@ def test_context_fallback_round_trip_preserves_reported_capabilities(view):
         default_model_id=decoded.default_model_id,
         proxy_root_url="http://localhost:8082",
     )
-    models = json.loads(json.dumps(config.file))["providers"]["free-claude-code"][
+    models = json.loads(json.dumps(config.file))["providers"]["code-relay"][
         "models"
     ]
     assert models["deepseek/deepseek-chat"]["limit"] == {"context": 200000}
@@ -266,7 +266,7 @@ def test_direct_model_views_exclude_claude_aliases_and_duplicate_variants():
     assert responses["data"][0] == {
         "object": "model",
         "created": 0,
-        "owned_by": "free-claude-code",
+        "owned_by": "code-relay",
         "created_at": "1970-01-01T00:00:00Z",
         "display_name": "deepseek/deepseek-chat",
         "id": "deepseek/deepseek-chat",
@@ -487,8 +487,8 @@ def test_unknown_model_view_is_rejected():
 
 @pytest.mark.parametrize("view", ["messages", "responses"])
 def test_real_json_catalog_agrees_with_application_identity_and_known_metadata(view):
-    from free_claude_code.application.model_catalog import read_model_catalog
-    from free_claude_code.cli.launchers.catalog_http import model_catalog_from_response
+    from code_relay.application.model_catalog import read_model_catalog
+    from code_relay.cli.launchers.catalog_http import model_catalog_from_response
 
     app = create_test_app(
         _settings(model="open_router/Zulu", model_opus=None, model_haiku=None)

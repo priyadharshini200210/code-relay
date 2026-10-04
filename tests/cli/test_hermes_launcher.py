@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 import pytest
 
-from free_claude_code.config.paths import launcher_temp_dir_path
+from code_relay.config.paths import launcher_temp_dir_path
 from tests.cli.conftest import LaunchCapture
 from tests.cli.test_launcher_workflow import launch
 

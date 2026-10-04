@@ -6,22 +6,22 @@ from typing import Any, cast
 
 import pytest
 
-from free_claude_code.core.anthropic import ReasoningReplayMode
-from free_claude_code.core.anthropic.conversion import AnthropicToOpenAIConverter
-from free_claude_code.core.anthropic.models import MessagesRequest
-from free_claude_code.core.history_replay import (
+from code_relay.core.anthropic import ReasoningReplayMode
+from code_relay.core.anthropic.conversion import AnthropicToOpenAIConverter
+from code_relay.core.anthropic.models import MessagesRequest
+from code_relay.core.history_replay import (
     HistoryScope,
     ReplayOrigin,
     prepare_history,
 )
-from free_claude_code.core.openai_responses.chat_request import (
+from code_relay.core.openai_responses.chat_request import (
     build_responses_chat_request,
 )
-from free_claude_code.core.openai_responses.models import OpenAIResponsesRequest
-from free_claude_code.core.reasoning import ReasoningPolicy
-from free_claude_code.providers.deepseek.client import DeepSeekProvider
-from free_claude_code.providers.deepseek.compat import finalize_deepseek_chat_body
-from free_claude_code.providers.open_router import OpenRouterProvider
+from code_relay.core.openai_responses.models import OpenAIResponsesRequest
+from code_relay.core.reasoning import ReasoningPolicy
+from code_relay.providers.deepseek.client import DeepSeekProvider
+from code_relay.providers.deepseek.compat import finalize_deepseek_chat_body
+from code_relay.providers.open_router import OpenRouterProvider
 from tests.providers.support import immediate_admission, make_provider_config
 
 
@@ -393,7 +393,7 @@ def test_completed_native_hosted_tools_become_readable_chat_history():
 
 @pytest.mark.parametrize("wire", ["messages", "responses"])
 def test_malformed_carrier_fails_startup_before_inference(wire):
-    from free_claude_code.application.errors import InvalidRequestError
+    from code_relay.application.errors import InvalidRequestError
 
     provider = OpenRouterProvider(
         make_provider_config(api_key="synthetic", base_url="https://example.org/v1"),

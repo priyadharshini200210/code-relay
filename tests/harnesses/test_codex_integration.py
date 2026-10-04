@@ -3,8 +3,8 @@ from pathlib import Path
 
 import pytest
 
-from free_claude_code.harnesses import codex_integration
-from free_claude_code.harnesses.codex_integration import config_path
+from code_relay.harnesses import codex_integration
+from code_relay.harnesses.codex_integration import config_path
 
 URL = "http://127.0.0.1:8082"
 
@@ -27,7 +27,7 @@ def test_connect_disconnect_preserve_model_comments_and_other_providers(tmp_path
     assert data["model_provider"] == "fcc"
     assert Path(data["model_catalog_json"]) == tmp_path / "catalog.json"
     assert data["model_providers"]["fcc"] == {
-        "name": "Free Claude Code",
+        "name": "Code Relay",
         "base_url": URL + "/v1",
         "wire_api": "responses",
         "auth": {"command": "fcc-codex", "args": ["--print-proxy-auth-token"]},

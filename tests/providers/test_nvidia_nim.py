@@ -7,23 +7,23 @@ import openai
 import pytest
 from httpx2 import Request, Response
 
-from free_claude_code.config.nim import NimSettings
-from free_claude_code.config.provider_catalog import NVIDIA_NIM_DEFAULT_BASE
-from free_claude_code.core.failures import ExecutionFailure
-from free_claude_code.core.history_replay import (
+from code_relay.config.nim import NimSettings
+from code_relay.config.provider_catalog import NVIDIA_NIM_DEFAULT_BASE
+from code_relay.core.failures import ExecutionFailure
+from code_relay.core.history_replay import (
     ReplayOrigin,
     ReplayRecord,
     encode_replay,
 )
-from free_claude_code.core.openai_responses.models import OpenAIResponsesRequest
-from free_claude_code.core.reasoning import ReasoningPolicy
-from free_claude_code.providers.admission import UPSTREAM_TRANSIENT_TOTAL_ATTEMPTS
-from free_claude_code.providers.nvidia_nim import NvidiaNimProvider
-from free_claude_code.providers.nvidia_nim.client import _PROFILE as NIM_PROFILE
-from free_claude_code.providers.nvidia_nim.tool_schema import (
+from code_relay.core.openai_responses.models import OpenAIResponsesRequest
+from code_relay.core.reasoning import ReasoningPolicy
+from code_relay.providers.admission import UPSTREAM_TRANSIENT_TOTAL_ATTEMPTS
+from code_relay.providers.nvidia_nim import NvidiaNimProvider
+from code_relay.providers.nvidia_nim.client import _PROFILE as NIM_PROFILE
+from code_relay.providers.nvidia_nim.tool_schema import (
     NIM_TOOL_ARGUMENT_ALIASES_KEY,
 )
-from free_claude_code.providers.stream_recovery import RecoveryHoldbackBuffer
+from code_relay.providers.stream_recovery import RecoveryHoldbackBuffer
 from tests.providers.request_factory import make_messages_request
 from tests.providers.support import (
     REASONING_OFF,
@@ -214,7 +214,7 @@ async def test_argument_aliases_survive_shared_history_correction(early_sse):
     # Test adapter exercises the shared history path; native NIM disables details.
     def provider_factory():
         with patch(
-            "free_claude_code.providers.nvidia_nim.client._PROFILE",
+            "code_relay.providers.nvidia_nim.client._PROFILE",
             replace(NIM_PROFILE, structured_reasoning_details=True),
         ):
             return _alias_provider()
@@ -343,7 +343,7 @@ def _make_internal_server_error(message: str) -> openai.InternalServerError:
 async def test_init(provider_config):
     """Test provider initialization."""
     with patch(
-        "free_claude_code.providers.openai_chat.client.AsyncOpenAI"
+        "code_relay.providers.openai_chat.client.AsyncOpenAI"
     ) as mock_openai:
         provider = NvidiaNimProvider(
             provider_config,
@@ -367,7 +367,7 @@ async def test_init_uses_configurable_timeouts():
         http_connect_timeout=5.0,
     )
     with patch(
-        "free_claude_code.providers.openai_chat.client.AsyncOpenAI"
+        "code_relay.providers.openai_chat.client.AsyncOpenAI"
     ) as mock_openai:
         NvidiaNimProvider(
             config, nim_settings=NimSettings(), admission=immediate_admission()
@@ -1111,7 +1111,7 @@ async def test_midstream_native_tool_suffix_failure_recovers_without_duplication
             new_callable=AsyncMock,
         ) as mock_create,
         patch(
-            "free_claude_code.providers.stream_recovery.RecoveryHoldbackBuffer",
+            "code_relay.providers.stream_recovery.RecoveryHoldbackBuffer",
             side_effect=immediate_holdback,
         ),
     ):

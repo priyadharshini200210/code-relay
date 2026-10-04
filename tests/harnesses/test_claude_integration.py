@@ -3,8 +3,8 @@ from pathlib import Path
 
 import pytest
 
-from free_claude_code.harnesses import claude_integration
-from free_claude_code.harnesses.claude_integration import settings_path
+from code_relay.harnesses import claude_integration
+from code_relay.harnesses.claude_integration import settings_path
 
 URL = "http://127.0.0.1:8000"
 TOKEN = "test-integration-token"

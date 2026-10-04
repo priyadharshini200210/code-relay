@@ -185,12 +185,12 @@ def test_dsh_native_settings_migration_and_dump_e2e(
         )
         assert "maxParallelToolCalls: 3" in persisted
         assert (
-            "free-claude-code" not in persisted and "FCC_DSH_API_KEY" not in persisted
+            "code-relay" not in persisted and "FCC_DSH_API_KEY" not in persisted
         )
         assert smoke_config.settings.proxy_auth_token not in persisted
         user_patch = tmp_path / "caller.patch.yml"
         user_patch.write_text(
-            "- id: agent-default-model\n  config:\n    provider: free-claude-code\n    model: caller-precedence\n",
+            "- id: agent-default-model\n  config:\n    provider: code-relay\n    model: caller-precedence\n",
             encoding="utf-8",
         )
         for selection in (

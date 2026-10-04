@@ -17,9 +17,9 @@ import httpx
 import pytest
 from playwright.sync_api import Page
 
-from free_claude_code.config.paths import managed_env_path
-from free_claude_code.config.provider_catalog import PROVIDER_CATALOG
-from free_claude_code.core.json_types import JsonObject, JsonValue
+from code_relay.config.paths import managed_env_path
+from code_relay.config.provider_catalog import PROVIDER_CATALOG
+from code_relay.core.json_types import JsonObject, JsonValue
 from smoke.lib.child_process import cmd_python_c
 from smoke.lib.claude_cli_matrix import run_claude_cli
 from smoke.lib.config import SmokeConfig
@@ -206,7 +206,7 @@ def test_opencode_cli_prompt_e2e(smoke_config: SmokeConfig, tmp_path: Path) -> N
         env.pop("OPENCODE_CONFIG", None)
         env.pop("OPENCODE_CONFIG_CONTENT", None)
         command = cmd_python_c(
-            "from free_claude_code.cli.launchers.opencode import launch; launch()"
+            "from code_relay.cli.launchers.opencode import launch; launch()"
         )
 
         def run(*args: str) -> str:
@@ -228,7 +228,7 @@ def test_opencode_cli_prompt_e2e(smoke_config: SmokeConfig, tmp_path: Path) -> N
             "--format",
             "json",
             "--model",
-            f"free-claude-code/{provider_model.full_model}",
+            f"code-relay/{provider_model.full_model}",
             "--auto",
             "Use the file-reading tool to read fcc-smoke-marker.txt. "
             "Reply with exactly its contents. Do not modify any files.",
@@ -688,7 +688,7 @@ def test_dsh_cli_tools_and_resume_e2e(
                     {
                         "id": "agent-default-model",
                         "config": {
-                            "provider": "free-claude-code",
+                            "provider": "code-relay",
                             "model": full_model,
                             "reasoningEffort": "high",
                         },
@@ -1228,7 +1228,7 @@ def test_claude_cli_web_search_e2e(smoke_config: SmokeConfig, tmp_path: Path) ->
                         "role": "user",
                         "content": (
                             "You must use the available web search tool to find the "
-                            "Free Claude Code GitHub repository."
+                            "Code Relay GitHub repository."
                         ),
                     }
                 ],
@@ -1248,7 +1248,7 @@ def test_claude_cli_web_search_e2e(smoke_config: SmokeConfig, tmp_path: Path) ->
             cwd=tmp_path,
             bare=False,
             prompt=(
-                "Use WebSearch exactly once to find the Free Claude Code GitHub "
+                "Use WebSearch exactly once to find the Code Relay GitHub "
                 "repository. Then reply with FCC_SMOKE_WEB_SEARCH and one source URL."
             ),
             tools="WebSearch",
@@ -1268,25 +1268,25 @@ def test_claude_cli_web_search_e2e(smoke_config: SmokeConfig, tmp_path: Path) ->
     log_rows = _trace_log_events(server_log)
     assert (
         sum(
-            row.get("event") == "free_claude_code.api.web_search.automatic_recognized"
+            row.get("event") == "code_relay.api.web_search.automatic_recognized"
             for row in log_rows
         )
         == 1
     ), server_log
     assert any(
-        row.get("event") == "free_claude_code.api.optimization.web_server_tool"
+        row.get("event") == "code_relay.api.optimization.web_server_tool"
         for row in log_rows
     ), server_log
     assert (
         sum(
-            row.get("event") == "free_claude_code.api.web_search.automatic_selected"
+            row.get("event") == "code_relay.api.web_search.automatic_selected"
             for row in log_rows
         )
         == 1
     ), server_log
     assert (
         sum(
-            row.get("event") == "free_claude_code.api.web_search.automatic_completed"
+            row.get("event") == "code_relay.api.web_search.automatic_completed"
             for row in log_rows
         )
         == 1
@@ -1371,7 +1371,7 @@ def test_claude_auto_mode_openai_connected_e2e(
     policy_rows = [
         row
         for row in log_rows
-        if row.get("event") == "free_claude_code.api.route.safety_classifier_policy"
+        if row.get("event") == "code_relay.api.route.safety_classifier_policy"
     ]
     assert any(
         row.get("classifier_stop_sequence") == "</severity>"

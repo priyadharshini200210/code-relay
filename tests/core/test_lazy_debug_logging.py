@@ -10,12 +10,12 @@ import pytest
 from loguru import logger
 from openai import AsyncOpenAI
 
-from free_claude_code.api.handlers import token_count
-from free_claude_code.application import execution
-from free_claude_code.config.settings import Settings
-from free_claude_code.core import trace
-from free_claude_code.core.anthropic import TokenCountRequest
-from free_claude_code.providers.openai_chat import transport as chat_transport
+from code_relay.api.handlers import token_count
+from code_relay.application import execution
+from code_relay.config.settings import Settings
+from code_relay.core import trace
+from code_relay.core.anthropic import TokenCountRequest
+from code_relay.providers.openai_chat import transport as chat_transport
 from tests.application.test_execution import (
     FakeProvider,
     ResponsesFakeProvider,
@@ -126,7 +126,7 @@ async def _probe(level: str, raw: bool) -> None:
         ingress_payload = next(
             payload
             for payload in payloads
-            if payload["event"] == "free_claude_code.api.request.received"
+            if payload["event"] == "code_relay.api.request.received"
         )
         assert ingress_payload["snapshot"]["model"] == "gateway-model"
         assert (

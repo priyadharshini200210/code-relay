@@ -1,6 +1,6 @@
 import pytest
 
-from free_claude_code.core.anthropic import (
+from code_relay.core.anthropic import (
     ContentType,
     ThinkTagParser,
 )

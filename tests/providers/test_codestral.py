@@ -4,9 +4,9 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.config.provider_catalog import CODESTRAL_DEFAULT_BASE
-from free_claude_code.core.model_capabilities import ModelInputModality
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.config.provider_catalog import CODESTRAL_DEFAULT_BASE
+from code_relay.core.model_capabilities import ModelInputModality
 from tests.providers.request_factory import make_messages_request
 from tests.providers.support import (
     SDKStreamDouble,
@@ -38,7 +38,7 @@ def codestral_provider(codestral_config):
 def test_init(codestral_config):
     """Test provider initialization."""
     with patch(
-        "free_claude_code.providers.openai_chat.client.AsyncOpenAI"
+        "code_relay.providers.openai_chat.client.AsyncOpenAI"
     ) as mock_openai:
         provider = profiled_provider(
             "mistral_codestral",

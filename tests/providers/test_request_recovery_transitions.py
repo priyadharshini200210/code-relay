@@ -13,28 +13,28 @@ import pytest
 from openai import AsyncOpenAI
 from starlette.responses import StreamingResponse
 
-from free_claude_code.api.response_streams import (
+from code_relay.api.response_streams import (
     anthropic_sse_streaming_response,
     openai_responses_sse_streaming_response,
 )
-from free_claude_code.core.anthropic import ReasoningReplayMode
-from free_claude_code.core.anthropic.models import MessagesRequest
-from free_claude_code.core.anthropic.stream_contracts import parse_sse_text
-from free_claude_code.core.failures import ExecutionFailure
-from free_claude_code.core.openai_responses import OpenAIResponsesRequest
-from free_claude_code.core.reasoning import ReasoningPolicy
-from free_claude_code.providers.admission import (
+from code_relay.core.anthropic import ReasoningReplayMode
+from code_relay.core.anthropic.models import MessagesRequest
+from code_relay.core.anthropic.stream_contracts import parse_sse_text
+from code_relay.core.failures import ExecutionFailure
+from code_relay.core.openai_responses import OpenAIResponsesRequest
+from code_relay.core.reasoning import ReasoningPolicy
+from code_relay.providers.admission import (
     ProviderAdmissionController,
     ProviderOperationKind,
 )
-from free_claude_code.providers.endpoint_types import HttpEndpoint
-from free_claude_code.providers.openai_chat import (
+from code_relay.providers.endpoint_types import HttpEndpoint
+from code_relay.providers.openai_chat import (
     NamedEffortReasoning,
     OpenAIChatProfile,
     OpenAIChatProvider,
     OpenAIChatRequestPolicy,
 )
-from free_claude_code.providers.openai_responses import OpenAIResponsesTransport
+from code_relay.providers.openai_responses import OpenAIResponsesTransport
 from tests.api.test_response_streams import _json_error, _serve
 from tests.providers.support import make_provider_config
 from tests.providers.test_anthropic_messages_transport import _events
@@ -347,7 +347,7 @@ async def test_mixed_recovery_keeps_one_budget_and_correction_history(
     request = _request(protocol)
     original = deepcopy(request.model_dump())
     async with _transport(protocol, respond) as (provider, endpoint, bodies, wires, _):
-        with patch("free_claude_code.providers.admission.trace_event") as trace:
+        with patch("code_relay.providers.admission.trace_event") as trace:
             if exhausted:
                 with pytest.raises(ExecutionFailure):
                     _ = [event async for event in _stream(provider, endpoint, request)]

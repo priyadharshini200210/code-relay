@@ -3,10 +3,10 @@ from pathlib import Path
 
 import pytest
 
-from free_claude_code.config.provider_catalog import PROVIDER_CATALOG
-from free_claude_code.config.settings import Settings
-from free_claude_code.messaging.platforms.factory import create_messaging_components
-from free_claude_code.providers.runtime import build_provider_config
+from code_relay.config.provider_catalog import PROVIDER_CATALOG
+from code_relay.config.settings import Settings
+from code_relay.messaging.platforms.factory import create_messaging_components
+from code_relay.providers.runtime import build_provider_config
 from smoke.lib.child_process import (
     cmd_fcc_server,
     cmd_python_c,
@@ -47,7 +47,7 @@ def test_env_precedence_e2e(smoke_config: SmokeConfig, tmp_path) -> None:
     env["MODEL"] = "nvidia_nim/process-model"
     env["ANTHROPIC_AUTH_TOKEN"] = "process-token"
     script = (
-        "from free_claude_code.config.loader import get_settings; "
+        "from code_relay.config.loader import get_settings; "
         "s=get_settings(); "
         "print(s.model); print(s.proxy_auth_token)"
     )
@@ -72,7 +72,7 @@ def test_removed_env_migration_e2e(smoke_config: SmokeConfig, tmp_path) -> None:
     env = _isolated_config_env(home)
     env["FCC_ENV_FILE"] = str(env_file)
     script = (
-        "from free_claude_code.config.loader import get_settings; "
+        "from code_relay.config.loader import get_settings; "
         "print(get_settings().model)"
     )
     result = run_captured_text(
@@ -114,8 +114,8 @@ def test_route_reasoning_config_e2e(smoke_config: SmokeConfig, tmp_path) -> None
     )
     env = _isolated_config_env(home)
     script = (
-        "from free_claude_code.application.routing import ModelRouter; "
-        "from free_claude_code.config.loader import get_settings; "
+        "from code_relay.application.routing import ModelRouter; "
+        "from code_relay.config.loader import get_settings; "
         "s=get_settings(); "
         "r=ModelRouter(s); "
         "print(r.resolve('claude-fable-5').reasoning_preference.value); "
@@ -155,9 +155,9 @@ def test_proxy_timeout_config_e2e(smoke_config: SmokeConfig, tmp_path) -> None:
     )
     env = _isolated_config_env(home)
     script = (
-        "from free_claude_code.config.loader import get_settings; "
-        "from free_claude_code.config.provider_catalog import PROVIDER_CATALOG; "
-        "from free_claude_code.providers.runtime import build_provider_config; "
+        "from code_relay.config.loader import get_settings; "
+        "from code_relay.config.provider_catalog import PROVIDER_CATALOG; "
+        "from code_relay.providers.runtime import build_provider_config; "
         "s=get_settings(); c=build_provider_config(PROVIDER_CATALOG['open_router'], s); "
         "print(c.proxy); print(c.http_read_timeout); "
         "print(c.http_connect_timeout); print(c.http_write_timeout)"

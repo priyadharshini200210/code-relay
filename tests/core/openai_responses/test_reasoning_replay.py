@@ -6,8 +6,8 @@ from typing import cast
 
 import pytest
 
-from free_claude_code.core.anthropic import ReasoningReplayMode
-from free_claude_code.core.history_replay import (
+from code_relay.core.anthropic import ReasoningReplayMode
+from code_relay.core.history_replay import (
     HistoryReplayError,
     ReplayOrigin,
     ReplayRecord,
@@ -15,15 +15,15 @@ from free_claude_code.core.history_replay import (
     encode_replay,
     prepare_history,
 )
-from free_claude_code.core.json_types import JsonObject
-from free_claude_code.core.openai_responses import (
+from code_relay.core.json_types import JsonObject
+from code_relay.core.openai_responses import (
     OpenAIResponsesRequest,
     ReasoningBlockState,
     build_native_responses_request,
     build_responses_chat_request,
     reasoning_output_item,
 )
-from free_claude_code.core.reasoning import ReasoningPolicy
+from code_relay.core.reasoning import ReasoningPolicy
 
 _ORIGIN = ReplayOrigin(
     "github_copilot/anthropic_messages", "messages", "", "", "upstream"

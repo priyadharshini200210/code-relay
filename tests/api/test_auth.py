@@ -3,8 +3,8 @@ from unittest.mock import AsyncMock, patch
 import pytest
 from fastapi.testclient import TestClient
 
-from free_claude_code.api.dependencies import get_settings
-from free_claude_code.config.settings import Settings
+from code_relay.api.dependencies import get_settings
+from code_relay.config.settings import Settings
 from tests.api.support import create_test_app
 
 
@@ -24,9 +24,9 @@ def test_anthropic_post_routes_accept_x_api_key(app):
     }
 
     with (
-        patch("free_claude_code.api.routes.get_token_count", return_value=1),
+        patch("code_relay.api.routes.get_token_count", return_value=1),
         patch(
-            "free_claude_code.api.routes._create_messages_response",
+            "code_relay.api.routes._create_messages_response",
             new_callable=AsyncMock,
             return_value={"accepted": True},
         ),
@@ -88,7 +88,7 @@ def test_messages_auth_gives_authorization_precedence_over_x_api_key(app):
     }
 
     with patch(
-        "free_claude_code.api.routes._create_messages_response",
+        "code_relay.api.routes._create_messages_response",
         new_callable=AsyncMock,
         return_value={"accepted": True},
     ):
@@ -147,7 +147,7 @@ def test_proxy_auth_token_normalizes_configured_whitespace(app):
         "messages": [{"role": "user", "content": "hello"}],
     }
 
-    with patch("free_claude_code.api.routes.get_token_count", return_value=3):
+    with patch("code_relay.api.routes.get_token_count", return_value=3):
         r = client.post(
             "/v1/messages/count_tokens",
             json=payload,

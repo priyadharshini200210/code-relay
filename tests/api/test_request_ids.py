@@ -12,11 +12,11 @@ from starlette.datastructures import Headers
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.types import ASGIApp, Message, Scope
 
-from free_claude_code.api.request_ids import (
+from code_relay.api.request_ids import (
     RequestCorrelationMiddleware,
     get_request_id,
 )
-from free_claude_code.api.request_lifetime import ClientRequestLifetimeMiddleware
+from code_relay.api.request_lifetime import ClientRequestLifetimeMiddleware
 from tests.api.support import create_test_app
 
 
@@ -97,7 +97,7 @@ async def test_correlation_context_and_headers_span_the_complete_stream() -> Non
 
     middleware = RequestCorrelationMiddleware(cast(ASGIApp, app))
     with patch(
-        "free_claude_code.api.request_ids.logger.contextualize",
+        "code_relay.api.request_ids.logger.contextualize",
         side_effect=contextualize,
     ):
         request = asyncio.create_task(

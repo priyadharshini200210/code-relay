@@ -7,7 +7,7 @@ from urllib.error import URLError
 
 import pytest
 
-from free_claude_code.cli.launchers import common, runner
+from code_relay.cli.launchers import common, runner
 from tests.cli.conftest import LaunchCapture
 from tests.cli.test_launcher_workflow import HARNESSES, launch
 
@@ -147,4 +147,4 @@ def test_programming_errors_are_not_disguised_as_setup_failures(
 ) -> None:
     launch_capture.catalog_error = AssertionError("programming error")
     with pytest.raises(AssertionError, match="programming error"):
-        importlib.import_module("free_claude_code.cli.launchers.codex").launch([])
+        importlib.import_module("code_relay.cli.launchers.codex").launch([])

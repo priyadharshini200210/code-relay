@@ -5,8 +5,8 @@ from types import SimpleNamespace
 
 import pytest
 
-from free_claude_code.harnesses import jetbrains_acp_integration as jb
-from free_claude_code.harnesses.jetbrains_acp_integration import (
+from code_relay.harnesses import jetbrains_acp_integration as jb
+from code_relay.harnesses.jetbrains_acp_integration import (
     registry_path,
     system_root,
 )
@@ -258,7 +258,7 @@ def test_timed_out_node_leaves_config_unchanged(files, monkeypatch):
 
 
 def test_failed_atomic_replace_preserves_existing_config(files, monkeypatch):
-    from free_claude_code.harnesses import config_file
+    from code_relay.harnesses import config_file
 
     config, registry, systems = files
     install(registry, systems)

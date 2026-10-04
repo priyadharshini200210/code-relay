@@ -2,15 +2,15 @@ import asyncio
 
 import pytest
 
-from free_claude_code.application.model_catalog import read_model_catalog
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.config.custom_providers import CustomProviderDefinition
-from free_claude_code.config.settings import Settings
-from free_claude_code.providers.admission_policy import ProviderAdmissionLimits
-from free_claude_code.providers.admission_registry import ProviderAdmissionRegistry
-from free_claude_code.providers.custom import CustomProvider
-from free_claude_code.providers.runtime import ProviderRuntime
-from free_claude_code.runtime.provider_manager import ProviderRuntimeManager
+from code_relay.application.model_catalog import read_model_catalog
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.config.custom_providers import CustomProviderDefinition
+from code_relay.config.settings import Settings
+from code_relay.providers.admission_policy import ProviderAdmissionLimits
+from code_relay.providers.admission_registry import ProviderAdmissionRegistry
+from code_relay.providers.custom import CustomProvider
+from code_relay.providers.runtime import ProviderRuntime
+from code_relay.runtime.provider_manager import ProviderRuntimeManager
 from tests.runtime.test_provider_manager import FakeRuntime, RuntimeFactory
 
 pytestmark = pytest.mark.asyncio

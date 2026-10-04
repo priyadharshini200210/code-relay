@@ -9,10 +9,10 @@ from typing import Literal
 
 import pytest
 
-from free_claude_code.application.reasoning import client_reasoning_policy
-from free_claude_code.cli.launchers.pi import pi_extension_path
-from free_claude_code.core.anthropic.models import MessagesRequest
-from free_claude_code.providers.github_copilot.types import CopilotEgress
+from code_relay.application.reasoning import client_reasoning_policy
+from code_relay.cli.launchers.pi import pi_extension_path
+from code_relay.core.anthropic.models import MessagesRequest
+from code_relay.providers.github_copilot.types import CopilotEgress
 from tests.providers.test_github_copilot_provider import Harness, collect
 
 
@@ -35,10 +35,10 @@ await extension({
 });
 const results = [];
 for (const [provider, session] of [
-    ["free-claude-code", "conversation-a"],
-    ["free-claude-code", "conversation-a"],
-    ["free-claude-code", "conversation-b"],
-    ["free-claude-code", "conversation-a"],
+    ["code-relay", "conversation-a"],
+    ["code-relay", "conversation-a"],
+    ["code-relay", "conversation-b"],
+    ["code-relay", "conversation-a"],
     ["another-provider", "another-session"],
 ]) {
     const headers = { "x-existing": "preserve" };
@@ -130,7 +130,7 @@ def test_pi_sends_selected_effort_without_an_exact_budget_or_native_thinking_mod
 ):
     model = {
         "id": "github_copilot/gpt-5.6-luna",
-        "provider": "free-claude-code",
+        "provider": "code-relay",
         "api": "anthropic-messages",
         "reasoning": True,
     }
@@ -158,7 +158,7 @@ def test_pi_preserves_disabled_thinking_and_requests_outside_its_budget_translat
 ):
     model = {
         "id": "github_copilot/gpt-5.6-luna",
-        "provider": "free-claude-code",
+        "provider": "code-relay",
         "api": "anthropic-messages",
         "reasoning": True,
     }
@@ -220,7 +220,7 @@ async def test_pi_named_effort_reaches_each_copilot_transport(
             {
                 "model": {
                     "id": model_id,
-                    "provider": "free-claude-code",
+                    "provider": "code-relay",
                     "api": "anthropic-messages",
                     "reasoning": True,
                 },

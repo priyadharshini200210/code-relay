@@ -10,8 +10,8 @@ from unittest.mock import patch
 import pytest
 from loguru import logger
 
-from free_claude_code.config import logging_config
-from free_claude_code.config.logging_config import configure_logging
+from code_relay.config import logging_config
+from code_relay.config.logging_config import configure_logging
 
 
 def test_log_capture_does_not_feed_back_into_interception(caplog, capsys, monkeypatch):
@@ -81,7 +81,7 @@ def test_logging_preserves_records_across_process_restarts(tmp_path):
     script = """
 import sys
 from loguru import logger
-from free_claude_code.config.logging_config import configure_logging
+from code_relay.config.logging_config import configure_logging
 configure_logging(sys.argv[1])
 logger.info(sys.argv[2])
 logger.complete()

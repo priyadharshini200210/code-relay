@@ -7,7 +7,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from free_claude_code.config.paths import FCC_DATABASE_FILENAME
+from code_relay.config.paths import FCC_DATABASE_FILENAME
 from smoke.product import test_codex_modes_product_live as smoke
 
 

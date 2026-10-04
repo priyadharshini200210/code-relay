@@ -6,13 +6,13 @@ import httpx2
 import pytest
 from openai import AsyncOpenAI
 
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.config.constants import ANTHROPIC_DEFAULT_MAX_OUTPUT_TOKENS
-from free_claude_code.config.provider_catalog import SCALEWAY_DEFAULT_BASE
-from free_claude_code.core.anthropic.models import MessagesRequest
-from free_claude_code.core.reasoning import ReasoningPolicy
-from free_claude_code.providers.model_listing import ModelListResponseError
-from free_claude_code.providers.openai_chat import OpenAIChatProvider
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.config.constants import ANTHROPIC_DEFAULT_MAX_OUTPUT_TOKENS
+from code_relay.config.provider_catalog import SCALEWAY_DEFAULT_BASE
+from code_relay.core.anthropic.models import MessagesRequest
+from code_relay.core.reasoning import ReasoningPolicy
+from code_relay.providers.model_listing import ModelListResponseError
+from code_relay.providers.openai_chat import OpenAIChatProvider
 from tests.providers.support import (
     REASONING_DEFAULT,
     REASONING_OFF,

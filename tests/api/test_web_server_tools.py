@@ -9,64 +9,64 @@ import httpx
 import pytest
 from fastapi.responses import JSONResponse, StreamingResponse
 
-import free_claude_code.runtime.web_tools.constants as web_tool_constants
-from free_claude_code.api.handlers import MessagesHandler
-from free_claude_code.application.errors import InvalidRequestError
-from free_claude_code.application.execution import ProviderExecutor
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.application.routing import (
+import code_relay.runtime.web_tools.constants as web_tool_constants
+from code_relay.api.handlers import MessagesHandler
+from code_relay.application.errors import InvalidRequestError
+from code_relay.application.execution import ProviderExecutor
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.application.routing import (
     ModelRouter,
     ProviderModelTarget,
     ResolvedModelRoute,
     RoutedMessagesRequest,
 )
-from free_claude_code.application.web_tools.ports import (
+from code_relay.application.web_tools.ports import (
     WebFetchEgressPolicy,
     WebFetchEgressViolation,
 )
-from free_claude_code.application.web_tools.request import (
+from code_relay.application.web_tools.request import (
     HIDDEN_WEB_SEARCH_NAME,
     is_web_server_tool_request,
     plan_automatic_web_search,
     unsupported_server_tool_error,
 )
-from free_claude_code.application.web_tools.service import WebToolService
-from free_claude_code.config.provider_catalog import PROVIDER_CATALOG
-from free_claude_code.config.reasoning import ReasoningPreference
-from free_claude_code.config.settings import Settings
-from free_claude_code.core.anthropic.conversion import AnthropicToOpenAIConverter
-from free_claude_code.core.anthropic.models import (
+from code_relay.application.web_tools.service import WebToolService
+from code_relay.config.provider_catalog import PROVIDER_CATALOG
+from code_relay.config.reasoning import ReasoningPreference
+from code_relay.config.settings import Settings
+from code_relay.core.anthropic.conversion import AnthropicToOpenAIConverter
+from code_relay.core.anthropic.models import (
     ContentBlockServerToolUse,
     Message,
     MessagesRequest,
     Tool,
 )
-from free_claude_code.core.anthropic.native import (
+from code_relay.core.anthropic.native import (
     NativeMessagesOptions,
     build_native_messages_request,
 )
-from free_claude_code.core.anthropic.stream_contracts import (
+from code_relay.core.anthropic.stream_contracts import (
     assert_anthropic_stream_contract,
     parse_sse_text,
     text_content,
 )
-from free_claude_code.core.anthropic.streaming import format_sse_event
-from free_claude_code.core.failures import ExecutionFailure, FailureKind
-from free_claude_code.core.openai_responses import OpenAIResponsesRequest
-from free_claude_code.core.openai_responses.provider_input import (
+from code_relay.core.anthropic.streaming import format_sse_event
+from code_relay.core.failures import ExecutionFailure, FailureKind
+from code_relay.core.openai_responses import OpenAIResponsesRequest
+from code_relay.core.openai_responses.provider_input import (
     build_responses_provider_request,
 )
-from free_claude_code.core.reasoning import ReasoningPolicy
-from free_claude_code.core.version import package_version
-from free_claude_code.core.web_tools import WebFetchResult, WebSearchResult
-from free_claude_code.messaging.event_parser import parse_cli_event
-from free_claude_code.runtime.web_tools import egress as web_egress
-from free_claude_code.runtime.web_tools.client import (
+from code_relay.core.reasoning import ReasoningPolicy
+from code_relay.core.version import package_version
+from code_relay.core.web_tools import WebFetchResult, WebSearchResult
+from code_relay.messaging.event_parser import parse_cli_event
+from code_relay.runtime.web_tools import egress as web_egress
+from code_relay.runtime.web_tools.client import (
     HTTPWebToolsClient,
     _drain_response_body_capped,
     _read_response_body_capped,
 )
-from free_claude_code.runtime.web_tools.egress import enforce_web_fetch_egress
+from code_relay.runtime.web_tools.egress import enforce_web_fetch_egress
 from tests.web_tools_support import StubWebToolsClient
 
 _STRICT_EGRESS = WebFetchEgressPolicy(
@@ -78,7 +78,7 @@ _PROVIDER_IDS = tuple(PROVIDER_CATALOG)
 
 def test_web_tool_user_agent_reports_installed_package_version() -> None:
     assert {
-        "User-Agent": (f"Mozilla/5.0 compatible; free-claude-code/{package_version()}")
+        "User-Agent": (f"Mozilla/5.0 compatible; code-relay/{package_version()}")
     } == web_tool_constants._WEB_TOOL_HTTP_HEADERS
 
 
@@ -1370,11 +1370,11 @@ async def test_web_fetch_pins_validated_addresses_for_every_redirect(monkeypatch
 
     with (
         patch(
-            "free_claude_code.runtime.web_tools.client.ClientSession",
+            "code_relay.runtime.web_tools.client.ClientSession",
             return_value=client_cm,
         ),
         patch(
-            "free_claude_code.runtime.web_tools.client.TCPConnector",
+            "code_relay.runtime.web_tools.client.TCPConnector",
             side_effect=connector,
         ),
     ):
@@ -1400,7 +1400,7 @@ async def test_run_web_fetch_follows_redirect_when_each_hop_is_allowed():
     res_ok = _aiohttp_response(200, url="http://8.8.8.8/final", body=b"hello world")
     client_cm, session = _aiohttp_client_session_patch(res_redirect, res_ok)
     with patch(
-        "free_claude_code.runtime.web_tools.client.ClientSession",
+        "code_relay.runtime.web_tools.client.ClientSession",
         return_value=client_cm,
     ):
         out = await HTTPWebToolsClient().fetch(
@@ -1418,7 +1418,7 @@ async def test_run_web_fetch_truncates_large_body_to_byte_cap(monkeypatch):
     client_cm, _ = _aiohttp_client_session_patch(res_ok)
     monkeypatch.setattr(web_tool_constants, "_MAX_WEB_FETCH_RESPONSE_BYTES", 100)
     with patch(
-        "free_claude_code.runtime.web_tools.client.ClientSession",
+        "code_relay.runtime.web_tools.client.ClientSession",
         return_value=client_cm,
     ):
         out = await HTTPWebToolsClient().fetch(
@@ -1440,7 +1440,7 @@ async def test_run_web_fetch_redirect_to_blocked_host_raises():
     client_cm, session = _aiohttp_client_session_patch(res_redirect)
     with (
         patch(
-            "free_claude_code.runtime.web_tools.client.ClientSession",
+            "code_relay.runtime.web_tools.client.ClientSession",
             return_value=client_cm,
         ),
         pytest.raises(WebFetchEgressViolation),
@@ -1456,7 +1456,7 @@ async def test_run_web_fetch_redirect_without_location_raises():
     client_cm, _ = _aiohttp_client_session_patch(res_bad)
     with (
         patch(
-            "free_claude_code.runtime.web_tools.client.ClientSession",
+            "code_relay.runtime.web_tools.client.ClientSession",
             return_value=client_cm,
         ),
         pytest.raises(WebFetchEgressViolation, match="missing Location"),
@@ -1471,10 +1471,10 @@ async def test_run_web_fetch_excess_redirects_raises():
     client_cm, _ = _aiohttp_client_session_patch(res1, res2)
     with (
         patch(
-            "free_claude_code.runtime.web_tools.constants._MAX_WEB_FETCH_REDIRECTS", 1
+            "code_relay.runtime.web_tools.constants._MAX_WEB_FETCH_REDIRECTS", 1
         ),
         patch(
-            "free_claude_code.runtime.web_tools.client.ClientSession",
+            "code_relay.runtime.web_tools.client.ClientSession",
             return_value=client_cm,
         ),
         pytest.raises(WebFetchEgressViolation, match="exceeded maximum redirects"),
@@ -1806,7 +1806,7 @@ async def test_streams_web_fetch_error_summary_generic_by_default(monkeypatch):
     )
 
     with patch(
-        "free_claude_code.application.web_tools.service.logger.warning"
+        "code_relay.application.web_tools.service.logger.warning"
     ) as log_warn:
         raw = "".join(
             [

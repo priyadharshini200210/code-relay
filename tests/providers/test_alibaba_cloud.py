@@ -7,13 +7,13 @@ import httpx2
 import pytest
 from openai import AsyncOpenAI
 
-from free_claude_code.config.provider_catalog import PROVIDER_CATALOG
-from free_claude_code.config.settings import Settings
-from free_claude_code.core.anthropic.models import MessagesRequest
-from free_claude_code.core.model_capabilities import ModelInputModality
-from free_claude_code.core.openai_responses import OpenAIResponsesRequest
-from free_claude_code.providers.model_listing import ModelListResponseError
-from free_claude_code.providers.runtime import build_provider_config
+from code_relay.config.provider_catalog import PROVIDER_CATALOG
+from code_relay.config.settings import Settings
+from code_relay.core.anthropic.models import MessagesRequest
+from code_relay.core.model_capabilities import ModelInputModality
+from code_relay.core.openai_responses import OpenAIResponsesRequest
+from code_relay.providers.model_listing import ModelListResponseError
+from code_relay.providers.runtime import build_provider_config
 from tests.providers.support import immediate_admission
 
 BASE_URL = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1"
@@ -44,7 +44,7 @@ def page(models, *, number=1, total=None):
 
 @asynccontextmanager
 async def provider_for(handler, base_url=BASE_URL):
-    from free_claude_code.providers.alibaba_cloud import AlibabaCloudProvider
+    from code_relay.providers.alibaba_cloud import AlibabaCloudProvider
 
     settings = Settings(
         ALIBABA_CLOUD_API_KEY="test-key", ALIBABA_CLOUD_BASE_URL=base_url

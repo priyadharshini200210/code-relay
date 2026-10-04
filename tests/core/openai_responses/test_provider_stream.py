@@ -1,15 +1,15 @@
 import pytest
 
-from free_claude_code.core.anthropic.stream_contracts import (
+from code_relay.core.anthropic.stream_contracts import (
     assert_anthropic_stream_contract,
     parse_sse_text,
     thinking_content,
 )
-from free_claude_code.core.openai_responses.provider_stream import (
+from code_relay.core.openai_responses.provider_stream import (
     ResponsesProviderStream,
     ResponsesStreamFailure,
 )
-from free_claude_code.core.openai_tool_names import OpenAIToolNameCodec
+from code_relay.core.openai_tool_names import OpenAIToolNameCodec
 
 
 def _terminal_usage(usage: dict[str, object]) -> dict[str, object]:

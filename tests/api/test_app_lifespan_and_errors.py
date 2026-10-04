@@ -9,26 +9,26 @@ from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from loguru import logger
 
-from free_claude_code.api.request_ids import RequestCorrelationMiddleware
-from free_claude_code.application.errors import (
+from code_relay.api.request_ids import RequestCorrelationMiddleware
+from code_relay.application.errors import (
     ApplicationUnavailableError,
     InvalidRequestError,
 )
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.config.settings import Settings
-from free_claude_code.core.async_tasks import run_sync_owned
-from free_claude_code.core.version import package_version
-from free_claude_code.messaging.transcription import TranscriptionService
-from free_claude_code.providers.nvidia_nim.client import NvidiaNimProvider
-from free_claude_code.providers.nvidia_nim.voice import NvidiaNimTranscriber
-from free_claude_code.runtime.application import (
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.config.settings import Settings
+from code_relay.core.async_tasks import run_sync_owned
+from code_relay.core.version import package_version
+from code_relay.messaging.transcription import TranscriptionService
+from code_relay.providers.nvidia_nim.client import NvidiaNimProvider
+from code_relay.providers.nvidia_nim.voice import NvidiaNimTranscriber
+from code_relay.runtime.application import (
     ApplicationRuntime,
     startup_failure_message,
 )
-from free_claude_code.runtime.asgi import RuntimeASGIApp
-from free_claude_code.runtime.bootstrap import _create_transcriber, build_asgi_app
-from free_claude_code.runtime.configuration import ConfigurationService
-from free_claude_code.runtime.provider_manager import ProviderRuntimeManager
+from code_relay.runtime.asgi import RuntimeASGIApp
+from code_relay.runtime.bootstrap import _create_transcriber, build_asgi_app
+from code_relay.runtime.configuration import ConfigurationService
+from code_relay.runtime.provider_manager import ProviderRuntimeManager
 from tests.api.support import create_test_app
 
 
@@ -61,7 +61,7 @@ async def test_runtime_startup_logs_admin_url_without_printed_server_banner(capl
         patch.object(manager, "start_model_list_refresh") as start_refresh,
         patch.object(manager, "close", new=AsyncMock()),
         patch(
-            "free_claude_code.runtime.messaging_service.messaging_platform_factory.create_messaging_components",
+            "code_relay.runtime.messaging_service.messaging_platform_factory.create_messaging_components",
             return_value=None,
         ),
         patch.object(uvicorn_logger, "info") as log_info,
@@ -113,7 +113,7 @@ def test_application_error_handler_does_not_log_error_message():
     async def _raise_application_secret():
         raise InvalidRequestError(secret)
 
-    with patch("free_claude_code.api.app.logger.error") as log_error:
+    with patch("code_relay.api.app.logger.error") as log_error:
         response = TestClient(app).get("/raise_application_secret")
 
     assert response.status_code == 400
@@ -148,7 +148,7 @@ def test_general_exception_default_log_excludes_exception_message():
     async def _raise_secret():
         raise ValueError(secret)
 
-    with patch("free_claude_code.api.app.logger.error") as log_error:
+    with patch("code_relay.api.app.logger.error") as log_error:
         response = TestClient(app, raise_server_exceptions=False).get("/raise_secret")
 
     assert response.status_code == 500
@@ -179,7 +179,7 @@ async def test_runtime_startup_schedules_catalog_without_a_network_barrier():
         ) as refresh,
         patch.object(manager, "close", new=AsyncMock()),
         patch(
-            "free_claude_code.runtime.messaging_service.messaging_platform_factory.create_messaging_components",
+            "code_relay.runtime.messaging_service.messaging_platform_factory.create_messaging_components",
             return_value=None,
         ),
     ):
@@ -366,10 +366,10 @@ def test_bootstrap_configures_default_log_and_publishes_only_services(tmp_path):
 
     with (
         patch(
-            "free_claude_code.runtime.bootstrap.server_log_path",
+            "code_relay.runtime.bootstrap.server_log_path",
             return_value=log_path,
         ),
-        patch("free_claude_code.runtime.bootstrap.configure_logging") as configure,
+        patch("code_relay.runtime.bootstrap.configure_logging") as configure,
     ):
         asgi_app = build_asgi_app(settings)
 
@@ -383,7 +383,7 @@ def test_bootstrap_configures_default_log_and_publishes_only_services(tmp_path):
 
 
 def test_bootstrap_app_transparently_exposes_fastapi_interface() -> None:
-    with patch("free_claude_code.runtime.bootstrap.configure_logging"):
+    with patch("code_relay.runtime.bootstrap.configure_logging"):
         asgi_app = build_asgi_app(_settings())
 
     api_app = cast(FastAPI, asgi_app.app)
@@ -397,9 +397,9 @@ def test_bootstrap_wires_the_codex_catalog_publisher() -> None:
     publisher = MagicMock()
 
     with (
-        patch("free_claude_code.runtime.bootstrap.configure_logging"),
+        patch("code_relay.runtime.bootstrap.configure_logging"),
         patch(
-            "free_claude_code.runtime.bootstrap.CodexModelCatalogPublisher",
+            "code_relay.runtime.bootstrap.CodexModelCatalogPublisher",
             return_value=publisher,
         ) as publisher_type,
     ):
@@ -420,7 +420,7 @@ def test_bootstrap_honors_process_log_file_override(monkeypatch, tmp_path):
     log_path = tmp_path / "custom.log"
     monkeypatch.setenv("LOG_FILE", str(log_path))
 
-    with patch("free_claude_code.runtime.bootstrap.configure_logging") as configure:
+    with patch("code_relay.runtime.bootstrap.configure_logging") as configure:
         build_asgi_app(_settings())
 
     assert configure.call_args.args[0] == log_path
@@ -449,7 +449,7 @@ async def test_bootstrap_constructs_isolated_runtime_resource_graphs(
         whisper_device="cpu",
     )
 
-    with patch("free_claude_code.runtime.bootstrap.configure_logging"):
+    with patch("code_relay.runtime.bootstrap.configure_logging"):
         first = build_asgi_app(settings)
         second = build_asgi_app(settings)
 

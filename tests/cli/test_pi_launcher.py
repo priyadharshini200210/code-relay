@@ -3,7 +3,7 @@
 from pathlib import Path
 from unittest.mock import patch
 
-from free_claude_code.cli.launchers import pi
+from code_relay.cli.launchers import pi
 from tests.cli.conftest import LaunchCapture
 from tests.cli.test_launcher_workflow import launch
 
@@ -15,7 +15,7 @@ def test_pi_registers_bundled_extension_without_a_python_catalog(
     command = launch_capture.commands[0]
     assert command[:2] == ["pi", "-e"]
     assert Path(command[2]) == pi.pi_extension_path()
-    assert command[3:5] == ["--models", "free-claude-code/**"]
+    assert command[3:5] == ["--models", "code-relay/**"]
     assert launch_capture.environments[0]["FCC_PI_API_KEY"] == "launcher-test-token"
     assert launch_capture.environments[0]["FCC_PI_BASE_URL"] == "http://127.0.0.1:8182"
     assert len(launch_capture.requests) == 1

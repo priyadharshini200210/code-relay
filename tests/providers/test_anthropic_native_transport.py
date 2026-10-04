@@ -7,13 +7,13 @@ from dataclasses import replace
 import httpx
 import pytest
 
-from free_claude_code.application.errors import InvalidRequestError
-from free_claude_code.core.anthropic.passthrough import NativeMessagesRequest
-from free_claude_code.core.anthropic.stream_contracts import parse_sse_text
-from free_claude_code.core.failures import ExecutionFailure
-from free_claude_code.core.history_replay import ReplayRecord, encode_replay
-from free_claude_code.core.json_types import JsonObject
-from free_claude_code.providers.history_replay import replay_origin
+from code_relay.application.errors import InvalidRequestError
+from code_relay.core.anthropic.passthrough import NativeMessagesRequest
+from code_relay.core.anthropic.stream_contracts import parse_sse_text
+from code_relay.core.failures import ExecutionFailure
+from code_relay.core.history_replay import ReplayRecord, encode_replay
+from code_relay.core.json_types import JsonObject
+from code_relay.providers.history_replay import replay_origin
 from tests.providers.test_anthropic_messages_transport import Wire, _events, _sse
 from tests.providers.test_anthropic_provider import native_body, provider
 

@@ -1,15 +1,15 @@
 import json
 from pathlib import Path
 
-from free_claude_code.config.admin.custom_providers import CustomProviderMutation
-from free_claude_code.config.admin.persistence import prepare_admin_update
-from free_claude_code.config.admin.values import load_config_response
-from free_claude_code.config.custom_providers import CUSTOM_PROVIDERS_ENV
-from free_claude_code.config.loader import (
+from code_relay.config.admin.custom_providers import CustomProviderMutation
+from code_relay.config.admin.persistence import prepare_admin_update
+from code_relay.config.admin.values import load_config_response
+from code_relay.config.custom_providers import CUSTOM_PROVIDERS_ENV
+from code_relay.config.loader import (
     ManagedConfigSnapshot,
     compose_settings_snapshot,
 )
-from free_claude_code.runtime.diagnostics import settings_report
+from code_relay.runtime.diagnostics import settings_report
 
 
 def snapshot(values=None, process=None):

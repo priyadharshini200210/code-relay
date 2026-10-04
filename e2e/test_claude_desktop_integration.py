@@ -4,7 +4,7 @@ from pathlib import Path
 import pytest
 from playwright.sync_api import expect
 
-from free_claude_code.harnesses import claude_desktop_integration as desktop
+from code_relay.harnesses import claude_desktop_integration as desktop
 
 
 @pytest.mark.parametrize("status_failure", ["none", "read", "startup"])

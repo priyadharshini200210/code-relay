@@ -7,7 +7,7 @@ from playwright.sync_api import Error, Page, Request, expect
 
 from e2e.form_support import assert_autofill_opt_out
 from e2e.provider_support import open_provider
-from free_claude_code.core.version import package_version
+from code_relay.core.version import package_version
 
 
 @pytest.mark.parametrize("width", [1280, 900, 390])
@@ -196,12 +196,9 @@ def test_admin_loads_current_release_assets_before_rendering_dynamic_content(
     expect(page.locator(".brand p")).to_have_text(
         f"Server Control · v{package_version()}"
     )
-    logo_link = page.get_by_role("link", name="Open Free Claude Code on GitHub")
+    logo_link = page.get_by_role("link", name="Open Code Relay usage dashboard")
     expect(logo_link).to_be_visible()
-    expect(logo_link).to_have_attribute(
-        "href", "https://github.com/Alishahryar1/free-claude-code"
-    )
-    expect(logo_link).to_have_attribute("target", "_blank")
+    expect(logo_link).to_have_attribute("href", "/admin/usage")
 
     versioned_root = f"/admin/assets/{package_version()}"
     assert f"{versioned_root}/app-icon.svg" in requested_paths

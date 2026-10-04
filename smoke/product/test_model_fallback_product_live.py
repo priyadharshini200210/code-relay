@@ -2,7 +2,7 @@
 
 import pytest
 
-from free_claude_code.core.anthropic.stream_contracts import parse_sse_text
+from code_relay.core.anthropic.stream_contracts import parse_sse_text
 from tests.api.model_fallback_support import (
     ControlledFallbackProvider,
     execution_failure,

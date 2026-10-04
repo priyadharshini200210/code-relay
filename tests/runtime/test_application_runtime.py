@@ -7,32 +7,32 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from free_claude_code.application.connected_accounts import (
+from code_relay.application.connected_accounts import (
     ConnectedAccountState,
     ConnectedAccountStatus,
 )
-from free_claude_code.application.errors import ApplicationUnavailableError
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.config.admin.persistence import PreparedAdminUpdate
-from free_claude_code.config.settings import Settings
-from free_claude_code.core.anthropic.models import MessagesRequest
-from free_claude_code.core.openai_responses import OpenAIResponsesRequest
-from free_claude_code.core.reasoning import DEFAULT_REASONING_POLICY, ReasoningPolicy
-from free_claude_code.messaging.command_context import StopOutcome
-from free_claude_code.messaging.platforms.ports import (
+from code_relay.application.errors import ApplicationUnavailableError
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.config.admin.persistence import PreparedAdminUpdate
+from code_relay.config.settings import Settings
+from code_relay.core.anthropic.models import MessagesRequest
+from code_relay.core.openai_responses import OpenAIResponsesRequest
+from code_relay.core.reasoning import DEFAULT_REASONING_POLICY, ReasoningPolicy
+from code_relay.messaging.command_context import StopOutcome
+from code_relay.messaging.platforms.ports import (
     InboundMessageHandler,
     MessagingPlatformComponents,
     MessagingStartupNotice,
 )
-from free_claude_code.providers.base import BaseProvider
-from free_claude_code.providers.credential_validation import (
+from code_relay.providers.base import BaseProvider
+from code_relay.providers.credential_validation import (
     CredentialCheck,
     CredentialStatus,
 )
-from free_claude_code.providers.runtime import ProviderRuntime
-from free_claude_code.runtime.application import ApplicationRuntime
-from free_claude_code.runtime.configuration import ConfigurationService
-from free_claude_code.runtime.provider_manager import ProviderRuntimeManager
+from code_relay.providers.runtime import ProviderRuntime
+from code_relay.runtime.application import ApplicationRuntime
+from code_relay.runtime.configuration import ConfigurationService
+from code_relay.runtime.provider_manager import ProviderRuntimeManager
 from tests.providers.support import make_provider_config
 
 
@@ -532,7 +532,7 @@ async def test_credential_checks_gate_both_apply_paths(tmp_path, pending, status
             return_value=prepared,
         ),
         patch(
-            "free_claude_code.runtime.application.check_credentials",
+            "code_relay.runtime.application.check_credentials",
             AsyncMock(return_value=checks),
         ) as check,
         patch.object(
@@ -574,7 +574,7 @@ async def test_cancelled_credential_check_never_commits(tmp_path):
             return_value=prepared,
         ),
         patch(
-            "free_claude_code.runtime.application.check_credentials",
+            "code_relay.runtime.application.check_credentials",
             AsyncMock(side_effect=asyncio.CancelledError),
         ),
         patch.object(runtime._configuration, "commit") as commit,
@@ -990,7 +990,7 @@ async def test_public_start_retries_transient_partial_messaging_cleanup() -> Non
     with (
         patch.object(manager, "start_model_list_refresh"),
         patch(
-            "free_claude_code.runtime.messaging_service.messaging_platform_factory.create_messaging_components",
+            "code_relay.runtime.messaging_service.messaging_platform_factory.create_messaging_components",
             return_value=components,
         ),
         patch.object(
@@ -1058,7 +1058,7 @@ async def test_public_start_retains_persistently_unclean_partial_messaging_graph
     with (
         patch.object(manager, "start_model_list_refresh"),
         patch(
-            "free_claude_code.runtime.messaging_service.messaging_platform_factory.create_messaging_components",
+            "code_relay.runtime.messaging_service.messaging_platform_factory.create_messaging_components",
             return_value=components,
         ),
         patch.object(
@@ -1107,7 +1107,7 @@ async def test_messaging_start_failure_is_nonfatal_after_complete_cleanup() -> N
 
     with (
         patch(
-            "free_claude_code.runtime.messaging_service.messaging_platform_factory.create_messaging_components",
+            "code_relay.runtime.messaging_service.messaging_platform_factory.create_messaging_components",
             side_effect=RuntimeError("messaging unavailable"),
         ),
         patch.object(
@@ -1130,7 +1130,7 @@ async def test_messaging_start_failure_fails_closed_when_cleanup_is_incomplete()
 
     with (
         patch(
-            "free_claude_code.runtime.messaging_service.messaging_platform_factory.create_messaging_components",
+            "code_relay.runtime.messaging_service.messaging_platform_factory.create_messaging_components",
             side_effect=RuntimeError("messaging unavailable"),
         ),
         patch.object(
@@ -1160,7 +1160,7 @@ async def test_composition_records_runtime_before_workspace_setup() -> None:
 
     with (
         patch(
-            "free_claude_code.runtime.messaging_service.os.makedirs",
+            "code_relay.runtime.messaging_service.os.makedirs",
             side_effect=OSError("workspace failed"),
         ),
         pytest.raises(OSError, match="workspace failed"),
@@ -1207,12 +1207,12 @@ async def test_composition_publishes_startup_notice_after_runtime_and_repair() -
 
     with (
         patch(
-            "free_claude_code.cli.managed.ManagedClaudeSessionManager",
+            "code_relay.cli.managed.ManagedClaudeSessionManager",
             return_value=cli_manager,
         ) as manager_constructor,
         patch.object(runtime._messaging, "_messaging_store", AsyncMock()),
         patch(
-            "free_claude_code.messaging.workflow.MessagingWorkflow",
+            "code_relay.messaging.workflow.MessagingWorkflow",
             return_value=workflow,
         ),
     ):
@@ -1239,7 +1239,7 @@ async def test_composition_publishes_startup_notice_after_runtime_and_repair() -
 async def test_folder_picker_is_stopped_before_http_shutdown_drains(monkeypatch):
     import uvicorn
 
-    from free_claude_code.cli.uvicorn_server import RuntimeServer
+    from code_relay.cli.uvicorn_server import RuntimeServer
 
     runtime, _manager = _runtime_with_admin_provider(AdminModelProvider())
     started = asyncio.Event()

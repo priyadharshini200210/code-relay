@@ -2,7 +2,7 @@
 
 import pytest
 
-from free_claude_code.cli.launchers.muse import SPEC
+from code_relay.cli.launchers.muse import SPEC
 from tests.cli.conftest import LaunchCapture
 from tests.cli.test_launcher_workflow import launch
 
@@ -33,6 +33,5 @@ def test_muse_connection_placement_keeps_native_model_options(
     assert env["MUSE_MODEL"] == "nvidia_nim/catalog-model:variant"
 
 
-def test_muse_install_hint_covers_windows_and_posix() -> None:
-    assert "install-muse.ps1" in SPEC.install_hint
+def test_muse_install_hint_covers_posix() -> None:
     assert "https://dev.meta.ai/install.sh" in SPEC.install_hint

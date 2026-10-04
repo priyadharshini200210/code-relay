@@ -8,8 +8,8 @@ import httpx
 import pytest
 from fastapi.testclient import TestClient
 
-from free_claude_code.config.settings import Settings
-from free_claude_code.providers.base import BaseProvider
+from code_relay.config.settings import Settings
+from code_relay.providers.base import BaseProvider
 from tests.api.support import create_test_app
 from tests.providers.test_anthropic_provider import native_body, provider
 
@@ -40,19 +40,19 @@ def test_native_ingress_preserves_extensions_and_bypasses_local_processing():
     body["model"] = "claude-sonnet-client-alias"
     with (
         patch(
-            "free_claude_code.api.handlers.messages.try_optimizations",
+            "code_relay.api.handlers.messages.try_optimizations",
             side_effect=AssertionError("native optimization"),
         ),
         patch(
-            "free_claude_code.runtime.provider_manager.ProviderGenerationLease.wait_for_token_estimation",
+            "code_relay.runtime.provider_manager.ProviderGenerationLease.wait_for_token_estimation",
             side_effect=AssertionError("native token wait"),
         ),
         patch(
-            "free_claude_code.api.routes.get_token_count",
+            "code_relay.api.routes.get_token_count",
             side_effect=AssertionError("native counting"),
         ),
         patch(
-            "free_claude_code.application.web_tools.service.WebToolService.try_stream_messages",
+            "code_relay.application.web_tools.service.WebToolService.try_stream_messages",
             side_effect=AssertionError("local tools"),
         ),
         TestClient(app) as client,
@@ -105,7 +105,7 @@ def test_compatibility_ingress_still_rejects_unknown_blocks():
 
 
 def test_leading_pings_allow_exhausted_primary_to_reach_native_fallback():
-    from free_claude_code.core.anthropic.stream_contracts import parse_sse_text
+    from code_relay.core.anthropic.stream_contracts import parse_sse_text
     from tests.providers.test_anthropic_messages_transport import Wire, _events, _sse
 
     calls = []
@@ -145,7 +145,7 @@ def test_leading_pings_allow_exhausted_primary_to_reach_native_fallback():
 
 
 def test_stream_failure_after_metadata_retries_same_provider_without_fallback():
-    from free_claude_code.core.anthropic.stream_contracts import parse_sse_text
+    from code_relay.core.anthropic.stream_contracts import parse_sse_text
     from tests.providers.test_anthropic_messages_transport import _events, _sse
 
     requests = []
@@ -189,8 +189,8 @@ def test_stream_failure_after_metadata_retries_same_provider_without_fallback():
 def test_native_model_catalog_does_not_advertise_ignored_thinking_variant(
     view, thinking
 ):
-    from free_claude_code.application.model_metadata import ProviderModelInfo
-    from free_claude_code.core.gateway_model_ids import decode_gateway_model_id
+    from code_relay.application.model_metadata import ProviderModelInfo
+    from code_relay.core.gateway_model_ids import decode_gateway_model_id
     from tests.api.support import provider_manager_for_app
 
     app = create_test_app(Settings(MODEL="anthropic/selected", ANTHROPIC_API_KEY="key"))

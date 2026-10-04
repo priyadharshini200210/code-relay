@@ -8,11 +8,11 @@ import httpx2
 import pytest
 from openai import AsyncOpenAI
 
-from free_claude_code.core.anthropic import ReasoningReplayMode
-from free_claude_code.core.failures import ExecutionFailure
-from free_claude_code.core.openai_responses import OpenAIResponsesRequest
-from free_claude_code.providers.admission import ProviderAdmissionController
-from free_claude_code.providers.openai_chat import (
+from code_relay.core.anthropic import ReasoningReplayMode
+from code_relay.core.failures import ExecutionFailure
+from code_relay.core.openai_responses import OpenAIResponsesRequest
+from code_relay.providers.admission import ProviderAdmissionController
+from code_relay.providers.openai_chat import (
     NO_REASONING,
     OpenAIChatBehavior,
     OpenAIChatProfile,

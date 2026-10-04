@@ -9,17 +9,17 @@ from unittest.mock import AsyncMock
 import httpx
 import pytest
 
-from free_claude_code.api.response_streams import bind_response_lifetime
-from free_claude_code.application.execution import ProviderExecutor
-from free_claude_code.config.nim import NimSettings
-from free_claude_code.core.anthropic import aggregate_anthropic_sse_to_message
-from free_claude_code.core.anthropic.passthrough import NativeMessagesRequest
-from free_claude_code.core.anthropic.stream_contracts import parse_sse_text
-from free_claude_code.core.reasoning import ReasoningPolicy
-from free_claude_code.providers.failure_policy import RetryableProviderProtocolError
-from free_claude_code.providers.nvidia_nim import NvidiaNimProvider, native_tool_stream
-from free_claude_code.providers.openai_chat.transport import _OpenAIChatStreamAssembler
-from free_claude_code.providers.stream_recovery import RecoveryHoldbackBuffer
+from code_relay.api.response_streams import bind_response_lifetime
+from code_relay.application.execution import ProviderExecutor
+from code_relay.config.nim import NimSettings
+from code_relay.core.anthropic import aggregate_anthropic_sse_to_message
+from code_relay.core.anthropic.passthrough import NativeMessagesRequest
+from code_relay.core.anthropic.stream_contracts import parse_sse_text
+from code_relay.core.reasoning import ReasoningPolicy
+from code_relay.providers.failure_policy import RetryableProviderProtocolError
+from code_relay.providers.nvidia_nim import NvidiaNimProvider, native_tool_stream
+from code_relay.providers.openai_chat.transport import _OpenAIChatStreamAssembler
+from code_relay.providers.stream_recovery import RecoveryHoldbackBuffer
 from tests.api.test_response_streams import _serve
 from tests.api.test_tool_call_buffer import _response
 from tests.api.test_tool_call_buffer_transports import _tools
@@ -35,7 +35,7 @@ from tests.providers.test_native_tool_arguments import tool_events
 def committed_holdback(monkeypatch):
     # Commit on metadata, regardless of whether a presenter emits partial args.
     monkeypatch.setattr(
-        "free_claude_code.providers.stream_recovery.RecoveryHoldbackBuffer",
+        "code_relay.providers.stream_recovery.RecoveryHoldbackBuffer",
         lambda: RecoveryHoldbackBuffer(max_bytes=1),
     )
 

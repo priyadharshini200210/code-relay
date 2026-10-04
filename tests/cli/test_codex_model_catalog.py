@@ -6,12 +6,12 @@ from pathlib import Path
 
 import pytest
 
-from free_claude_code.cli.launchers.catalog_http import catalog_models_from_response
-from free_claude_code.harnesses.codex import codex_config_args
-from free_claude_code.harnesses.codex_model_catalog import (
+from code_relay.cli.launchers.catalog_http import catalog_models_from_response
+from code_relay.harnesses.codex import codex_config_args
+from code_relay.harnesses.codex_model_catalog import (
     build_codex_model_catalog,
 )
-from free_claude_code.runtime.codex_catalog import write_codex_model_catalog
+from code_relay.runtime.codex_catalog import write_codex_model_catalog
 from tests.harnesses.test_codex_model_catalog import _models_payload
 
 
@@ -39,7 +39,7 @@ def test_launcher_config_composes_with_persistent_codex_config(
                 f"model_catalog_json = {json.dumps(str(catalog_path))}",
                 "",
                 "[model_providers.fcc]",
-                'name = "Free Claude Code"',
+                'name = "Code Relay"',
                 'base_url = "http://127.0.0.1:8082/v1"',
                 'wire_api = "responses"',
                 "",

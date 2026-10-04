@@ -6,17 +6,17 @@ import json
 import httpx
 import pytest
 
-from free_claude_code.application.errors import InvalidRequestError
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.core.anthropic.models import MessagesRequest
-from free_claude_code.core.openai_responses import OpenAIResponsesRequest
-from free_claude_code.core.reasoning import (
+from code_relay.application.errors import InvalidRequestError
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.core.anthropic.models import MessagesRequest
+from code_relay.core.openai_responses import OpenAIResponsesRequest
+from code_relay.core.reasoning import (
     ReasoningCapability,
     ReasoningEffort,
     ReasoningPolicy,
 )
-from free_claude_code.providers.anthropic.models import model_record
-from free_claude_code.providers.model_listing import ModelListResponseError
+from code_relay.providers.anthropic.models import model_record
+from code_relay.providers.model_listing import ModelListResponseError
 from tests.providers.test_anthropic_messages_transport import _events, _sse
 from tests.providers.test_anthropic_provider import provider
 

@@ -5,15 +5,15 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
 
-from free_claude_code.config.loader import clear_settings_cache, get_settings
-from free_claude_code.config.model_refs import parse_model_name, parse_provider_type
-from free_claude_code.config.provider_catalog import (
+from code_relay.config.loader import clear_settings_cache, get_settings
+from code_relay.config.model_refs import parse_model_name, parse_provider_type
+from code_relay.config.provider_catalog import (
     PROVIDER_CATALOG,
     SUPPORTED_PROVIDER_IDS,
     ProviderAuthKind,
 )
-from free_claude_code.config.settings import Settings
-from free_claude_code.providers.runtime.config import has_provider_configuration
+from code_relay.config.settings import Settings
+from code_relay.providers.runtime.config import has_provider_configuration
 
 DEFAULT_TARGETS = frozenset(
     {

@@ -4,12 +4,12 @@ import json
 
 import pytest
 
-from free_claude_code.core.anthropic.sse_aggregation import (
+from code_relay.core.anthropic.sse_aggregation import (
     aggregate_anthropic_sse_to_message,
 )
-from free_claude_code.core.anthropic.stream_contracts import parse_sse_text
-from free_claude_code.core.failures import ExecutionFailure, FailureKind
-from free_claude_code.core.openai_responses.streaming.event_builders import (
+from code_relay.core.anthropic.stream_contracts import parse_sse_text
+from code_relay.core.failures import ExecutionFailure, FailureKind
+from code_relay.core.openai_responses.streaming.event_builders import (
     ResponseEventBuilder,
 )
 from tests.providers.test_history_transports import _events_for, _harness

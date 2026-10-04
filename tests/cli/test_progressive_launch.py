@@ -16,11 +16,11 @@ import pytest
 import uvicorn
 from fastapi import FastAPI
 
-from free_claude_code.cli import commands
-from free_claude_code.cli.launchers import common
-from free_claude_code.cli.server_socket import ServerSockets
-from free_claude_code.cli.uvicorn_server import RuntimeServer
-from free_claude_code.config.settings import Settings
+from code_relay.cli import commands
+from code_relay.cli.launchers import common
+from code_relay.cli.server_socket import ServerSockets
+from code_relay.cli.uvicorn_server import RuntimeServer
+from code_relay.config.settings import Settings
 
 
 @pytest.fixture
@@ -50,7 +50,7 @@ def test_listeners_remain_exclusive_until_owner_closes():
 
 
 def test_partial_address_failure_closes_every_reserved_socket(monkeypatch):
-    from free_claude_code.cli import server_socket
+    from code_relay.cli import server_socket
 
     listeners = [MagicMock(), MagicMock()]
     listeners[1].bind.side_effect = OSError(errno.EADDRINUSE, "busy")
@@ -187,9 +187,9 @@ def test_browser_warning_retains_owning_instance_after_server_exit(
                 assert not tray.is_alive()
             assert entered.wait(2)
 
-    monkeypatch.setattr("free_claude_code.runtime.bootstrap.build_asgi_app", build)
+    monkeypatch.setattr("code_relay.runtime.bootstrap.build_asgi_app", build)
     monkeypatch.setattr(uvicorn, "Config", lambda *args, **kwargs: None)
-    monkeypatch.setattr("free_claude_code.cli.uvicorn_server.RuntimeServer", Server)
+    monkeypatch.setattr("code_relay.cli.uvicorn_server.RuntimeServer", Server)
     monkeypatch.setattr(commands.webbrowser, "open", browser)
     try:
         for _ in range(2):
@@ -329,8 +329,8 @@ def test_browser_thread_start_failure_does_not_fail_fcc(monkeypatch, reuse, capl
 
 def _run_browser_shutdown_probe(mode, outcome, directory, setup_delay="0"):
     """Run real FCC lifecycle owners with only OS/browser/server dependencies faked."""
-    from free_claude_code.cli import desktop, uvicorn_server
-    from free_claude_code.runtime import bootstrap
+    from code_relay.cli import desktop, uvicorn_server
+    from code_relay.runtime import bootstrap
 
     print("probe: setup", flush=True)
     entered = threading.Event()
@@ -413,7 +413,7 @@ def _run_browser_shutdown_probe(mode, outcome, directory, setup_delay="0"):
         assert supervisor.status is commands.ServerStatus.STOPPED
     else:
         # Keep a real existing listener and (for desktop reuse) its singleton lock.
-        from free_claude_code.core.interprocess_lock import InterprocessFileLock
+        from code_relay.core.interprocess_lock import InterprocessFileLock
 
         with ServerSockets.reserve("127.0.0.1", 0) as owner:
             settings.port = owner.sockets[0].getsockname()[1]

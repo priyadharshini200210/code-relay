@@ -4,14 +4,14 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from free_claude_code.application.errors import ApplicationUnavailableError
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.application.ports import ModelCatalogPort
-from free_claude_code.config.settings import Settings
-from free_claude_code.providers.base import BaseProvider
-from free_claude_code.providers.nvidia_nim import NvidiaNimProvider
-from free_claude_code.providers.runtime import ProviderRuntime
-from free_claude_code.runtime.provider_manager import ProviderRuntimeManager
+from code_relay.application.errors import ApplicationUnavailableError
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.application.ports import ModelCatalogPort
+from code_relay.config.settings import Settings
+from code_relay.providers.base import BaseProvider
+from code_relay.providers.nvidia_nim import NvidiaNimProvider
+from code_relay.providers.runtime import ProviderRuntime
+from code_relay.runtime.provider_manager import ProviderRuntimeManager
 
 
 class FakeRuntime(ProviderRuntime):
@@ -255,7 +255,7 @@ async def test_catalog_publication_failure_is_warning_only_and_secret_safe() -> 
         model_catalog_publisher=publisher,
     )
 
-    with patch("free_claude_code.runtime.provider_manager.logger.warning") as warning:
+    with patch("code_relay.runtime.provider_manager.logger.warning") as warning:
         await manager.refresh_model_list_cache()
         manager.cache_model_infos(
             "nvidia_nim",
@@ -314,7 +314,7 @@ async def test_hot_replacement_shares_admission_and_retires_clients() -> None:
         return client
 
     with patch(
-        "free_claude_code.providers.openai_chat.client.AsyncOpenAI",
+        "code_relay.providers.openai_chat.client.AsyncOpenAI",
         side_effect=create_client,
     ):
         manager = ProviderRuntimeManager(first_settings)
@@ -860,7 +860,7 @@ async def test_replacement_prunes_and_rejects_removed_remote_provider_cache() ->
 async def test_generation_lifecycle_traces_contain_minimal_correlation_fields() -> None:
     factory = RuntimeFactory()
 
-    with patch("free_claude_code.runtime.provider_manager.trace_event") as trace:
+    with patch("code_relay.runtime.provider_manager.trace_event") as trace:
         manager = ProviderRuntimeManager(
             _settings("nvidia_nim/one"),
             runtime_factory=factory,

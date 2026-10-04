@@ -4,9 +4,9 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from free_claude_code.config.constants import ANTHROPIC_DEFAULT_MAX_OUTPUT_TOKENS
-from free_claude_code.core.anthropic.stream_contracts import parse_sse_text
-from free_claude_code.providers.openai_chat import OpenAIChatProvider
+from code_relay.config.constants import ANTHROPIC_DEFAULT_MAX_OUTPUT_TOKENS
+from code_relay.core.anthropic.stream_contracts import parse_sse_text
+from code_relay.providers.openai_chat import OpenAIChatProvider
 from tests.providers.request_factory import make_messages_request
 from tests.providers.support import (
     REASONING_OFF,
@@ -40,7 +40,7 @@ def provider() -> OpenAIChatProvider:
 )
 def test_init_normalizes_openai_base_url(configured: str, expected: str) -> None:
     with patch(
-        "free_claude_code.providers.openai_chat.client.AsyncOpenAI"
+        "code_relay.providers.openai_chat.client.AsyncOpenAI"
     ) as openai_client:
         provider = profiled_provider(
             "llamacpp",
@@ -61,7 +61,7 @@ def test_init_uses_openai_chat_client() -> None:
         http_connect_timeout=5.0,
     )
     with patch(
-        "free_claude_code.providers.openai_chat.client.AsyncOpenAI"
+        "code_relay.providers.openai_chat.client.AsyncOpenAI"
     ) as openai_client:
         provider = profiled_provider(
             "llamacpp", config, admission=immediate_admission()

@@ -8,9 +8,9 @@ import pytest
 import simplejson
 from starlette.responses import StreamingResponse
 
-from free_claude_code.api.handlers.classifier_response import classifier_response
-from free_claude_code.core.anthropic.stream_contracts import parse_sse_text
-from free_claude_code.core.stream_delivery import current_stream_delivery
+from code_relay.api.handlers.classifier_response import classifier_response
+from code_relay.core.anthropic.stream_contracts import parse_sse_text
+from code_relay.core.stream_delivery import current_stream_delivery
 from tests.api.test_response_streams import _serve
 from tests.api.test_tool_call_buffer import _call, _end, _frames, _response, _start
 from tests.api.test_web_server_tools import (

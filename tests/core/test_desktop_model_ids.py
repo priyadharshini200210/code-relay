@@ -1,6 +1,6 @@
 import pytest
 
-from free_claude_code.core.gateway_model_ids import (
+from code_relay.core.gateway_model_ids import (
     decode_gateway_model_id,
     desktop_model_id,
 )

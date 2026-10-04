@@ -2,12 +2,12 @@ import json
 
 import pytest
 
-from free_claude_code.core.anthropic.models import MessagesRequest
-from free_claude_code.core.openai_responses.errors import ResponsesConversionError
-from free_claude_code.core.openai_responses.provider_input import (
+from code_relay.core.anthropic.models import MessagesRequest
+from code_relay.core.openai_responses.errors import ResponsesConversionError
+from code_relay.core.openai_responses.provider_input import (
     build_responses_provider_request,
 )
-from free_claude_code.core.reasoning import ReasoningEffort, ReasoningPolicy
+from code_relay.core.reasoning import ReasoningEffort, ReasoningPolicy
 
 _KEEP_ALL_THINKING_EDIT = {
     "type": "clear_thinking_20251015",

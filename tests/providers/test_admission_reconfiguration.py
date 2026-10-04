@@ -6,13 +6,13 @@ from types import SimpleNamespace
 import pytest
 from pydantic import ValidationError
 
-from free_claude_code.config.settings import Settings
-from free_claude_code.providers import admission as admission_module
-from free_claude_code.providers.admission import (
+from code_relay.config.settings import Settings
+from code_relay.providers import admission as admission_module
+from code_relay.providers.admission import (
     ProviderAdmissionController,
     ProviderOperationKind,
 )
-from free_claude_code.providers.admission_policy import ProviderAdmissionLimits
+from code_relay.providers.admission_policy import ProviderAdmissionLimits
 
 
 async def admit(controller):

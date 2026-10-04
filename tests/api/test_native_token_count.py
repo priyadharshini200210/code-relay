@@ -9,8 +9,8 @@ import httpx
 import pytest
 from fastapi.testclient import TestClient
 
-from free_claude_code.config.settings import Settings
-from free_claude_code.core.anthropic import get_token_count
+from code_relay.config.settings import Settings
+from code_relay.core.anthropic import get_token_count
 from tests.api.support import create_test_app, provider_manager_for_app
 
 
@@ -55,7 +55,7 @@ def test_native_count_accepts_and_estimates_opaque_payload_without_provider(fiel
     original = deepcopy(body)
     with (
         patch(
-            "free_claude_code.runtime.provider_manager.ProviderGenerationLease.resolve_provider",
+            "code_relay.runtime.provider_manager.ProviderGenerationLease.resolve_provider",
             side_effect=AssertionError("Counting must not resolve a provider"),
         ),
         TestClient(app) as client,
@@ -134,10 +134,10 @@ def test_native_count_proxy_auth_and_local_estimator_failure_release():
         )
         with (
             patch(
-                "free_claude_code.api.routes.get_token_count",
+                "code_relay.api.routes.get_token_count",
                 side_effect=RuntimeError("private-estimate-token"),
             ),
-            patch("free_claude_code.api.request_errors.logger.error") as error_log,
+            patch("code_relay.api.request_errors.logger.error") as error_log,
         ):
             failed = client.post(
                 "/v1/messages/count_tokens",
@@ -152,7 +152,7 @@ def test_native_count_proxy_auth_and_local_estimator_failure_release():
 
 
 def test_native_count_estimator_receives_payload_without_mutation_and_traces_alias():
-    from free_claude_code.application.routing import ModelRouter
+    from code_relay.application.routing import ModelRouter
 
     body = count_body()
     body["tools"][0]["api_key"] = "private-tool-option"
@@ -181,8 +181,8 @@ def test_native_count_estimator_receives_payload_without_mutation_and_traces_ali
     app = create_test_app(Settings(MODEL="anthropic/selected"))
     with (
         patch.object(ModelRouter, "resolve", record_resolve),
-        patch("free_claude_code.api.routes.get_token_count", count),
-        patch("free_claude_code.api.handlers.token_count.trace_event") as trace,
+        patch("code_relay.api.routes.get_token_count", count),
+        patch("code_relay.api.handlers.token_count.trace_event") as trace,
         TestClient(app) as client,
     ):
         response = client.post("/v1/messages/count_tokens", json=body)
@@ -206,7 +206,7 @@ def test_native_count_estimator_receives_payload_without_mutation_and_traces_ali
 @pytest.mark.asyncio
 @pytest.mark.parametrize("cancel", [False, True])
 async def test_native_count_retains_generation_while_waiting_for_encoder(cancel):
-    from free_claude_code.runtime.provider_manager import ProviderGenerationLease
+    from code_relay.runtime.provider_manager import ProviderGenerationLease
 
     entered = asyncio.Event()
     proceed = asyncio.Event()

@@ -5,9 +5,9 @@ from pathlib import Path
 
 import pytest
 
-from free_claude_code.application.model_catalog import CatalogModel
-from free_claude_code.cli.launchers.opencode_config import build_opencode_config
-from free_claude_code.core.model_capabilities import ModelInputModality
+from code_relay.application.model_catalog import CatalogModel
+from code_relay.cli.launchers.opencode_config import build_opencode_config
+from code_relay.core.model_capabilities import ModelInputModality
 
 
 def test_opencode_config_uses_native_responses_and_model_budgets() -> None:
@@ -52,7 +52,7 @@ def test_opencode_config_uses_native_responses_and_model_budgets() -> None:
 
     provider = config.file["providers"]
     assert isinstance(provider, dict)
-    fcc = provider["free-claude-code"]
+    fcc = provider["code-relay"]
     assert isinstance(fcc, dict)
     assert fcc["package"] == "@opencode/ai/providers/openai/responses"
     assert fcc["settings"] == {
@@ -86,8 +86,8 @@ def test_opencode_config_uses_native_responses_and_model_budgets() -> None:
     assert config.overlay == {
         "compaction": {"buffer": 16384},
         "providers": {
-            "free-claude-code": {
-                "name": "Free Claude Code",
+            "code-relay": {
+                "name": "Code Relay",
                 "package": "@opencode/ai/providers/openai/responses",
                 "settings": {
                     "baseURL": "http://127.0.0.1:9191/v1",
@@ -100,13 +100,13 @@ def test_opencode_config_uses_native_responses_and_model_budgets() -> None:
                 {"action": "provider.use", "resource": "*", "effect": "deny"},
                 {
                     "action": "provider.use",
-                    "resource": "free-claude-code",
+                    "resource": "code-relay",
                     "effect": "allow",
                 },
             ]
         },
-        "model": "free-claude-code/nvidia_nim/vendor/model",
-        "agents": {"title": {"model": "free-claude-code/nvidia_nim/vendor/model"}},
+        "model": "code-relay/nvidia_nim/vendor/model",
+        "agents": {"title": {"model": "code-relay/nvidia_nim/vendor/model"}},
     }
     serialized = json.dumps(config.file | config.overlay)
     assert "proxy-token" not in serialized
@@ -147,7 +147,7 @@ def test_opencode_context_reserves_fit_small_models(
     )
     provider = config.file["providers"]
     assert isinstance(provider, dict)
-    fcc = provider["free-claude-code"]
+    fcc = provider["code-relay"]
     assert isinstance(fcc, dict)
     models = fcc["models"]
     assert isinstance(models, dict)
@@ -174,10 +174,10 @@ def test_opencode_child_receives_private_catalog_and_overlay(launch_capture) -> 
     def inspect(command, env):
         config = json.loads(Path(env["OPENCODE_CONFIG"]).read_text())
         overlay = json.loads(env["OPENCODE_CONFIG_CONTENT"])
-        provider = config["providers"]["free-claude-code"]
+        provider = config["providers"]["code-relay"]
         assert provider["settings"]["baseURL"] == "http://127.0.0.1:8182/v1"
         assert "nvidia_nim/catalog-model:variant" in provider["models"]
-        assert overlay["experimental"]["policies"][-1]["resource"] == "free-claude-code"
+        assert overlay["experimental"]["policies"][-1]["resource"] == "code-relay"
         assert env["FCC_OPENCODE_API_KEY"] == "launcher-test-token"
 
     launch_capture.on_start = inspect

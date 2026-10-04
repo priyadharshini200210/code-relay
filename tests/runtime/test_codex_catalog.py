@@ -4,20 +4,20 @@ from unittest.mock import patch
 
 import pytest
 
-from free_claude_code.application.code_sessions.models import CodeValidationError
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.application.ports import (
+from code_relay.application.code_sessions.models import CodeValidationError
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.application.ports import (
     ModelCatalogSnapshot,
     RequestRuntimeLease,
     RequestRuntimePort,
 )
-from free_claude_code.cli.launchers.catalog_http import catalog_models_from_response
-from free_claude_code.config.settings import Settings
-from free_claude_code.core.json_types import JsonObject
-from free_claude_code.core.model_capabilities import ModelInputModality
-from free_claude_code.harnesses.codex_model_catalog import build_codex_model_catalog
-from free_claude_code.runtime.codex_app_server import CodexHarnessFactory
-from free_claude_code.runtime.codex_catalog import (
+from code_relay.cli.launchers.catalog_http import catalog_models_from_response
+from code_relay.config.settings import Settings
+from code_relay.core.json_types import JsonObject
+from code_relay.core.model_capabilities import ModelInputModality
+from code_relay.harnesses.codex_model_catalog import build_codex_model_catalog
+from code_relay.runtime.codex_app_server import CodexHarnessFactory
+from code_relay.runtime.codex_catalog import (
     CodexModelCatalogPublisher,
     write_codex_model_catalog,
 )
@@ -124,7 +124,7 @@ def test_empty_projection_preserves_existing_catalog(tmp_path: Path) -> None:
 
     with (
         patch(
-            "free_claude_code.runtime.codex_catalog.build_codex_model_catalog",
+            "code_relay.runtime.codex_catalog.build_codex_model_catalog",
             return_value={"models": []},
         ),
         pytest.raises(ValueError, match="no routable models"),
@@ -250,7 +250,7 @@ async def test_catalog_refresh_preserves_selection_and_behavior_fingerprint():
     "modalities", [frozenset(), frozenset({ModelInputModality.IMAGE})]
 )
 def test_non_text_capabilities_retain_the_native_text_fallback(modalities):
-    from free_claude_code.application.model_catalog import read_model_catalog
+    from code_relay.application.model_catalog import read_model_catalog
 
     snapshot = ModelCatalogSnapshot(
         Settings().model_copy(update={"model": "open_router/model"}),

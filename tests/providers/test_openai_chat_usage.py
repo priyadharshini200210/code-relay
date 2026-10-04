@@ -9,29 +9,29 @@ import pytest
 from httpx2 import Request, Response
 from openai.types.completion_usage import CompletionUsage, PromptTokensDetails
 
-from free_claude_code.core.anthropic import ReasoningReplayMode
-from free_claude_code.core.anthropic.models import MessagesRequest
-from free_claude_code.core.anthropic.sse_aggregation import (
+from code_relay.core.anthropic import ReasoningReplayMode
+from code_relay.core.anthropic.models import MessagesRequest
+from code_relay.core.anthropic.sse_aggregation import (
     aggregate_anthropic_sse_to_message,
 )
-from free_claude_code.core.anthropic.stream_contracts import parse_sse_text
-from free_claude_code.core.openai_responses import OpenAIResponsesRequest
-from free_claude_code.core.reasoning import DEFAULT_REASONING_POLICY, ReasoningPolicy
-from free_claude_code.providers.admission import ProviderOperationKind
-from free_claude_code.providers.openai_chat import (
+from code_relay.core.anthropic.stream_contracts import parse_sse_text
+from code_relay.core.openai_responses import OpenAIResponsesRequest
+from code_relay.core.reasoning import DEFAULT_REASONING_POLICY, ReasoningPolicy
+from code_relay.providers.admission import ProviderOperationKind
+from code_relay.providers.openai_chat import (
     OpenAIChatBehavior,
     OpenAIChatProfile,
     OpenAIChatProvider,
     OpenAIChatRequestPolicy,
 )
-from free_claude_code.providers.openai_chat.reasoning import NO_REASONING
-from free_claude_code.providers.openai_chat.usage import (
+from code_relay.providers.openai_chat.reasoning import NO_REASONING
+from code_relay.providers.openai_chat.usage import (
     clone_without_stream_usage,
     is_stream_usage_rejection,
     request_stream_usage,
     usage_int,
 )
-from free_claude_code.providers.request_recovery import RequestRecovery
+from code_relay.providers.request_recovery import RequestRecovery
 from tests.providers.request_factory import make_messages_request
 from tests.providers.support import (
     SDKStreamDouble,

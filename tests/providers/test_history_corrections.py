@@ -6,8 +6,8 @@ import httpx2
 import pytest
 from openai import BadRequestError
 
-from free_claude_code.providers.endpoint_types import HttpEndpoint
-from free_claude_code.providers.history_replay import history_retry_body, replay_origin
+from code_relay.providers.endpoint_types import HttpEndpoint
+from code_relay.providers.history_replay import history_retry_body, replay_origin
 
 
 def _error(message, *, code="invalid_request_error", param=None, status=400):

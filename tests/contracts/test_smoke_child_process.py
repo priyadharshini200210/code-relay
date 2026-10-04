@@ -6,7 +6,7 @@ from unittest.mock import MagicMock
 import httpx
 import pytest
 
-from free_claude_code.config.settings import Settings
+from code_relay.config.settings import Settings
 from smoke.lib import child_process
 from smoke.lib import e2e as smoke_e2e
 from smoke.lib import http as smoke_http
@@ -46,7 +46,7 @@ def test_fcc_server_command_uses_cli_entrypoint() -> None:
     assert cmd_fcc_server() == [
         child_process.python_exe(),
         "-c",
-        "from free_claude_code.cli.entrypoints import serve; serve()",
+        "from code_relay.cli.entrypoints import serve; serve()",
     ]
 
 

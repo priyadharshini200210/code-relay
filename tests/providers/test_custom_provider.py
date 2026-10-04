@@ -5,17 +5,17 @@ import httpx
 import httpx2
 import pytest
 
-from free_claude_code.application.errors import InvalidRequestError
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.config.custom_providers import CustomProviderDefinition
-from free_claude_code.config.settings import Settings
-from free_claude_code.core.anthropic import MessagesRequest
-from free_claude_code.core.model_capabilities import ModelInputModality
-from free_claude_code.core.openai_responses import OpenAIResponsesRequest
-from free_claude_code.core.reasoning import ReasoningEffort, ReasoningPolicy
-from free_claude_code.providers.admission import ProviderAdmissionController
-from free_claude_code.providers.custom import CustomProvider
-from free_claude_code.providers.runtime.config import build_custom_provider_config
+from code_relay.application.errors import InvalidRequestError
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.config.custom_providers import CustomProviderDefinition
+from code_relay.config.settings import Settings
+from code_relay.core.anthropic import MessagesRequest
+from code_relay.core.model_capabilities import ModelInputModality
+from code_relay.core.openai_responses import OpenAIResponsesRequest
+from code_relay.core.reasoning import ReasoningEffort, ReasoningPolicy
+from code_relay.providers.admission import ProviderAdmissionController
+from code_relay.providers.custom import CustomProvider
+from code_relay.providers.runtime.config import build_custom_provider_config
 
 pytestmark = pytest.mark.asyncio
 

@@ -2,14 +2,14 @@
 
 import pytest
 
-from free_claude_code.core.anthropic.models import ThinkingConfig
-from free_claude_code.core.anthropic.native import NativeMessagesError
-from free_claude_code.core.reasoning import (
+from code_relay.core.anthropic.models import ThinkingConfig
+from code_relay.core.anthropic.native import NativeMessagesError
+from code_relay.core.reasoning import (
     ReasoningControl,
     ReasoningEffort,
     ReasoningPolicy,
 )
-from free_claude_code.providers.anthropic_messages.request_policy import (
+from code_relay.providers.anthropic_messages.request_policy import (
     MessagesModelCapabilities,
     resolve_messages_options,
 )

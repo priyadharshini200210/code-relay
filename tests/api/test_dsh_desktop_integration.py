@@ -5,8 +5,8 @@ import json
 import pytest
 from fastapi.testclient import TestClient
 
-from free_claude_code.config.settings import Settings
-from free_claude_code.harnesses import dsh_desktop_integration as desktop
+from code_relay.config.settings import Settings
+from code_relay.harnesses import dsh_desktop_integration as desktop
 from tests.api.support import create_test_app
 
 ROOT = "/admin/api/integrations/dsh-desktop"

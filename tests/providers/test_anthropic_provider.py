@@ -3,10 +3,10 @@ import json
 import httpx
 import pytest
 
-from free_claude_code.config.provider_catalog import PROVIDER_CATALOG
-from free_claude_code.core.anthropic.passthrough import NativeMessagesRequest
-from free_claude_code.core.failures import ExecutionFailure
-from free_claude_code.providers.anthropic import AnthropicProvider
+from code_relay.config.provider_catalog import PROVIDER_CATALOG
+from code_relay.core.anthropic.passthrough import NativeMessagesRequest
+from code_relay.core.failures import ExecutionFailure
+from code_relay.providers.anthropic import AnthropicProvider
 from tests.providers.support import immediate_admission, make_provider_config
 
 

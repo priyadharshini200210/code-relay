@@ -4,7 +4,7 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from free_claude_code.application.model_metadata import ProviderModelInfo
+from code_relay.application.model_metadata import ProviderModelInfo
 from tests.providers.support import (
     immediate_admission,
     make_provider_config,

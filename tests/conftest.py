@@ -8,9 +8,9 @@ from unittest.mock import AsyncMock, MagicMock
 import pytest
 import pytest_asyncio
 
-from free_claude_code.config import env_migrations, paths
-from free_claude_code.config.loader import clear_settings_cache
-from free_claude_code.harnesses import (
+from code_relay.config import env_migrations, paths
+from code_relay.config.loader import clear_settings_cache
+from code_relay.harnesses import (
     claude_desktop_integration,
     claude_integration,
     codex_integration,
@@ -98,8 +98,8 @@ def provider_config():
 
 @pytest.fixture
 def nim_provider(provider_config):
-    from free_claude_code.config.nim import NimSettings
-    from free_claude_code.providers.nvidia_nim import NvidiaNimProvider
+    from code_relay.config.nim import NimSettings
+    from code_relay.providers.nvidia_nim import NvidiaNimProvider
 
     return NvidiaNimProvider(
         provider_config,
@@ -110,14 +110,14 @@ def nim_provider(provider_config):
 
 @pytest.fixture
 def open_router_provider(provider_config):
-    from free_claude_code.providers.open_router import OpenRouterProvider
+    from code_relay.providers.open_router import OpenRouterProvider
 
     return OpenRouterProvider(provider_config, admission=immediate_admission())
 
 
 @pytest.fixture
 def lmstudio_provider(provider_config):
-    from free_claude_code.providers.lmstudio import LMStudioProvider
+    from code_relay.providers.lmstudio import LMStudioProvider
 
     lmstudio_config = make_provider_config(
         api_key="lm-studio",
@@ -134,7 +134,7 @@ def lmstudio_provider(provider_config):
 
 @pytest.fixture
 def llamacpp_provider(provider_config):
-    from free_claude_code.providers.openai_chat import create_openai_chat_provider
+    from code_relay.providers.openai_chat import create_openai_chat_provider
 
     llamacpp_config = make_provider_config(
         api_key="llamacpp",
@@ -155,7 +155,7 @@ def llamacpp_provider(provider_config):
 
 @pytest.fixture
 def mock_cli_session():
-    from free_claude_code.messaging.managed_protocols import (
+    from code_relay.messaging.managed_protocols import (
         ManagedClaudeSessionProtocol,
     )
 
@@ -167,7 +167,7 @@ def mock_cli_session():
 
 @pytest.fixture
 def mock_cli_manager():
-    from free_claude_code.messaging.managed_protocols import (
+    from code_relay.messaging.managed_protocols import (
         ManagedClaudeSessionManagerProtocol,
     )
 
@@ -182,7 +182,7 @@ def mock_cli_manager():
 
 @pytest.fixture
 def mock_platform():
-    from free_claude_code.messaging.platforms.ports import OutboundMessenger
+    from code_relay.messaging.platforms.ports import OutboundMessenger
 
     platform = MagicMock(spec=OutboundMessenger)
     platform.send_message = AsyncMock(return_value="msg_123")
@@ -207,7 +207,7 @@ def mock_platform():
 
 @pytest.fixture
 def mock_session_store():
-    from free_claude_code.messaging.trees import ConversationSnapshot, MessagingStore
+    from code_relay.messaging.trees import ConversationSnapshot, MessagingStore
 
     store = AsyncMock(spec=MessagingStore)
     store.get_tracked_message_ids_for_chat.return_value = []
@@ -234,7 +234,7 @@ def incoming_message_factory():
     )
 
     def _create(**kwargs):
-        from free_claude_code.messaging.models import IncomingMessage
+        from code_relay.messaging.models import IncomingMessage
 
         defaults: dict[str, Any] = {
             "text": "hello",
@@ -274,9 +274,9 @@ def _propagate_loguru_to_caplog(caplog):
 @pytest_asyncio.fixture
 async def messaging_store_factory(tmp_path):
     """Real SQLite stores with fixture-owned lifetime and optional old JSON input."""
-    from free_claude_code.runtime.messaging_import import import_legacy
-    from free_claude_code.runtime.messaging_sqlite import SQLiteMessagingStore
-    from free_claude_code.runtime.sqlite_database import SQLiteDatabase
+    from code_relay.runtime.messaging_import import import_legacy
+    from code_relay.runtime.messaging_sqlite import SQLiteMessagingStore
+    from code_relay.runtime.sqlite_database import SQLiteDatabase
 
     databases = {}
 
@@ -305,7 +305,7 @@ async def messaging_store_factory(tmp_path):
 @pytest_asyncio.fixture
 async def database_factory():
     """Own database resources for tests that compose individual services."""
-    from free_claude_code.runtime.sqlite_database import SQLiteDatabase
+    from code_relay.runtime.sqlite_database import SQLiteDatabase
 
     databases = []
 

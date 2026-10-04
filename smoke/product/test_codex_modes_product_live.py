@@ -18,12 +18,12 @@ from typing import Any
 import httpx
 import pytest
 
-from free_claude_code.config.env_migrations import (
+from code_relay.config.env_migrations import (
     atomic_write_managed_config,
     settings_env_keys,
 )
-from free_claude_code.config.paths import FCC_DATABASE_FILENAME
-from free_claude_code.config.provider_catalog import PROVIDER_CATALOG
+from code_relay.config.paths import FCC_DATABASE_FILENAME
+from code_relay.config.provider_catalog import PROVIDER_CATALOG
 from smoke.lib.child_process import run_captured_text
 from smoke.lib.config import SmokeConfig
 from smoke.lib.e2e import SmokeServerDriver

@@ -23,7 +23,7 @@ async def test_local_provider_results_complete_independently():
         base_url="http://127.0.0.1",
     ) as client:
         with patch(
-            "free_claude_code.api.admin_routes._check_local_provider", side_effect=check
+            "code_relay.api.admin_routes._check_local_provider", side_effect=check
         ):
             slow = asyncio.create_task(
                 client.get("/admin/api/providers/ollama/local-status")
@@ -50,7 +50,7 @@ async def test_nonlocal_provider_status_is_rejected(provider_id):
         base_url="http://127.0.0.1",
     ) as client:
         with patch(
-            "free_claude_code.api.admin_routes._check_local_provider",
+            "code_relay.api.admin_routes._check_local_provider",
             new_callable=AsyncMock,
         ) as check:
             response = await client.get(

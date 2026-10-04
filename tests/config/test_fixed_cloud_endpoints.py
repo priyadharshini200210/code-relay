@@ -1,9 +1,9 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from free_claude_code.config.loader import compose_settings_snapshot
-from free_claude_code.config.provider_catalog import PROVIDER_CATALOG
-from free_claude_code.providers.runtime.config import build_provider_config
+from code_relay.config.loader import compose_settings_snapshot
+from code_relay.config.provider_catalog import PROVIDER_CATALOG
+from code_relay.providers.runtime.config import build_provider_config
 from tests.api.support import create_test_app
 
 

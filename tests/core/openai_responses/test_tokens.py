@@ -1,8 +1,8 @@
 import json
 from collections.abc import Mapping, Sequence
 
-import free_claude_code.core.openai_responses.tokens as responses_tokens
-from free_claude_code.core.openai_responses import (
+import code_relay.core.openai_responses.tokens as responses_tokens
+from code_relay.core.openai_responses import (
     OpenAIResponsesRequest,
     estimate_responses_input_tokens,
 )

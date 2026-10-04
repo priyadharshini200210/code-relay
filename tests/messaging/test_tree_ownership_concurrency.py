@@ -5,10 +5,10 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from free_claude_code.messaging.models import IncomingMessage, MessageScope
-from free_claude_code.messaging.trees import manager as manager_module
-from free_claude_code.messaging.trees.manager import TreeQueueManager
-from free_claude_code.messaging.trees.transitions import (
+from code_relay.messaging.models import IncomingMessage, MessageScope
+from code_relay.messaging.trees import manager as manager_module
+from code_relay.messaging.trees.manager import TreeQueueManager
+from code_relay.messaging.trees.transitions import (
     AdmissionRejection,
     CancellationReason,
     CancellationUiOwner,

@@ -8,11 +8,11 @@ import pytest
 from fastapi.testclient import TestClient
 from loguru import logger
 
-from free_claude_code.api.request_ids import RequestCorrelationMiddleware
-from free_claude_code.api.request_outcomes import RequestOutcomeMiddleware
-from free_claude_code.config.settings import Settings
-from free_claude_code.core.failures import ExecutionFailure, FailureKind
-from free_claude_code.core.request_outcomes import (
+from code_relay.api.request_ids import RequestCorrelationMiddleware
+from code_relay.api.request_outcomes import RequestOutcomeMiddleware
+from code_relay.config.settings import Settings
+from code_relay.core.failures import ExecutionFailure, FailureKind
+from code_relay.core.request_outcomes import (
     current_request_outcome,
     record_request_route,
 )
@@ -93,7 +93,7 @@ def test_one_final_outcome_for_streamed_inference(outcomes, wire_api, result):
         payload["input"] = "private input"
     with (
         patch(
-            "free_claude_code.api.routes.resolve_provider",
+            "code_relay.api.routes.resolve_provider",
             return_value=OutcomeProvider(result),
         ),
         TestClient(create_test_app(Settings())) as client,
@@ -132,7 +132,7 @@ def test_fallback_records_selected_provider_without_logging_failed_attempt(outco
     }
     with (
         patch(
-            "free_claude_code.api.routes.resolve_provider",
+            "code_relay.api.routes.resolve_provider",
             side_effect=lambda name, **kwargs: providers[name],
         ),
         TestClient(create_test_app(settings)) as client,
@@ -165,12 +165,12 @@ def test_fallback_records_selected_provider_without_logging_failed_attempt(outco
 def test_non_streaming_messages_have_one_outcome(outcomes, result):
     with (
         patch(
-            "free_claude_code.api.routes.resolve_provider",
+            "code_relay.api.routes.resolve_provider",
             return_value=OutcomeProvider(result),
         ),
         TestClient(create_test_app(Settings())) as client,
         patch(
-            "free_claude_code.api.request_outcomes.monotonic", side_effect=[10.0, 12.5]
+            "code_relay.api.request_outcomes.monotonic", side_effect=[10.0, 12.5]
         ),
     ):
         response = client.post(
@@ -229,7 +229,7 @@ async def test_disconnect_logs_cancellation_after_cleanup(outcomes, wire_api, st
     async def send(message):
         sent.append(message)
 
-    with patch("free_claude_code.api.routes.resolve_provider", return_value=provider):
+    with patch("code_relay.api.routes.resolve_provider", return_value=provider):
         app = create_test_app(Settings())
         scope = _http_scope(f"/v1/{wire_api}")
         scope["headers"] = [(b"content-type", b"application/json")]
@@ -389,7 +389,7 @@ async def test_successful_named_events_skip_json_decoding(outcomes):
         pass
 
     with patch(
-        "free_claude_code.core.anthropic.stream_contracts.json.loads", wraps=json.loads
+        "code_relay.core.anthropic.stream_contracts.json.loads", wraps=json.loads
     ) as loads:
         await RequestCorrelationMiddleware(RequestOutcomeMiddleware(app))(
             _http_scope("/v1/responses"), receive, send

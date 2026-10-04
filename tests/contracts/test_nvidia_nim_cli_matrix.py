@@ -3,7 +3,7 @@ import subprocess
 from pathlib import Path
 from typing import cast
 
-from free_claude_code.config.settings import Settings
+from code_relay.config.settings import Settings
 from smoke.lib.claude_cli_matrix import (
     ClaudeCliRun,
     _build_claude_cli_command,
@@ -409,7 +409,7 @@ def test_cli_matrix_unclassified_provider_error_is_model_feature_failure(
         marker="FCC_OPENROUTER_FREE_TOOL",
         run=run,
         log_delta=(
-            '{"event": "free_claude_code.api.request.received", "http_method": "POST", '
+            '{"event": "code_relay.api.request.received", "http_method": "POST", '
             '"http_path": "/v1/messages"}\n'
             '{"event": "provider.response.error", "exc_type": "HTTPStatusError"}'
         ),

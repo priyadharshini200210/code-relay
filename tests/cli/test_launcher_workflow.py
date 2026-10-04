@@ -8,9 +8,9 @@ from urllib.error import URLError
 
 import pytest
 
-from free_claude_code.application.model_catalog import CatalogModel
-from free_claude_code.cli.launchers.aider_config import build_aider_config
-from free_claude_code.config.paths import codex_model_catalog_path
+from code_relay.application.model_catalog import CatalogModel
+from code_relay.cli.launchers.aider_config import build_aider_config
+from code_relay.config.paths import codex_model_catalog_path
 from tests.cli.conftest import LaunchCapture
 
 HARNESSES = (
@@ -28,7 +28,7 @@ HARNESSES = (
 
 
 def launch(name: str, args: list[str], exit_code: int = 23) -> None:
-    module = importlib.import_module(f"free_claude_code.cli.launchers.{name}")
+    module = importlib.import_module(f"code_relay.cli.launchers.{name}")
     with pytest.raises(SystemExit) as exc:
         module.launch(args)
     assert exc.value.code == exit_code
@@ -79,7 +79,7 @@ def test_launch_default_is_server_selection_not_first_row_or_local_settings(
             assert (
                 config["model"]
                 == config["agents"]["title"]["model"]
-                == f"free-claude-code/{selected}"
+                == f"code-relay/{selected}"
             )
         elif name == "cline":
             path = Path(env["CLINE_PROVIDER_SETTINGS_PATH"])

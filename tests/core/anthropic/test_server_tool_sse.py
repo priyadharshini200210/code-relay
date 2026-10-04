@@ -2,7 +2,7 @@
 
 import pytest
 
-from free_claude_code.core.anthropic.server_tool_sse import (
+from code_relay.core.anthropic.server_tool_sse import (
     ServerToolResponseContext,
     server_tool_completion_frames,
     server_tool_start_frames,
@@ -10,8 +10,8 @@ from free_claude_code.core.anthropic.server_tool_sse import (
     web_search_result_block,
     web_tool_error_block,
 )
-from free_claude_code.core.anthropic.stream_contracts import parse_sse_text
-from free_claude_code.core.web_tools import WebFetchResult, WebSearchResult
+from code_relay.core.anthropic.stream_contracts import parse_sse_text
+from code_relay.core.web_tools import WebFetchResult, WebSearchResult
 
 
 @pytest.mark.parametrize(

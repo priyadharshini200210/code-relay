@@ -6,7 +6,7 @@ from typing import Any, cast
 
 import pytest
 
-from free_claude_code.core.history_replay import (
+from code_relay.core.history_replay import (
     AssociatedReplayRecord,
     HistoryReplayError,
     HistoryScope,

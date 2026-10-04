@@ -8,23 +8,23 @@ from typing import cast
 import pytest
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
-from free_claude_code.api.app import create_app
-from free_claude_code.api.ports import AdminRuntimePort, ApiServices
-from free_claude_code.api.request_lifetime import (
+from code_relay.api.app import create_app
+from code_relay.api.ports import AdminRuntimePort, ApiServices
+from code_relay.api.request_lifetime import (
     ClientRequestLifetimeMiddleware,
 )
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.application.ports import (
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.application.ports import (
     ProviderPort,
     RequestRuntimeLease,
     RequestRuntimePort,
     TaskController,
 )
-from free_claude_code.config.settings import Settings
-from free_claude_code.core.anthropic import MessagesRequest
-from free_claude_code.core.anthropic.streaming import format_sse_event
-from free_claude_code.core.openai_responses import OpenAIResponsesRequest
-from free_claude_code.core.reasoning import ReasoningPolicy
+from code_relay.config.settings import Settings
+from code_relay.core.anthropic import MessagesRequest
+from code_relay.core.anthropic.streaming import format_sse_event
+from code_relay.core.openai_responses import OpenAIResponsesRequest
+from code_relay.core.reasoning import ReasoningPolicy
 from tests.web_tools_support import StubWebToolsClient
 
 

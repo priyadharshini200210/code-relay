@@ -10,18 +10,18 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
-from free_claude_code.application.code_sessions import CodeService
-from free_claude_code.application.code_sessions.models import (
+from code_relay.application.code_sessions import CodeService
+from code_relay.application.code_sessions.models import (
     CodeConflictError,
     CodeUnavailableError,
 )
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.application.ports import ModelCatalogSnapshot, RequestRuntimePort
-from free_claude_code.config.paths import launcher_temp_dir_path
-from free_claude_code.config.settings import Settings
-from free_claude_code.core.gateway_model_ids import no_thinking_gateway_model_id
-from free_claude_code.runtime.code_sessions_sqlite import SQLiteCodeStore
-from free_claude_code.runtime.codex_app_server import (
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.application.ports import ModelCatalogSnapshot, RequestRuntimePort
+from code_relay.config.paths import launcher_temp_dir_path
+from code_relay.config.settings import Settings
+from code_relay.core.gateway_model_ids import no_thinking_gateway_model_id
+from code_relay.runtime.code_sessions_sqlite import SQLiteCodeStore
+from code_relay.runtime.codex_app_server import (
     CodexAppServer,
     CodexHarnessFactory,
 )
@@ -109,7 +109,7 @@ async def test_factory_open_preserves_setup_and_catalog_until_process_exit(
         )
         assert config["model"] == no_thinking_gateway_model_id(selection.model)
         assert config["model_providers"]["fcc"] == {
-            "name": "Free Claude Code",
+            "name": "Code Relay",
             "base_url": "http://127.0.0.1:8182/v1",
             "auth": {"command": "fcc-codex", "args": ["--print-proxy-auth-token"]},
             "wire_api": "responses",

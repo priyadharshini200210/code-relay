@@ -5,8 +5,8 @@ import asyncio
 import httpx
 import pytest
 
-from free_claude_code.core.web_tools import WebSearchResult
-from free_claude_code.runtime.web_tools import client as web_client
+from code_relay.core.web_tools import WebSearchResult
+from code_relay.runtime.web_tools import client as web_client
 
 
 def _httpx_clients(monkeypatch, handler):
@@ -27,7 +27,7 @@ async def test_search_request_parsing_limit_and_client_closure(monkeypatch):
     def handle(request):
         assert str(request.url).startswith("https://lite.duckduckgo.com/lite/")
         assert request.url.params["q"] == "query & details"
-        assert "free-claude-code/" in request.headers["User-Agent"]
+        assert "code-relay/" in request.headers["User-Agent"]
         links = [
             f'<a href="/l/?uddg=https%3A%2F%2Fexample.com%2F{index}">Title {index}</a>'
             for index in range(12)
@@ -90,7 +90,7 @@ async def test_fetch_cancellation_closes_response_session_and_connector(monkeypa
     from contextlib import asynccontextmanager
     from types import SimpleNamespace
 
-    from free_claude_code.application.web_tools.ports import WebFetchEgressPolicy
+    from code_relay.application.web_tools.ports import WebFetchEgressPolicy
 
     entered = asyncio.Event()
     response_closed, session_closed = [], []

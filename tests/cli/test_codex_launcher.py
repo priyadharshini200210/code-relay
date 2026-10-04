@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 import pytest
 
-from free_claude_code.cli.launchers import codex, runner
+from code_relay.cli.launchers import codex, runner
 from tests.cli.conftest import LaunchCapture
 from tests.cli.test_launcher_workflow import launch
 

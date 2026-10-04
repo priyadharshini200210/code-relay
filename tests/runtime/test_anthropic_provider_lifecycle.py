@@ -3,12 +3,12 @@
 import httpx
 import pytest
 
-from free_claude_code.config.provider_catalog import PROVIDER_CATALOG
-from free_claude_code.config.settings import Settings
-from free_claude_code.providers.anthropic import AnthropicProvider
-from free_claude_code.providers.runtime import ProviderRuntime
-from free_claude_code.providers.runtime.config import build_provider_config
-from free_claude_code.runtime.provider_manager import ProviderRuntimeManager
+from code_relay.config.provider_catalog import PROVIDER_CATALOG
+from code_relay.config.settings import Settings
+from code_relay.providers.anthropic import AnthropicProvider
+from code_relay.providers.runtime import ProviderRuntime
+from code_relay.providers.runtime.config import build_provider_config
+from code_relay.runtime.provider_manager import ProviderRuntimeManager
 from tests.providers.support import immediate_admission
 from tests.providers.test_anthropic_discovery import metadata
 

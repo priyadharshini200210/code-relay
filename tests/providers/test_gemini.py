@@ -4,12 +4,12 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from free_claude_code.application.errors import InvalidRequestError
-from free_claude_code.config.provider_catalog import GEMINI_DEFAULT_BASE
-from free_claude_code.core.anthropic.stream_contracts import parse_sse_text
-from free_claude_code.core.reasoning import ReasoningEffort, ReasoningPolicy
-from free_claude_code.providers.gemini import GeminiProvider
-from free_claude_code.providers.google_openai import (
+from code_relay.application.errors import InvalidRequestError
+from code_relay.config.provider_catalog import GEMINI_DEFAULT_BASE
+from code_relay.core.anthropic.stream_contracts import parse_sse_text
+from code_relay.core.reasoning import ReasoningEffort, ReasoningPolicy
+from code_relay.providers.gemini import GeminiProvider
+from code_relay.providers.google_openai import (
     GOOGLE_SKIP_THOUGHT_SIGNATURE_VALIDATOR,
 )
 from tests.providers.request_factory import make_messages_request
@@ -60,7 +60,7 @@ def gemini_provider(gemini_config):
 def test_init(gemini_config):
     """Test provider initialization."""
     with patch(
-        "free_claude_code.providers.openai_chat.client.AsyncOpenAI"
+        "code_relay.providers.openai_chat.client.AsyncOpenAI"
     ) as mock_openai:
         provider = GeminiProvider(gemini_config, admission=immediate_admission())
         assert provider._api_key == "test_gemini_key"

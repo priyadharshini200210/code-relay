@@ -598,7 +598,7 @@ wheels = [
 ]
 
 [[package]]
-name = "free-claude-code"
+name = "code-relay"
 source = { editable = "." }
 dependencies = [
     { name = "aiohttp" },

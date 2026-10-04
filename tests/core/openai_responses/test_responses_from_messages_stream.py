@@ -5,18 +5,18 @@ from typing import cast
 
 import pytest
 
-from free_claude_code.core.anthropic.native import (
+from code_relay.core.anthropic.native import (
     NativeMessagesError,
     NativeMessagesOptions,
 )
-from free_claude_code.core.anthropic.stream_contracts import parse_sse_lines
-from free_claude_code.core.failures import ExecutionFailure, FailureKind
-from free_claude_code.core.history_replay import (
+from code_relay.core.anthropic.stream_contracts import parse_sse_lines
+from code_relay.core.failures import ExecutionFailure, FailureKind
+from code_relay.core.history_replay import (
     ReplayOrigin,
     decode_replay,
 )
-from free_claude_code.core.json_types import JsonObject, JsonValue
-from free_claude_code.core.openai_responses import (
+from code_relay.core.json_types import JsonObject, JsonValue
+from code_relay.core.openai_responses import (
     AnthropicToResponsesStream,
     OpenAIResponsesRequest,
     build_responses_messages_request,

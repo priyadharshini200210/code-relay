@@ -7,16 +7,16 @@ import httpx2
 import openai
 import pytest
 
-from free_claude_code.config.provider_catalog import GROQ_DEFAULT_BASE
-from free_claude_code.core.anthropic.stream_contracts import parse_sse_text
-from free_claude_code.core.failures import FailureKind
-from free_claude_code.core.reasoning import ReasoningEffort, ReasoningPolicy
-from free_claude_code.providers.admission import ProviderOperationKind
-from free_claude_code.providers.failure_policy import classify_provider_failure
-from free_claude_code.providers.groq import GroqProvider
-from free_claude_code.providers.groq.client import GroqChatBehavior
-from free_claude_code.providers.groq.tpm import correct_tpm_completion_budget
-from free_claude_code.providers.request_recovery import RequestRecovery
+from code_relay.config.provider_catalog import GROQ_DEFAULT_BASE
+from code_relay.core.anthropic.stream_contracts import parse_sse_text
+from code_relay.core.failures import FailureKind
+from code_relay.core.reasoning import ReasoningEffort, ReasoningPolicy
+from code_relay.providers.admission import ProviderOperationKind
+from code_relay.providers.failure_policy import classify_provider_failure
+from code_relay.providers.groq import GroqProvider
+from code_relay.providers.groq.client import GroqChatBehavior
+from code_relay.providers.groq.tpm import correct_tpm_completion_budget
+from code_relay.providers.request_recovery import RequestRecovery
 from tests.providers.request_factory import make_messages_request
 from tests.providers.support import (
     SDKStreamDouble,

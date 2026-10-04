@@ -2,8 +2,8 @@
 
 import pytest
 
-from free_claude_code.application.web_tools.ports import WebFetchEgressPolicy
-from free_claude_code.core.web_tools import WebFetchResult, WebSearchResult
+from code_relay.application.web_tools.ports import WebFetchEgressPolicy
+from code_relay.core.web_tools import WebFetchResult, WebSearchResult
 
 
 class StubWebToolsClient:

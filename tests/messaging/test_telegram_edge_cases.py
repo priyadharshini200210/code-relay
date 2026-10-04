@@ -14,7 +14,7 @@ def _limiter_mock() -> MagicMock:
 
 
 def _telegram_runtime(*args, limiter=None, transcriber=None, **kwargs):
-    from free_claude_code.messaging.platforms.telegram import TelegramRuntime
+    from code_relay.messaging.platforms.telegram import TelegramRuntime
 
     return TelegramRuntime(
         *args,
@@ -27,7 +27,7 @@ def _telegram_runtime(*args, limiter=None, transcriber=None, **kwargs):
 def test_telegram_platform_init_raises_when_dependency_missing():
     with (
         patch(
-            "free_claude_code.messaging.platforms.telegram.TELEGRAM_AVAILABLE", False
+            "code_relay.messaging.platforms.telegram.TELEGRAM_AVAILABLE", False
         ),
         pytest.raises(ImportError),
     ):
@@ -38,7 +38,7 @@ def test_telegram_platform_init_raises_when_dependency_missing():
 async def test_telegram_platform_start_requires_token():
     with (
         patch.dict("os.environ", {}, clear=True),
-        patch("free_claude_code.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True),
+        patch("code_relay.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True),
     ):
         platform = _telegram_runtime(bot_token=None)
         with pytest.raises(ValueError):
@@ -48,7 +48,7 @@ async def test_telegram_platform_start_requires_token():
 @pytest.mark.asyncio
 async def test_telegram_platform_quiesce_and_close_without_application():
     with patch(
-        "free_claude_code.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
+        "code_relay.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
     ):
         platform = _telegram_runtime(bot_token="t")
         platform._application = None
@@ -62,7 +62,7 @@ async def test_telegram_platform_quiesce_and_close_without_application():
 @pytest.mark.asyncio
 async def test_telegram_close_cleans_up_partially_initialized_application():
     with patch(
-        "free_claude_code.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
+        "code_relay.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
     ):
         platform = _telegram_runtime(bot_token="t")
         platform._application = MagicMock()
@@ -86,7 +86,7 @@ async def test_telegram_close_cleans_up_partially_initialized_application():
 @pytest.mark.asyncio
 async def test_telegram_two_phase_lifecycle_drains_before_delivery_close():
     with patch(
-        "free_claude_code.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
+        "code_relay.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
     ):
         platform = _telegram_runtime(bot_token="t")
         order: list[str] = []
@@ -131,7 +131,7 @@ async def test_telegram_two_phase_lifecycle_drains_before_delivery_close():
 )
 async def test_telegram_quiesce_attempts_all_steps_after_failure(failing_step):
     with patch(
-        "free_claude_code.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
+        "code_relay.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
     ):
         platform = _telegram_runtime(bot_token="t")
         order: list[str] = []
@@ -174,7 +174,7 @@ async def test_telegram_quiesce_attempts_all_steps_after_failure(failing_step):
 )
 async def test_telegram_close_attempts_all_steps_after_failure(failing_step):
     with patch(
-        "free_claude_code.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
+        "code_relay.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
     ):
         platform = _telegram_runtime(bot_token="t")
         order: list[str] = []
@@ -210,7 +210,7 @@ async def test_telegram_close_attempts_all_steps_after_failure(failing_step):
 @pytest.mark.asyncio
 async def test_with_retry_returns_none_when_message_not_modified_network_error():
     with patch(
-        "free_claude_code.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
+        "code_relay.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
     ):
         platform = _telegram_runtime(bot_token="t")
 
@@ -223,7 +223,7 @@ async def test_with_retry_returns_none_when_message_not_modified_network_error()
 @pytest.mark.asyncio
 async def test_with_retry_retries_network_error_then_succeeds(monkeypatch):
     with patch(
-        "free_claude_code.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
+        "code_relay.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
     ):
         platform = _telegram_runtime(bot_token="t")
 
@@ -244,7 +244,7 @@ async def test_with_retry_retries_network_error_then_succeeds(monkeypatch):
 @pytest.mark.asyncio
 async def test_with_retry_honors_retry_after_timedelta(monkeypatch):
     with patch(
-        "free_claude_code.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
+        "code_relay.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
     ):
         platform = _telegram_runtime(bot_token="t")
 
@@ -265,7 +265,7 @@ async def test_with_retry_honors_retry_after_timedelta(monkeypatch):
 @pytest.mark.asyncio
 async def test_with_retry_drops_parse_mode_on_markdown_entity_error():
     with patch(
-        "free_claude_code.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
+        "code_relay.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
     ):
         platform = _telegram_runtime(bot_token="t")
 
@@ -284,7 +284,7 @@ async def test_with_retry_drops_parse_mode_on_markdown_entity_error():
 @pytest.mark.asyncio
 async def test_with_retry_can_raise_known_message_errors_for_bulk_fallback():
     with patch(
-        "free_claude_code.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
+        "code_relay.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
     ):
         platform = _telegram_runtime(bot_token="t")
 
@@ -301,7 +301,7 @@ async def test_with_retry_can_raise_known_message_errors_for_bulk_fallback():
 @pytest.mark.asyncio
 async def test_queue_send_message_uses_required_limiter():
     with patch(
-        "free_claude_code.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
+        "code_relay.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
     ):
         platform = _telegram_runtime(bot_token="t")
         platform._application = MagicMock()
@@ -325,7 +325,7 @@ async def test_queue_send_message_uses_required_limiter():
 @pytest.mark.asyncio
 async def test_queue_edit_message_uses_required_limiter():
     with patch(
-        "free_claude_code.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
+        "code_relay.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
     ):
         platform = _telegram_runtime(bot_token="t")
         platform._application = MagicMock()
@@ -343,7 +343,7 @@ async def test_queue_edit_message_uses_required_limiter():
 
 def test_fire_and_forget_non_coroutine_uses_ensure_future(monkeypatch):
     with patch(
-        "free_claude_code.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
+        "code_relay.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
     ):
         platform = _telegram_runtime(bot_token="t")
 
@@ -357,7 +357,7 @@ def test_fire_and_forget_non_coroutine_uses_ensure_future(monkeypatch):
 @pytest.mark.asyncio
 async def test_on_start_command_replies_and_forwards():
     with patch(
-        "free_claude_code.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
+        "code_relay.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
     ):
         platform = _telegram_runtime(bot_token="t")
         with patch.object(
@@ -374,7 +374,7 @@ async def test_on_start_command_replies_and_forwards():
 @pytest.mark.asyncio
 async def test_on_telegram_message_handler_error_sends_error_message():
     with patch(
-        "free_claude_code.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
+        "code_relay.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
     ):
         platform = _telegram_runtime(bot_token="t", allowed_user_id="123")
         with patch.object(
@@ -400,7 +400,7 @@ async def test_on_telegram_message_handler_error_sends_error_message():
 @pytest.mark.asyncio
 async def test_telegram_start_retries_on_network_error(monkeypatch):
     with patch(
-        "free_claude_code.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
+        "code_relay.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
     ):
         platform = _telegram_runtime(bot_token="token", allowed_user_id=None)
 
@@ -426,7 +426,7 @@ async def test_telegram_polling_retry_does_not_restart_running_application(
     monkeypatch,
 ):
     with patch(
-        "free_claude_code.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
+        "code_relay.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
     ):
         platform = _telegram_runtime(bot_token="token", allowed_user_id=None)
 
@@ -454,7 +454,7 @@ async def test_telegram_polling_retry_does_not_restart_running_application(
 async def test_edit_message_with_text_exceeding_4096_raises():
     """edit_message with text > 4096 raises TelegramError (BadRequest)."""
     with patch(
-        "free_claude_code.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
+        "code_relay.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
     ):
         platform = _telegram_runtime(bot_token="t")
         platform._application = MagicMock()
@@ -471,7 +471,7 @@ async def test_edit_message_with_text_exceeding_4096_raises():
 async def test_edit_message_empty_string():
     """edit_message with empty string - Telegram accepts (no-op edit)."""
     with patch(
-        "free_claude_code.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
+        "code_relay.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
     ):
         platform = _telegram_runtime(bot_token="t")
         platform._application = MagicMock()
@@ -488,7 +488,7 @@ async def test_edit_message_empty_string():
 async def test_send_message_empty_string():
     """send_message with empty string - Telegram may reject; we pass through."""
     with patch(
-        "free_claude_code.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
+        "code_relay.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
     ):
         platform = _telegram_runtime(bot_token="t")
         platform._application = MagicMock()
@@ -506,7 +506,7 @@ async def test_send_message_empty_string():
 async def test_on_telegram_message_non_text_update_ignored():
     """Update with message.photo but no text returns early without calling handler."""
     with patch(
-        "free_claude_code.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
+        "code_relay.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
     ):
         platform = _telegram_runtime(bot_token="t", allowed_user_id="123")
         handler = AsyncMock()
@@ -528,7 +528,7 @@ async def test_on_telegram_message_non_text_update_ignored():
 async def test_with_retry_message_not_found_returns_none():
     """'message to edit not found' returns None without retry."""
     with patch(
-        "free_claude_code.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
+        "code_relay.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
     ):
         platform = _telegram_runtime(bot_token="t")
 

@@ -4,11 +4,11 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.config.constants import ANTHROPIC_DEFAULT_MAX_OUTPUT_TOKENS
-from free_claude_code.config.provider_catalog import WAFER_DEFAULT_BASE
-from free_claude_code.core.anthropic.models import Message, MessagesRequest, Tool
-from free_claude_code.providers.openai_chat import (
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.config.constants import ANTHROPIC_DEFAULT_MAX_OUTPUT_TOKENS
+from code_relay.config.provider_catalog import WAFER_DEFAULT_BASE
+from code_relay.core.anthropic.models import Message, MessagesRequest, Tool
+from code_relay.providers.openai_chat import (
     OpenAIChatProvider,
 )
 from tests.providers.support import (

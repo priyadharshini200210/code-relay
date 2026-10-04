@@ -2,10 +2,10 @@
 
 import pytest
 
-from free_claude_code.application.errors import InvalidRequestError
-from free_claude_code.core.anthropic.stream_contracts import parse_sse_text
-from free_claude_code.core.anthropic.streaming import format_sse_event
-from free_claude_code.core.failures import ExecutionFailure, FailureKind
+from code_relay.application.errors import InvalidRequestError
+from code_relay.core.anthropic.stream_contracts import parse_sse_text
+from code_relay.core.anthropic.streaming import format_sse_event
+from code_relay.core.failures import ExecutionFailure, FailureKind
 from tests.api.model_fallback_support import (
     ControlledFallbackProvider,
     execution_failure,

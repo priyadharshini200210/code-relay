@@ -5,14 +5,14 @@ from collections.abc import AsyncIterator
 
 import pytest
 
-from free_claude_code.application.errors import InvalidRequestError
-from free_claude_code.application.execution import ProviderExecutor
-from free_claude_code.application.routing import ModelRouter
-from free_claude_code.application.web_tools.ports import WebFetchEgressPolicy
-from free_claude_code.application.web_tools.service import WebToolService
-from free_claude_code.config.settings import Settings
-from free_claude_code.core.anthropic.models import Message, MessagesRequest, Tool
-from free_claude_code.core.web_tools import WebFetchResult
+from code_relay.application.errors import InvalidRequestError
+from code_relay.application.execution import ProviderExecutor
+from code_relay.application.routing import ModelRouter
+from code_relay.application.web_tools.ports import WebFetchEgressPolicy
+from code_relay.application.web_tools.service import WebToolService
+from code_relay.config.settings import Settings
+from code_relay.core.anthropic.models import Message, MessagesRequest, Tool
+from code_relay.core.web_tools import WebFetchResult
 from tests.web_tools_support import StubWebToolsClient
 
 

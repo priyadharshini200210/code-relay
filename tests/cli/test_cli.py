@@ -7,7 +7,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from free_claude_code.messaging.event_parser import parse_cli_event
+from code_relay.messaging.event_parser import parse_cli_event
 
 # --- Existing Parser Tests ---
 
@@ -152,7 +152,7 @@ class TestManagedClaudeSession:
 
     def test_session_init(self):
         """Test ManagedClaudeSession initialization."""
-        from free_claude_code.cli.managed.session import ManagedClaudeSession
+        from code_relay.cli.managed.session import ManagedClaudeSession
 
         session = ManagedClaudeSession(
             workspace_path="/tmp/test",
@@ -166,7 +166,7 @@ class TestManagedClaudeSession:
 
     def test_session_extract_session_id(self):
         """Test session ID extraction from various event formats."""
-        from free_claude_code.cli.managed.claude import (
+        from code_relay.cli.managed.claude import (
             extract_managed_claude_session_id,
         )
 
@@ -199,7 +199,7 @@ class TestManagedClaudeSession:
     @pytest.mark.asyncio
     async def test_start_task_basic_flow(self):
         """Test start_task running a basic command flow."""
-        from free_claude_code.cli.managed.session import ManagedClaudeSession
+        from code_relay.cli.managed.session import ManagedClaudeSession
 
         session = ManagedClaudeSession(
             "/tmp", "http://localhost:8082", auth_token="freecc"
@@ -245,7 +245,7 @@ class TestManagedClaudeSession:
     @pytest.mark.asyncio
     async def test_start_task_with_session_resume(self):
         """Test resuming an existing session."""
-        from free_claude_code.cli.managed.session import ManagedClaudeSession
+        from code_relay.cli.managed.session import ManagedClaudeSession
 
         session = ManagedClaudeSession(
             "/tmp", "http://localhost:8082", auth_token="freecc"
@@ -274,7 +274,7 @@ class TestManagedClaudeSession:
     @pytest.mark.asyncio
     async def test_start_task_with_session_resume_and_fork(self):
         """Test resuming an existing session and forking."""
-        from free_claude_code.cli.managed.session import ManagedClaudeSession
+        from code_relay.cli.managed.session import ManagedClaudeSession
 
         session = ManagedClaudeSession(
             "/tmp", "http://localhost:8082", auth_token="freecc"
@@ -303,7 +303,7 @@ class TestManagedClaudeSession:
     @pytest.mark.asyncio
     async def test_start_task_process_failure_with_stderr(self):
         """Test process exit with error code and stderr output."""
-        from free_claude_code.cli.managed.session import ManagedClaudeSession
+        from code_relay.cli.managed.session import ManagedClaudeSession
 
         session = ManagedClaudeSession(
             "/tmp", "http://localhost:8082", auth_token="freecc"
@@ -333,7 +333,7 @@ class TestManagedClaudeSession:
     @pytest.mark.asyncio
     async def test_start_task_stderr_while_stdout_streams(self):
         """Stderr is drained concurrently so stdout streaming is not blocked."""
-        from free_claude_code.cli.managed.session import ManagedClaudeSession
+        from code_relay.cli.managed.session import ManagedClaudeSession
 
         session = ManagedClaudeSession(
             "/tmp", "http://localhost:8082", auth_token="freecc"
@@ -364,7 +364,7 @@ class TestManagedClaudeSession:
     @pytest.mark.asyncio
     async def test_start_task_ignores_benign_claude_connectors_stderr(self):
         """Known Claude diagnostics on stderr are not surfaced as task failures."""
-        from free_claude_code.cli.managed.session import ManagedClaudeSession
+        from code_relay.cli.managed.session import ManagedClaudeSession
 
         session = ManagedClaudeSession(
             "/tmp", "http://localhost:8082", auth_token="freecc"
@@ -394,7 +394,7 @@ class TestManagedClaudeSession:
     @pytest.mark.asyncio
     async def test_start_task_mixed_stderr_reports_only_fatal_lines(self):
         """Benign stderr diagnostics are filtered without hiding real failures."""
-        from free_claude_code.cli.managed.session import ManagedClaudeSession
+        from code_relay.cli.managed.session import ManagedClaudeSession
 
         session = ManagedClaudeSession(
             "/tmp", "http://localhost:8082", auth_token="freecc"
@@ -424,7 +424,7 @@ class TestManagedClaudeSession:
         self,
     ):
         """A benign stderr line is not duplicated as the process failure reason."""
-        from free_claude_code.cli.managed.session import ManagedClaudeSession
+        from code_relay.cli.managed.session import ManagedClaudeSession
 
         session = ManagedClaudeSession(
             "/tmp", "http://localhost:8082", auth_token="freecc"
@@ -450,7 +450,7 @@ class TestManagedClaudeSession:
     @pytest.mark.asyncio
     async def test_drain_stderr_bounded_retains_cap_but_drains_to_eof(self):
         """Oversized stderr is fully drained so the pipe cannot deadlock; capture is bounded."""
-        from free_claude_code.cli.managed.session import (
+        from code_relay.cli.managed.session import (
             _MAX_STDERR_CAPTURE_BYTES,
             ManagedClaudeSession,
         )
@@ -480,7 +480,7 @@ class TestManagedClaudeSession:
     @pytest.mark.asyncio
     async def test_stop_session(self):
         """Test stopping the session process."""
-        from free_claude_code.cli.managed.session import ManagedClaudeSession
+        from code_relay.cli.managed.session import ManagedClaudeSession
 
         session = ManagedClaudeSession(
             "/tmp", "http://localhost:8082", auth_token="freecc"
@@ -494,7 +494,7 @@ class TestManagedClaudeSession:
         session.process = mock_process
 
         with patch(
-            "free_claude_code.cli.managed.session.kill_pid_tree_best_effort"
+            "code_relay.cli.managed.session.kill_pid_tree_best_effort"
         ) as kill_tree:
             stopped = await session.stop()
 
@@ -505,7 +505,7 @@ class TestManagedClaudeSession:
     @pytest.mark.asyncio
     async def test_stop_session_timeout_force_kill(self):
         """Test force kill if terminate times out."""
-        from free_claude_code.cli.managed.session import ManagedClaudeSession
+        from code_relay.cli.managed.session import ManagedClaudeSession
 
         session = ManagedClaudeSession(
             "/tmp", "http://localhost:8082", auth_token="freecc"
@@ -526,7 +526,7 @@ class TestManagedClaudeSession:
         session.process = mock_process
 
         with patch(
-            "free_claude_code.cli.managed.session.kill_pid_tree_best_effort"
+            "code_relay.cli.managed.session.kill_pid_tree_best_effort"
         ) as kill_tree:
             stopped = await session.stop()
 
@@ -537,7 +537,7 @@ class TestManagedClaudeSession:
     @pytest.mark.asyncio
     async def test_start_task_split_buffer(self):
         """Test handling of JSON split across chunks."""
-        from free_claude_code.cli.managed.session import ManagedClaudeSession
+        from code_relay.cli.managed.session import ManagedClaudeSession
 
         session = ManagedClaudeSession(
             "/tmp", "http://localhost:8082", auth_token="freecc"
@@ -568,7 +568,7 @@ class TestManagedClaudeSession:
     @pytest.mark.asyncio
     async def test_start_task_remnant_buffer(self):
         """Test handling of buffer remnant at EOF (no newline at end)."""
-        from free_claude_code.cli.managed.session import ManagedClaudeSession
+        from code_relay.cli.managed.session import ManagedClaudeSession
 
         session = ManagedClaudeSession(
             "/tmp", "http://localhost:8082", auth_token="freecc"
@@ -597,7 +597,7 @@ class TestManagedClaudeSession:
     @pytest.mark.asyncio
     async def test_start_task_targets_proxy_root(self):
         """Test start_task passes the configured proxy root to Claude Code."""
-        from free_claude_code.cli.managed.session import ManagedClaudeSession
+        from code_relay.cli.managed.session import ManagedClaudeSession
 
         session = ManagedClaudeSession(
             "/tmp", "http://localhost:8082", auth_token="freecc"
@@ -623,7 +623,7 @@ class TestManagedClaudeSession:
     @pytest.mark.asyncio
     async def test_start_task_sets_proxy_auth_token(self):
         """Test start_task forwards configured proxy auth to Claude Code."""
-        from free_claude_code.cli.managed.session import ManagedClaudeSession
+        from code_relay.cli.managed.session import ManagedClaudeSession
 
         session = ManagedClaudeSession(
             "/tmp", "http://localhost:8082", auth_token="proxy-token"
@@ -655,7 +655,7 @@ class TestManagedClaudeSession:
     @pytest.mark.asyncio
     async def test_start_task_uses_sentinel_when_proxy_auth_blank(self):
         """Test start_task does not leak inherited Claude auth into proxy calls."""
-        from free_claude_code.cli.managed.session import ManagedClaudeSession
+        from code_relay.cli.managed.session import ManagedClaudeSession
 
         session = ManagedClaudeSession(
             "/tmp",
@@ -684,7 +684,7 @@ class TestManagedClaudeSession:
     @pytest.mark.asyncio
     async def test_start_task_allowed_dirs(self):
         """Test start_task includes allowed dirs in command."""
-        from free_claude_code.cli.managed.session import ManagedClaudeSession
+        from code_relay.cli.managed.session import ManagedClaudeSession
 
         session = ManagedClaudeSession(
             "/tmp",
@@ -712,8 +712,8 @@ class TestManagedClaudeSession:
 
     @pytest.mark.asyncio
     async def test_start_task_json_error(self):
-        """Test handling of non-JSON output from free_claude_code.cli."""
-        from free_claude_code.cli.managed.session import ManagedClaudeSession
+        """Test handling of non-JSON output from code_relay.cli."""
+        from code_relay.cli.managed.session import ManagedClaudeSession
 
         session = ManagedClaudeSession(
             "/tmp", "http://localhost:8082", auth_token="freecc"
@@ -737,7 +737,7 @@ class TestManagedClaudeSession:
     @pytest.mark.asyncio
     async def test_stop_exception(self):
         """Test exception handling during stop."""
-        from free_claude_code.cli.managed.session import ManagedClaudeSession
+        from code_relay.cli.managed.session import ManagedClaudeSession
 
         session = ManagedClaudeSession(
             "/tmp", "http://localhost:8082", auth_token="freecc"
@@ -749,7 +749,7 @@ class TestManagedClaudeSession:
         session.process = mock_process
 
         with patch(
-            "free_claude_code.cli.managed.session.kill_pid_tree_best_effort",
+            "code_relay.cli.managed.session.kill_pid_tree_best_effort",
             side_effect=RuntimeError("Permission denied"),
         ):
             stopped = await session.stop()
@@ -762,7 +762,7 @@ class TestManagedClaudeSessionManager:
     @pytest.mark.asyncio
     async def test_manager_create_session(self):
         """Test creating a new session."""
-        from free_claude_code.cli.managed.manager import ManagedClaudeSessionManager
+        from code_relay.cli.managed.manager import ManagedClaudeSessionManager
 
         manager = ManagedClaudeSessionManager(
             workspace_path="/tmp/test",
@@ -778,7 +778,7 @@ class TestManagedClaudeSessionManager:
     @pytest.mark.asyncio
     async def test_manager_reuse_session(self):
         """Test reusing an existing session."""
-        from free_claude_code.cli.managed.manager import ManagedClaudeSessionManager
+        from code_relay.cli.managed.manager import ManagedClaudeSessionManager
 
         manager = ManagedClaudeSessionManager(
             workspace_path="/tmp/test",
@@ -798,7 +798,7 @@ class TestManagedClaudeSessionManager:
     @pytest.mark.asyncio
     async def test_manager_stats(self):
         """Test manager stats."""
-        from free_claude_code.cli.managed.manager import ManagedClaudeSessionManager
+        from code_relay.cli.managed.manager import ManagedClaudeSessionManager
 
         manager = ManagedClaudeSessionManager(
             workspace_path="/tmp/test",

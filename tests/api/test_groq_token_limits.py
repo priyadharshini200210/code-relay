@@ -37,7 +37,7 @@ def test_groq_quota_failure_reaches_clients_after_correction(wire, stream, quota
     try:
         with (
             patch(
-                "free_claude_code.api.routes.resolve_provider", return_value=provider
+                "code_relay.api.routes.resolve_provider", return_value=provider
             ),
             patch.object(provider._client.chat.completions, "create", create),
             TestClient(create_test_app()) as client,

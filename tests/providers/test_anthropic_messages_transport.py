@@ -7,23 +7,23 @@ from collections.abc import AsyncIterator, Callable
 import httpx
 import pytest
 
-from free_claude_code.application.errors import InvalidRequestError
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.core.anthropic.models import MessagesRequest
-from free_claude_code.core.anthropic.stream_contracts import parse_sse_text
-from free_claude_code.core.failures import ExecutionFailure, FailureKind
-from free_claude_code.core.json_types import JsonObject
-from free_claude_code.core.openai_responses import OpenAIResponsesRequest
-from free_claude_code.core.reasoning import ReasoningPolicy
-from free_claude_code.providers.admission import ProviderAdmissionController
-from free_claude_code.providers.anthropic_messages.request_policy import (
+from code_relay.application.errors import InvalidRequestError
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.core.anthropic.models import MessagesRequest
+from code_relay.core.anthropic.stream_contracts import parse_sse_text
+from code_relay.core.failures import ExecutionFailure, FailureKind
+from code_relay.core.json_types import JsonObject
+from code_relay.core.openai_responses import OpenAIResponsesRequest
+from code_relay.core.reasoning import ReasoningPolicy
+from code_relay.providers.admission import ProviderAdmissionController
+from code_relay.providers.anthropic_messages.request_policy import (
     MessagesModelCapabilities,
 )
-from free_claude_code.providers.anthropic_messages.transport import (
+from code_relay.providers.anthropic_messages.transport import (
     AnthropicMessagesTransport,
 )
-from free_claude_code.providers.endpoint_types import HttpEndpoint
-from free_claude_code.providers.http import maybe_await_aclose
+from code_relay.providers.endpoint_types import HttpEndpoint
+from code_relay.providers.http import maybe_await_aclose
 from tests.providers.support import immediate_admission
 
 

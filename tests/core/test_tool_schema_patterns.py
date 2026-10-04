@@ -6,13 +6,13 @@ from copy import deepcopy
 
 import pytest
 
-from free_claude_code.core.anthropic.conversion import build_base_request_body
-from free_claude_code.core.anthropic.models import MessagesRequest
-from free_claude_code.core.openai_responses.provider_input import (
+from code_relay.core.anthropic.conversion import build_base_request_body
+from code_relay.core.anthropic.models import MessagesRequest
+from code_relay.core.openai_responses.provider_input import (
     build_responses_provider_request,
 )
-from free_claude_code.core.reasoning import ReasoningPolicy
-from free_claude_code.core.tool_schema_patterns import translate_tool_schema_patterns
+from code_relay.core.reasoning import ReasoningPolicy
+from code_relay.core.tool_schema_patterns import translate_tool_schema_patterns
 
 ARTIFACT_PATTERN = r'^(?!__.*__$)[^\p{Cc}\p{Cf}\p{Zl}\p{Zp}"\\./[\]]{1,200}$'
 

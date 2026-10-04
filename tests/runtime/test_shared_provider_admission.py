@@ -7,12 +7,12 @@ from unittest.mock import AsyncMock, patch
 import httpx
 import pytest
 
-from free_claude_code.config.settings import Settings
-from free_claude_code.providers.admission import ProviderOperationKind
-from free_claude_code.providers.admission_policy import ProviderAdmissionLimits
-from free_claude_code.providers.admission_registry import ProviderAdmissionRegistry
-from free_claude_code.providers.nvidia_nim import NvidiaNimProvider
-from free_claude_code.runtime.provider_manager import ProviderRuntimeManager
+from code_relay.config.settings import Settings
+from code_relay.providers.admission import ProviderOperationKind
+from code_relay.providers.admission_policy import ProviderAdmissionLimits
+from code_relay.providers.admission_registry import ProviderAdmissionRegistry
+from code_relay.providers.nvidia_nim import NvidiaNimProvider
+from code_relay.runtime.provider_manager import ProviderRuntimeManager
 from tests.runtime.test_provider_manager import RuntimeFactory
 
 
@@ -234,7 +234,7 @@ async def test_separate_provider_ids_and_managers_have_independent_capacity():
 
 @pytest.mark.asyncio
 async def test_custom_registry_entry_lives_until_retired_generation_cleanup_succeeds():
-    from free_claude_code.config.custom_providers import CustomProviderDefinition
+    from code_relay.config.custom_providers import CustomProviderDefinition
 
     custom_id = "custom_12345678123412341234123456789abc"
     settings = Settings(

@@ -9,18 +9,18 @@ import pytest
 from fastapi.responses import JSONResponse, StreamingResponse
 from openai import APIError, AsyncOpenAI, BadRequestError
 
-from free_claude_code.api.handlers import MessagesHandler
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.config.constants import ANTHROPIC_DEFAULT_MAX_OUTPUT_TOKENS
-from free_claude_code.config.settings import Settings
-from free_claude_code.core.anthropic.models import MessagesRequest
-from free_claude_code.core.anthropic.stream_contracts import (
+from code_relay.api.handlers import MessagesHandler
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.config.constants import ANTHROPIC_DEFAULT_MAX_OUTPUT_TOKENS
+from code_relay.config.settings import Settings
+from code_relay.core.anthropic.models import MessagesRequest
+from code_relay.core.anthropic.stream_contracts import (
     parse_sse_text,
     text_content,
     thinking_content,
 )
-from free_claude_code.core.reasoning import ReasoningCapability
-from free_claude_code.providers.open_router import OpenRouterProvider
+from code_relay.core.reasoning import ReasoningCapability
+from code_relay.providers.open_router import OpenRouterProvider
 from tests.providers.support import (
     SDKStreamDouble,
     immediate_admission,
@@ -137,7 +137,7 @@ async def test_openrouter_numeric_sse_rejection_uses_classifier_correction(
         )
 
     with patch(
-        "free_claude_code.providers.openai_chat.client.AsyncOpenAI",
+        "code_relay.providers.openai_chat.client.AsyncOpenAI",
         return_value=AsyncOpenAI(
             api_key="test",
             base_url="https://provider.invalid/v1",

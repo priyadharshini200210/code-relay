@@ -7,13 +7,13 @@ from unittest.mock import AsyncMock, patch
 import httpx
 import pytest
 
-from free_claude_code.application.errors import ApplicationUnavailableError
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.config.provider_catalog import CLOUDFLARE_AI_REST_ROOT
-from free_claude_code.core.anthropic.models import Message, MessagesRequest
-from free_claude_code.core.anthropic.stream_contracts import parse_sse_text
-from free_claude_code.providers.base import ProviderConfig
-from free_claude_code.providers.cloudflare import (
+from code_relay.application.errors import ApplicationUnavailableError
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.config.provider_catalog import CLOUDFLARE_AI_REST_ROOT
+from code_relay.core.anthropic.models import Message, MessagesRequest
+from code_relay.core.anthropic.stream_contracts import parse_sse_text
+from code_relay.providers.base import ProviderConfig
+from code_relay.providers.cloudflare import (
     CloudflareProvider,
     cloudflare_ai_base_url,
 )
@@ -86,7 +86,7 @@ def test_init_composes_account_scoped_openai_chat_base_url(
 ) -> None:
     with (
         patch(
-            "free_claude_code.providers.openai_chat.client.AsyncOpenAI"
+            "code_relay.providers.openai_chat.client.AsyncOpenAI"
         ) as mock_openai,
         patch("httpx.AsyncClient") as mock_httpx_client,
     ):

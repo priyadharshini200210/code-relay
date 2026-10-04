@@ -11,19 +11,19 @@ from fastapi.responses import JSONResponse, StreamingResponse
 from loguru import logger
 from starlette.types import Message, Scope
 
-from free_claude_code.api.request_ids import RequestCorrelationMiddleware
-from free_claude_code.api.response_streams import (
+from code_relay.api.request_ids import RequestCorrelationMiddleware
+from code_relay.api.response_streams import (
     ManagedStreamingResponse,
     anthropic_sse_streaming_response,
     bind_response_lifetime,
     terminal_execution_error_response,
 )
-from free_claude_code.core.anthropic import (
+from code_relay.core.anthropic import (
     anthropic_error_payload,
     anthropic_failure_payload,
 )
-from free_claude_code.core.anthropic.stream_contracts import parse_sse_text
-from free_claude_code.core.failures import ExecutionFailure, FailureKind
+from code_relay.core.anthropic.stream_contracts import parse_sse_text
+from code_relay.core.failures import ExecutionFailure, FailureKind
 
 
 async def _body_chunks(chunks: list[str]) -> AsyncGenerator[str]:

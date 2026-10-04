@@ -3,12 +3,12 @@ from typing import cast
 
 import pytest
 
-from free_claude_code.core.anthropic import ReasoningReplayMode
-from free_claude_code.core.anthropic.stream_contracts import parse_sse_text
-from free_claude_code.core.failures import ExecutionFailure, FailureKind
-from free_claude_code.core.openai_responses import build_responses_chat_request
-from free_claude_code.core.openai_responses.models import OpenAIResponsesRequest
-from free_claude_code.providers.openai_chat.stream_output import (
+from code_relay.core.anthropic import ReasoningReplayMode
+from code_relay.core.anthropic.stream_contracts import parse_sse_text
+from code_relay.core.failures import ExecutionFailure, FailureKind
+from code_relay.core.openai_responses import build_responses_chat_request
+from code_relay.core.openai_responses.models import OpenAIResponsesRequest
+from code_relay.providers.openai_chat.stream_output import (
     AnthropicChatStreamOutput,
     ChatStreamUsage,
     ResponsesChatStreamOutput,

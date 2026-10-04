@@ -10,7 +10,7 @@ from typing import Literal
 import pytest
 import pytest_asyncio
 
-from free_claude_code.application.code_sessions.models import (
+from code_relay.application.code_sessions.models import (
     CodeConflictError,
     CodeItem,
     CodePrompt,
@@ -18,9 +18,9 @@ from free_claude_code.application.code_sessions.models import (
     CodeSession,
     CodeUnavailableError,
 )
-from free_claude_code.runtime import code_sessions_sqlite as code_store_module
-from free_claude_code.runtime.code_sessions_sqlite import SQLiteCodeStore
-from free_claude_code.runtime.sqlite_database import SQLiteDatabase
+from code_relay.runtime import code_sessions_sqlite as code_store_module
+from code_relay.runtime.code_sessions_sqlite import SQLiteCodeStore
+from code_relay.runtime.sqlite_database import SQLiteDatabase
 
 
 @pytest.mark.asyncio

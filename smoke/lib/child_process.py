@@ -27,7 +27,7 @@ def cmd_fcc_version() -> list[str]:
         (
             "import sys; "
             "sys.argv = ['fcc-server', '--version']; "
-            "from free_claude_code.cli.entrypoints import serve; serve()"
+            "from code_relay.cli.entrypoints import serve; serve()"
         ),
     ]
 
@@ -36,7 +36,7 @@ def cmd_fcc_server() -> list[str]:
     return [
         python_exe(),
         "-c",
-        "from free_claude_code.cli.entrypoints import serve; serve()",
+        "from code_relay.cli.entrypoints import serve; serve()",
     ]
 
 

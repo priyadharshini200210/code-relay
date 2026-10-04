@@ -2,14 +2,14 @@ import json
 
 import pytest
 
-from free_claude_code.core.anthropic import (
+from code_relay.core.anthropic import (
     AnthropicToOpenAIConverter,
     OpenAIConversionError,
     ReasoningReplayMode,
     build_base_request_body,
 )
-from free_claude_code.core.anthropic.models import MessagesRequest
-from free_claude_code.core.openai_chat import (
+from code_relay.core.anthropic.models import MessagesRequest
+from code_relay.core.openai_chat import (
     is_synthetic_chat_tool_turn_boundary,
 )
 
@@ -956,7 +956,7 @@ def test_convert_mixed_blocks_and_types_and_roles():
 
 def test_get_block_attr_defaults():
     # Test helper directly
-    from free_claude_code.core.anthropic import get_block_attr
+    from code_relay.core.anthropic import get_block_attr
 
     assert get_block_attr({}, "missing", "default") == "default"
     assert get_block_attr(object(), "missing", "default") == "default"

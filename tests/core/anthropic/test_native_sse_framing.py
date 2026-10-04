@@ -4,8 +4,8 @@ import json
 
 import pytest
 
-from free_claude_code.core.anthropic.stream_contracts import parse_sse_text
-from free_claude_code.core.anthropic.streaming.decoder import AnthropicSSEDecoder
+from code_relay.core.anthropic.stream_contracts import parse_sse_text
+from code_relay.core.anthropic.streaming.decoder import AnthropicSSEDecoder
 
 
 @pytest.mark.parametrize("newline", ["\r", "\n", "\r\n"])

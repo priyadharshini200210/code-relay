@@ -4,7 +4,7 @@ import os
 
 import pytest
 
-from free_claude_code.harnesses import dsh_files
+from code_relay.harnesses import dsh_files
 
 
 def test_lock_uses_native_pid_bytes_and_is_released(tmp_path):

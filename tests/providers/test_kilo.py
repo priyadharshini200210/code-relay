@@ -6,21 +6,21 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from free_claude_code.application.errors import InvalidRequestError
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.config.provider_catalog import KILO_DEFAULT_BASE
-from free_claude_code.core.anthropic.models import Message, MessagesRequest
-from free_claude_code.core.anthropic.stream_contracts import (
+from code_relay.application.errors import InvalidRequestError
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.config.provider_catalog import KILO_DEFAULT_BASE
+from code_relay.core.anthropic.models import Message, MessagesRequest
+from code_relay.core.anthropic.stream_contracts import (
     parse_sse_text,
     text_content,
     thinking_content,
 )
-from free_claude_code.core.history_replay import decode_replay
-from free_claude_code.core.model_capabilities import ModelInputModality
-from free_claude_code.core.reasoning import ReasoningPolicy
-from free_claude_code.providers.kilo import KiloProvider
-from free_claude_code.providers.model_listing import ModelListResponseError
-from free_claude_code.providers.openai_chat import OpenAIChatProvider
+from code_relay.core.history_replay import decode_replay
+from code_relay.core.model_capabilities import ModelInputModality
+from code_relay.core.reasoning import ReasoningPolicy
+from code_relay.providers.kilo import KiloProvider
+from code_relay.providers.model_listing import ModelListResponseError
+from code_relay.providers.openai_chat import OpenAIChatProvider
 from tests.providers.support import (
     SDKStreamDouble,
     immediate_admission,

@@ -7,20 +7,20 @@ import httpx
 import pytest
 from fastapi.testclient import TestClient
 
-from free_claude_code.application.connected_accounts import (
+from code_relay.application.connected_accounts import (
     ConnectedAccountLoginMode,
     ConnectedAccountState,
     ConnectedAccountStatus,
 )
-from free_claude_code.application.model_metadata import (
+from code_relay.application.model_metadata import (
     ProviderModelInfo,
     ProviderModelRefreshResult,
 )
-from free_claude_code.config.admin.values import MASKED_SECRET
-from free_claude_code.config.provider_catalog import PROVIDER_CATALOG
-from free_claude_code.config.server_urls import local_admin_url
-from free_claude_code.config.settings import Settings
-from free_claude_code.core.version import package_version
+from code_relay.config.admin.values import MASKED_SECRET
+from code_relay.config.provider_catalog import PROVIDER_CATALOG
+from code_relay.config.server_urls import local_admin_url
+from code_relay.config.settings import Settings
+from code_relay.core.version import package_version
 from tests.api.support import create_test_app, provider_manager_for_app, runtime_for_app
 
 
@@ -102,7 +102,7 @@ def test_admin_retirement_preview_apply_and_runtime_agree(monkeypatch, tmp_path)
 def _offline_credential_checks(monkeypatch):
     """These tests exercise config persistence; probe HTTP has its own suite."""
     monkeypatch.setattr(
-        "free_claude_code.runtime.application.check_credentials",
+        "code_relay.runtime.application.check_credentials",
         AsyncMock(return_value=()),
     )
 
@@ -177,7 +177,7 @@ def test_admin_page_is_loopback_only(monkeypatch, tmp_path, path):
 def test_admin_page_uses_installed_version(monkeypatch, tmp_path):
     _set_home(monkeypatch, tmp_path)
     monkeypatch.setattr(
-        "free_claude_code.api.admin_routes.package_version",
+        "code_relay.api.admin_routes.package_version",
         lambda: "9.8.7",
     )
 
@@ -185,10 +185,8 @@ def test_admin_page_uses_installed_version(monkeypatch, tmp_path):
 
     assert response.status_code == 200
     assert "<p>Server Control · v9.8.7</p>" in response.text
-    assert 'href="https://github.com/Alishahryar1/free-claude-code"' in response.text
-    assert 'target="_blank"' in response.text
-    assert 'rel="noopener noreferrer"' in response.text
-    assert 'aria-label="Open Free Claude Code on GitHub"' in response.text
+    assert 'href="/admin/usage"' in response.text
+    assert 'aria-label="Open Code Relay usage dashboard"' in response.text
     assert 'src="/admin/assets/9.8.7/app-icon.svg"' in response.text
     assert 'href="/admin/assets/9.8.7/admin.css"' in response.text
     assert 'href="/admin/assets/9.8.7/code_sessions.css"' in response.text
@@ -227,7 +225,7 @@ def test_admin_versioned_assets_serve_packaged_files(
     asset_path = (
         Path(__file__).resolve().parents[2]
         / "src"
-        / "free_claude_code"
+        / "code_relay"
         / "api"
         / "admin_static"
         / filename
@@ -246,7 +244,7 @@ def test_admin_versioned_logo_reuses_packaged_app_icon(monkeypatch, tmp_path):
     asset_path = (
         Path(__file__).resolve().parents[2]
         / "src"
-        / "free_claude_code"
+        / "code_relay"
         / "assets"
         / "app-icon.svg"
     )
@@ -346,7 +344,7 @@ def test_admin_unexpected_errors_are_never_cached(monkeypatch, tmp_path):
     )
 
     with patch(
-        "free_claude_code.runtime.configuration.ConfigurationService.admin_config",
+        "code_relay.runtime.configuration.ConfigurationService.admin_config",
         side_effect=RuntimeError("test error"),
     ):
         response = client.get("/admin/api/config")
@@ -365,7 +363,7 @@ def test_admin_cache_policy_does_not_match_similar_public_paths(monkeypatch, tmp
 
 
 def test_admin_api_fetches_bypass_browser_cache():
-    script = Path("src/free_claude_code/api/admin_static/admin.js").read_text(
+    script = Path("src/code_relay/api/admin_static/admin.js").read_text(
         encoding="utf-8"
     )
 
@@ -609,7 +607,7 @@ def test_admin_page_no_longer_renders_global_status_header(monkeypatch, tmp_path
 
 
 def test_admin_static_no_longer_fetches_global_status_header():
-    script = Path("src/free_claude_code/api/admin_static/admin.js").read_text(
+    script = Path("src/code_relay/api/admin_static/admin.js").read_text(
         encoding="utf-8"
     )
 
@@ -621,7 +619,7 @@ def test_admin_static_no_longer_fetches_global_status_header():
 
 
 def test_admin_static_hides_managed_source_label():
-    script = Path("src/free_claude_code/api/admin_static/admin.js").read_text(
+    script = Path("src/code_relay/api/admin_static/admin.js").read_text(
         encoding="utf-8"
     )
 
@@ -632,7 +630,7 @@ def test_admin_static_hides_managed_source_label():
 
 
 def test_admin_static_places_reasoning_fields_in_model_config():
-    script = Path("src/free_claude_code/api/admin_static/admin.js").read_text(
+    script = Path("src/code_relay/api/admin_static/admin.js").read_text(
         encoding="utf-8"
     )
 
@@ -641,13 +639,13 @@ def test_admin_static_places_reasoning_fields_in_model_config():
 
 
 def test_admin_static_model_combobox_owns_dropdown_and_search_behavior():
-    script = Path("src/free_claude_code/api/admin_static/admin.js").read_text(
+    script = Path("src/code_relay/api/admin_static/admin.js").read_text(
         encoding="utf-8"
     )
     combobox_script = Path(
-        "src/free_claude_code/api/admin_static/model_combobox.js"
+        "src/code_relay/api/admin_static/model_combobox.js"
     ).read_text(encoding="utf-8")
-    styles = Path("src/free_claude_code/api/admin_static/admin.css").read_text(
+    styles = Path("src/code_relay/api/admin_static/admin.css").read_text(
         encoding="utf-8"
     )
 
@@ -670,7 +668,7 @@ def test_admin_static_model_combobox_owns_dropdown_and_search_behavior():
 
 
 def test_admin_static_model_combobox_preserves_custom_slugs_and_none_semantics():
-    script = Path("src/free_claude_code/api/admin_static/admin.js").read_text(
+    script = Path("src/code_relay/api/admin_static/admin.js").read_text(
         encoding="utf-8"
     )
 
@@ -1924,7 +1922,7 @@ def test_pending_restart_survives_later_apply(
 ):
     from unittest.mock import MagicMock
 
-    from free_claude_code.config.loader import ManagedConfigStore
+    from code_relay.config.loader import ManagedConfigStore
 
     _set_home(monkeypatch, tmp_path)
     _clear_process_config(monkeypatch)
@@ -1958,7 +1956,7 @@ def test_pending_restart_survives_later_apply(
 def test_reverting_pending_restart_restores_hot_apply(monkeypatch, tmp_path):
     from unittest.mock import MagicMock
 
-    from free_claude_code.config.loader import ManagedConfigStore
+    from code_relay.config.loader import ManagedConfigStore
 
     _set_home(monkeypatch, tmp_path)
     _clear_process_config(monkeypatch)
@@ -2183,7 +2181,7 @@ def test_admin_local_provider_status_reports_reachable(
         async def get(self, url: str):
             return httpx.Response(200, json={"data": []})
 
-    with patch("free_claude_code.api.admin_routes.httpx.AsyncClient", FakeAsyncClient):
+    with patch("code_relay.api.admin_routes.httpx.AsyncClient", FakeAsyncClient):
         response = _local_client(app).get(
             f"/admin/api/providers/{provider_id}/local-status"
         )
@@ -2217,7 +2215,7 @@ def test_admin_local_provider_status_checks_only_requested_provider(
             return httpx.Response(200, json={"data": []})
 
     with patch(
-        "free_claude_code.api.admin_routes.httpx.AsyncClient", CountingAsyncClient
+        "code_relay.api.admin_routes.httpx.AsyncClient", CountingAsyncClient
     ):
         response = _local_client(app).get("/admin/api/providers/lmstudio/local-status")
 
@@ -2267,7 +2265,7 @@ def test_admin_local_provider_failure_does_not_return_exception_text(
             )
 
     with patch(
-        "free_claude_code.api.admin_routes.httpx.AsyncClient",
+        "code_relay.api.admin_routes.httpx.AsyncClient",
         return_value=FailingAsyncClient(),
     ):
         response = _local_client(app).get("/admin/api/providers/lmstudio/local-status")

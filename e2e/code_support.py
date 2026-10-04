@@ -4,9 +4,9 @@ import asyncio
 from collections.abc import Coroutine
 from unittest.mock import patch
 
-from free_claude_code.application.code_sessions import CodeService
-from free_claude_code.runtime.code_sessions_sqlite import SQLiteCodeStore
-from free_claude_code.runtime.sqlite_database import SQLiteDatabase
+from code_relay.application.code_sessions import CodeService
+from code_relay.runtime.code_sessions_sqlite import SQLiteCodeStore
+from code_relay.runtime.sqlite_database import SQLiteDatabase
 from tests.code_sessions_support import FakeHarness
 
 

@@ -7,7 +7,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 import pytest
 
-from free_claude_code.cli.launchers.common import preflight_proxy
+from code_relay.cli.launchers.common import preflight_proxy
 
 
 @contextmanager

@@ -7,20 +7,20 @@ from unittest.mock import AsyncMock, MagicMock
 import httpx
 import pytest
 
-from free_claude_code.api.app import create_app
-from free_claude_code.api.ports import ApiServices
-from free_claude_code.application.errors import ApplicationUnavailableError
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.application.readiness import InitializationWait
-from free_claude_code.config.loader import ManagedConfigStore
-from free_claude_code.config.settings import Settings
-from free_claude_code.core.async_tasks import run_sync_owned
-from free_claude_code.providers.base import BaseProvider
-from free_claude_code.providers.runtime.runtime import ProviderRuntime
-from free_claude_code.runtime.application import ApplicationRuntime
-from free_claude_code.runtime.codex_catalog import CodexModelCatalogPublisher
-from free_claude_code.runtime.configuration import ConfigurationService
-from free_claude_code.runtime.provider_manager import ProviderRuntimeManager
+from code_relay.api.app import create_app
+from code_relay.api.ports import ApiServices
+from code_relay.application.errors import ApplicationUnavailableError
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.application.readiness import InitializationWait
+from code_relay.config.loader import ManagedConfigStore
+from code_relay.config.settings import Settings
+from code_relay.core.async_tasks import run_sync_owned
+from code_relay.providers.base import BaseProvider
+from code_relay.providers.runtime.runtime import ProviderRuntime
+from code_relay.runtime.application import ApplicationRuntime
+from code_relay.runtime.codex_catalog import CodexModelCatalogPublisher
+from code_relay.runtime.configuration import ConfigurationService
+from code_relay.runtime.provider_manager import ProviderRuntimeManager
 from tests.web_tools_support import StubWebToolsClient
 
 
@@ -219,7 +219,7 @@ async def test_recovery_wait_uses_remaining_budget_without_orphaning_waiter(
     )
     wait = InitializationWait(1 if cancel else 0.01)
     monkeypatch.setattr(
-        "free_claude_code.runtime.provider_manager.InitializationWait", lambda: wait
+        "code_relay.runtime.provider_manager.InitializationWait", lambda: wait
     )
     lease = await manager.acquire()
     waiting = None
@@ -473,7 +473,7 @@ async def test_catalog_waiter_exit_preserves_shared_discovery(
     )
     wait = InitializationWait(1 if cancel else 0.01)
     monkeypatch.setattr(
-        "free_claude_code.runtime.provider_manager.InitializationWait", lambda: wait
+        "code_relay.runtime.provider_manager.InitializationWait", lambda: wait
     )
     waiting = asyncio.create_task(
         manager.wait_for_catalog_file(wait)
@@ -490,7 +490,7 @@ async def test_catalog_waiter_exit_preserves_shared_discovery(
             with pytest.raises(ApplicationUnavailableError, match="still starting"):
                 await waiting
         monkeypatch.setattr(
-            "free_claude_code.runtime.provider_manager.InitializationWait",
+            "code_relay.runtime.provider_manager.InitializationWait",
             InitializationWait,
         )
         release.set()

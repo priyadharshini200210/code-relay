@@ -2,7 +2,7 @@
 
 import unicodedata
 
-from free_claude_code.core.tool_schema_patterns import translate_tool_schema_patterns
+from code_relay.core.tool_schema_patterns import translate_tool_schema_patterns
 from tests.core.test_tool_schema_patterns import ARTIFACT_PATTERN
 
 

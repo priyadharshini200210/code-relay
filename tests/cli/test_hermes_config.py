@@ -4,11 +4,11 @@ import json
 
 import pytest
 
-from free_claude_code.application.model_catalog import CatalogModel
-from free_claude_code.cli.launchers.hermes_config import (
+from code_relay.application.model_catalog import CatalogModel
+from code_relay.cli.launchers.hermes_config import (
     build_hermes_managed_config,
 )
-from free_claude_code.core.model_capabilities import ModelInputModality
+from code_relay.core.model_capabilities import ModelInputModality
 
 
 def _models() -> tuple[CatalogModel, ...]:
@@ -56,7 +56,7 @@ def test_hermes_config_pins_responses_catalog_and_fallbacks() -> None:
     )
     assert managed.config["providers"] == {
         "fcc-a1b2c3": {
-            "name": "Free Claude Code",
+            "name": "Code Relay",
             "api": "http://127.0.0.1:9191/v1",
             "key_env": "FCC_HERMES_A1B2C3",
             "extra_headers": {

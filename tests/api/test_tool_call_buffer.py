@@ -8,12 +8,12 @@ from typing import Any
 import pytest
 from starlette.types import Message
 
-from free_claude_code.api.response_streams import (
+from code_relay.api.response_streams import (
     ManagedStreamingResponse,
     anthropic_sse_streaming_response,
     openai_responses_sse_streaming_response,
 )
-from free_claude_code.core.anthropic.stream_contracts import parse_sse_text
+from code_relay.core.anthropic.stream_contracts import parse_sse_text
 from tests.api.test_response_streams import _json_error, _serve
 
 

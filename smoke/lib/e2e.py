@@ -16,8 +16,8 @@ from typing import Any
 import httpx
 import pytest
 
-from free_claude_code.config.provider_catalog import SUPPORTED_PROVIDER_IDS
-from free_claude_code.core.anthropic.stream_contracts import (
+from code_relay.config.provider_catalog import SUPPORTED_PROVIDER_IDS
+from code_relay.core.anthropic.stream_contracts import (
     SSEEvent,
     assert_anthropic_stream_contract,
     event_index,
@@ -25,12 +25,12 @@ from free_claude_code.core.anthropic.stream_contracts import (
     parse_sse_lines,
     text_content,
 )
-from free_claude_code.harnesses.claude import build_claude_proxy_env
-from free_claude_code.messaging.models import IncomingMessage, MessageScope
-from free_claude_code.messaging.voice import VoiceCancellationResult
-from free_claude_code.messaging.workflow import MessagingWorkflow
-from free_claude_code.runtime.messaging_sqlite import SQLiteMessagingStore
-from free_claude_code.runtime.sqlite_database import SQLiteDatabase
+from code_relay.harnesses.claude import build_claude_proxy_env
+from code_relay.messaging.models import IncomingMessage, MessageScope
+from code_relay.messaging.voice import VoiceCancellationResult
+from code_relay.messaging.workflow import MessagingWorkflow
+from code_relay.runtime.messaging_sqlite import SQLiteMessagingStore
+from code_relay.runtime.sqlite_database import SQLiteDatabase
 from smoke.lib.child_process import run_captured_text
 from smoke.lib.config import ProviderModel, SmokeConfig, auth_headers
 from smoke.lib.http import conversation_headers
@@ -753,7 +753,7 @@ def default_cli_events(session_id: str) -> list[dict[str, Any]]:
                     {
                         "type": "tool_result",
                         "tool_use_id": "toolu_fake",
-                        "content": "Free Claude Code",
+                        "content": "Code Relay",
                     },
                     {"type": "text", "text": "Fake platform answer."},
                 ]

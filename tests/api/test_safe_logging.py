@@ -7,11 +7,11 @@ import pytest
 from fastapi import HTTPException
 from fastapi.responses import JSONResponse
 
-from free_claude_code.api import request_errors
-from free_claude_code.api.handlers import MessagesHandler, TokenCountHandler
-from free_claude_code.config.settings import Settings
-from free_claude_code.core.anthropic import AnthropicStreamLedger
-from free_claude_code.core.anthropic.models import Message, MessagesRequest
+from code_relay.api import request_errors
+from code_relay.api.handlers import MessagesHandler, TokenCountHandler
+from code_relay.config.settings import Settings
+from code_relay.core.anthropic import AnthropicStreamLedger
+from code_relay.core.anthropic.models import Message, MessagesRequest
 from tests.web_tools_support import StubWebToolsClient
 
 
@@ -80,7 +80,7 @@ async def test_create_message_logs_full_payload_when_opt_in(caplog):
 
 def test_stream_ledger_default_debug_has_no_serialized_json_content():
     with patch(
-        "free_claude_code.core.anthropic.streaming.emitter.logger.debug"
+        "code_relay.core.anthropic.streaming.emitter.logger.debug"
     ) as mock_debug:
         ledger = AnthropicStreamLedger("msg_x", "m", 1, log_raw_events=False)
         ledger.message_start()
@@ -90,7 +90,7 @@ def test_stream_ledger_default_debug_has_no_serialized_json_content():
 
 def test_stream_ledger_raw_logging_includes_event_body_when_enabled():
     with patch(
-        "free_claude_code.core.anthropic.streaming.emitter.logger.debug"
+        "code_relay.core.anthropic.streaming.emitter.logger.debug"
     ) as mock_debug:
         ledger = AnthropicStreamLedger("msg_x", "m", 1, log_raw_events=True)
         ledger.message_start()
@@ -181,10 +181,10 @@ async def test_create_message_unexpected_error_terminal_json_ignores_status_code
 
 def test_parse_cli_event_error_logs_metadata_by_default():
     """CLI parser must not log raw error text unless LOG_RAW_CLI_DIAGNOSTICS is on."""
-    from free_claude_code.messaging.event_parser import parse_cli_event
+    from code_relay.messaging.event_parser import parse_cli_event
 
     secret = "user-secret-parser-leak-xyz"
-    with patch("free_claude_code.messaging.event_parser.logger.info") as log_info:
+    with patch("code_relay.messaging.event_parser.logger.info") as log_info:
         parse_cli_event(
             {"type": "error", "error": {"message": secret}}, log_raw_cli=False
         )
@@ -194,10 +194,10 @@ def test_parse_cli_event_error_logs_metadata_by_default():
 
 
 def test_parse_cli_event_error_logs_text_when_log_raw_cli_enabled():
-    from free_claude_code.messaging.event_parser import parse_cli_event
+    from code_relay.messaging.event_parser import parse_cli_event
 
     secret = "visible-cli-parser-msg"
-    with patch("free_claude_code.messaging.event_parser.logger.info") as log_info:
+    with patch("code_relay.messaging.event_parser.logger.info") as log_info:
         parse_cli_event(
             {"type": "error", "error": {"message": secret}}, log_raw_cli=True
         )
@@ -217,7 +217,7 @@ def test_count_tokens_unexpected_error_default_logs_exclude_exception_text():
         settings,
         token_counter=boom,
     )
-    from free_claude_code.core.anthropic.models import TokenCountRequest
+    from code_relay.core.anthropic.models import TokenCountRequest
 
     req = TokenCountRequest(
         model="claude-3-haiku-20240307",

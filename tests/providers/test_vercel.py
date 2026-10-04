@@ -6,9 +6,9 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.config.provider_catalog import VERCEL_AI_GATEWAY_DEFAULT_BASE
-from free_claude_code.core.model_capabilities import ModelInputModality
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.config.provider_catalog import VERCEL_AI_GATEWAY_DEFAULT_BASE
+from code_relay.core.model_capabilities import ModelInputModality
 from tests.providers.request_factory import make_messages_request
 from tests.providers.support import (
     SDKStreamDouble,
@@ -45,7 +45,7 @@ def test_default_base_url_constant():
 
 def test_init_uses_default_base_url_and_api_key(vercel_config):
     with patch(
-        "free_claude_code.providers.openai_chat.client.AsyncOpenAI"
+        "code_relay.providers.openai_chat.client.AsyncOpenAI"
     ) as mock_openai:
         provider = profiled_provider(
             "vercel",
@@ -61,7 +61,7 @@ def test_init_uses_default_base_url_and_api_key(vercel_config):
 def test_init_strips_trailing_slash(vercel_config):
     config = replace(vercel_config, base_url=f"{VERCEL_AI_GATEWAY_DEFAULT_BASE}/")
 
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         provider = profiled_provider(
             "vercel",
             config,
@@ -118,7 +118,7 @@ async def test_model_catalog_extracts_modalities_and_exhaustive_reasoning_suppor
 
 def test_build_request_body_keeps_max_tokens(vercel_provider):
     with patch(
-        "free_claude_code.providers.openai_chat.request_policy.build_base_request_body"
+        "code_relay.providers.openai_chat.request_policy.build_base_request_body"
     ) as mock_convert:
         mock_convert.return_value = {
             "model": "openai/gpt-5.5",

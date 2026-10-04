@@ -3,13 +3,13 @@ import json
 import pytest
 from pydantic import ValidationError
 
-from free_claude_code.application.errors import UnknownProviderError
-from free_claude_code.application.routing import ModelRouter
-from free_claude_code.config.custom_providers import (
+from code_relay.application.errors import UnknownProviderError
+from code_relay.application.routing import ModelRouter
+from code_relay.config.custom_providers import (
     CustomProviderDefinition,
     encode_custom_providers,
 )
-from free_claude_code.config.settings import Settings
+from code_relay.config.settings import Settings
 
 ID = "custom_" + "a" * 32
 

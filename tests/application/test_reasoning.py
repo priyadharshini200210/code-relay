@@ -1,15 +1,15 @@
 import pytest
 
-from free_claude_code.application.reasoning import (
+from code_relay.application.reasoning import (
     client_reasoning_policy,
     client_responses_reasoning_policy,
     resolve_reasoning_policy,
     resolve_responses_reasoning_policy,
 )
-from free_claude_code.config.reasoning import ReasoningPreference
-from free_claude_code.core.anthropic.models import MessagesRequest
-from free_claude_code.core.openai_responses import OpenAIResponsesRequest
-from free_claude_code.core.reasoning import (
+from code_relay.config.reasoning import ReasoningPreference
+from code_relay.core.anthropic.models import MessagesRequest
+from code_relay.core.openai_responses import OpenAIResponsesRequest
+from code_relay.core.reasoning import (
     ReasoningControl,
     ReasoningEffort,
     ReasoningPolicy,

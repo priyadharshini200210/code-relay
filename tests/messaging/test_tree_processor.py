@@ -6,8 +6,8 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from free_claude_code.messaging.models import IncomingMessage, MessageScope
-from free_claude_code.messaging.trees import (
+from code_relay.messaging.models import IncomingMessage, MessageScope
+from code_relay.messaging.trees import (
     CancellationReason,
     CancellationUiOwner,
     FailureResult,
@@ -16,11 +16,11 @@ from free_claude_code.messaging.trees import (
     QueueEntry,
     TreeQueueManager,
 )
-from free_claude_code.messaging.trees import manager as manager_module
-from free_claude_code.messaging.trees import processor as processor_module
-from free_claude_code.messaging.trees.node import MessageNode
-from free_claude_code.messaging.trees.processor import TreeQueueProcessor
-from free_claude_code.messaging.trees.runtime import MessageTree
+from code_relay.messaging.trees import manager as manager_module
+from code_relay.messaging.trees import processor as processor_module
+from code_relay.messaging.trees.node import MessageNode
+from code_relay.messaging.trees.processor import TreeQueueProcessor
+from code_relay.messaging.trees.runtime import MessageTree
 
 _SCOPE = MessageScope(platform="telegram", chat_id="chat")
 

@@ -16,11 +16,11 @@ import pytest
 import uvicorn
 from loguru import logger
 
-from free_claude_code.cli.commands import ServerSupervisor
-from free_claude_code.cli.uvicorn_server import RuntimeServer
-from free_claude_code.config.logging_config import configure_logging
-from free_claude_code.config.settings import Settings
-from free_claude_code.runtime.application import ApplicationRuntime
+from code_relay.cli.commands import ServerSupervisor
+from code_relay.cli.uvicorn_server import RuntimeServer
+from code_relay.config.logging_config import configure_logging
+from code_relay.config.settings import Settings
+from code_relay.runtime.application import ApplicationRuntime
 
 
 def _exercise_server_logging(
@@ -67,7 +67,7 @@ def _exercise_server_logging(
         logging.getLogger("test.dependency").warning("dependency warning")
 
     with (
-        patch("free_claude_code.runtime.bootstrap.build_asgi_app", build_app),
+        patch("code_relay.runtime.bootstrap.build_asgi_app", build_app),
         patch.object(RuntimeServer, "run", run),
         patch.multiple(sys, stdout=None, stderr=None)
         if without_streams

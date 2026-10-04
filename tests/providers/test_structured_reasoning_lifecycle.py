@@ -5,22 +5,22 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from free_claude_code.core.anthropic.models import MessagesRequest
-from free_claude_code.core.anthropic.stream_contracts import parse_sse_text
-from free_claude_code.core.history_replay import (
+from code_relay.core.anthropic.models import MessagesRequest
+from code_relay.core.anthropic.stream_contracts import parse_sse_text
+from code_relay.core.history_replay import (
     AssociatedReplayRecord,
     ReplayOrigin,
     decode_replay,
 )
-from free_claude_code.providers.history_replay import normalize_messages_history
-from free_claude_code.providers.openai_chat.reasoning_details import (
+from code_relay.providers.history_replay import normalize_messages_history
+from code_relay.providers.openai_chat.reasoning_details import (
     StructuredReasoningStream,
 )
-from free_claude_code.providers.openai_chat.stream_output import (
+from code_relay.providers.openai_chat.stream_output import (
     AnthropicChatStreamOutput,
     ChatStreamUsage,
 )
-from free_claude_code.providers.openai_chat.transport import _OpenAIChatStreamRunner
+from code_relay.providers.openai_chat.transport import _OpenAIChatStreamRunner
 from tests.providers.test_history_transports import (
     _carrier,
     _chat_reasoning_events,

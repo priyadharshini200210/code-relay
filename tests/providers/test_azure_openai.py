@@ -5,8 +5,8 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from free_claude_code.core.reasoning import ReasoningEffort, ReasoningPolicy
-from free_claude_code.providers.openai_chat import OpenAIChatProvider
+from code_relay.core.reasoning import ReasoningEffort, ReasoningPolicy
+from code_relay.providers.openai_chat import OpenAIChatProvider
 from tests.providers.request_factory import make_messages_request
 from tests.providers.support import (
     immediate_admission,
@@ -31,7 +31,7 @@ def _provider() -> OpenAIChatProvider:
 
 def test_init_uses_resource_v1_url_and_api_key() -> None:
     with patch(
-        "free_claude_code.providers.openai_chat.client.AsyncOpenAI"
+        "code_relay.providers.openai_chat.client.AsyncOpenAI"
     ) as openai_client:
         provider = _provider()
 

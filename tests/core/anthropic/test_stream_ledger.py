@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 import pytest
 
-from free_claude_code.core.anthropic.streaming import (
+from code_relay.core.anthropic.streaming import (
     AnthropicStreamLedger,
     StreamBlockLedger,
     ToolSchema,
@@ -126,7 +126,7 @@ def test_output_token_estimate_combines_shared_estimates_and_block_overhead() ->
     ledger.emit_tool_delta(0, "{}")
 
     with patch(
-        "free_claude_code.core.anthropic.streaming.ledger.estimate_text_tokens",
+        "code_relay.core.anthropic.streaming.ledger.estimate_text_tokens",
         side_effect=len,
     ):
         assert ledger.estimate_output_tokens() == 40

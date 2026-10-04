@@ -8,14 +8,14 @@ from unittest.mock import AsyncMock, Mock, patch
 import pytest
 import pytest_asyncio
 
-from free_claude_code.messaging.models import IncomingMessage, MessageScope
-from free_claude_code.messaging.trees import MessagingStorageError, TreeQueueManager
-from free_claude_code.messaging.trees.snapshot import TreeSnapshot
-from free_claude_code.messaging.workflow import MessagingWorkflow
-from free_claude_code.runtime.code_sessions_sqlite import SQLiteCodeStore
-from free_claude_code.runtime.messaging_import import import_legacy
-from free_claude_code.runtime.messaging_sqlite import SQLiteMessagingStore
-from free_claude_code.runtime.sqlite_database import SQLiteDatabase
+from code_relay.messaging.models import IncomingMessage, MessageScope
+from code_relay.messaging.trees import MessagingStorageError, TreeQueueManager
+from code_relay.messaging.trees.snapshot import TreeSnapshot
+from code_relay.messaging.workflow import MessagingWorkflow
+from code_relay.runtime.code_sessions_sqlite import SQLiteCodeStore
+from code_relay.runtime.messaging_import import import_legacy
+from code_relay.runtime.messaging_sqlite import SQLiteMessagingStore
+from code_relay.runtime.sqlite_database import SQLiteDatabase
 
 pytestmark = pytest.mark.asyncio
 
@@ -218,7 +218,7 @@ async def test_invalid_graph_and_invalid_log_entry_do_not_discard_good_records(
 async def test_failed_import_transaction_keeps_source_and_allows_retry(
     storage, tmp_path
 ):
-    from free_claude_code.runtime.messaging_sqlite import write_tree
+    from code_relay.runtime.messaging_sqlite import write_tree
 
     source = tmp_path / "sessions.json"
     source.write_text(
@@ -232,7 +232,7 @@ async def test_failed_import_transaction_keeps_source_and_allows_retry(
 
     with (
         patch(
-            "free_claude_code.runtime.messaging_import.write_tree",
+            "code_relay.runtime.messaging_import.write_tree",
             side_effect=fail_second_tree,
         ),
         pytest.raises(sqlite3.OperationalError),
@@ -513,11 +513,11 @@ async def test_import_outer_failure_rolls_back_released_units(
 async def test_startup_partial_import_preserves_links_scopes_and_code(
     storage, tmp_path, platform
 ):
-    from free_claude_code.application.code_sessions.models import CodeSession
-    from free_claude_code.config.settings import Settings
-    from free_claude_code.runtime.application import ApplicationRuntime
-    from free_claude_code.runtime.configuration import ConfigurationService
-    from free_claude_code.runtime.provider_manager import ProviderRuntimeManager
+    from code_relay.application.code_sessions.models import CodeSession
+    from code_relay.config.settings import Settings
+    from code_relay.runtime.application import ApplicationRuntime
+    from code_relay.runtime.configuration import ConfigurationService
+    from code_relay.runtime.provider_manager import ProviderRuntimeManager
 
     code = SQLiteCodeStore(storage.database)
     await code.start()
@@ -572,7 +572,7 @@ async def test_startup_partial_import_preserves_links_scopes_and_code(
     )
     try:
         with patch(
-            "free_claude_code.runtime.messaging_service.messaging_state_dir_path",
+            "code_relay.runtime.messaging_service.messaging_state_dir_path",
             return_value=str(tmp_path),
         ):
             await runtime._messaging._initialize_messaging_storage()
@@ -939,7 +939,7 @@ async def test_gated_tree_can_be_cleared_and_replaced_before_old_cleanup_finishe
     storage, monkeypatch
 ):
     monkeypatch.setattr(
-        "free_claude_code.messaging.trees.manager.CANCEL_TASK_DRAIN_TIMEOUT_S", 0.01
+        "code_relay.messaging.trees.manager.CANCEL_TASK_DRAIN_TIMEOUT_S", 0.01
     )
     faulted, cleanup_release = asyncio.Event(), asyncio.Event()
     new_started, new_release = asyncio.Event(), asyncio.Event()

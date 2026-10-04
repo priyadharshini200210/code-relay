@@ -3,7 +3,7 @@ import tomllib
 
 import pytest
 
-from free_claude_code.harnesses import claude_integration, codex_integration
+from code_relay.harnesses import claude_integration, codex_integration
 
 URL = "http://127.0.0.1:8000"
 TOKEN = "test-integration-token"

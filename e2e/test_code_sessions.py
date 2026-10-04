@@ -7,11 +7,11 @@ from playwright.sync_api import expect
 
 from e2e.form_support import assert_autofill_opt_out
 from e2e.provider_support import open_provider
-from free_claude_code.application.code_sessions.models import (
+from code_relay.application.code_sessions.models import (
     HarnessEvent,
     PromptRequest,
 )
-from free_claude_code.runtime.codex_protocol import CodexProtocol
+from code_relay.runtime.codex_protocol import CodexProtocol
 from tests.code_sessions_support import CodexPackets
 
 
@@ -22,9 +22,9 @@ def test_model_picker_uses_application_order_and_keeps_configured_selection(
     code_control,
     monkeypatch,
 ):
-    from free_claude_code.application.model_metadata import ProviderModelInfo
-    from free_claude_code.config.settings import Settings
-    from free_claude_code.runtime.codex_app_server import CodexHarnessFactory
+    from code_relay.application.model_metadata import ProviderModelInfo
+    from code_relay.config.settings import Settings
+    from code_relay.runtime.codex_app_server import CodexHarnessFactory
     from tests.runtime.test_codex_catalog import FakeRequestRuntime
 
     refs = (

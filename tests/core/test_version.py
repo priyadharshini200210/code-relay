@@ -3,18 +3,18 @@ from importlib.metadata import version as distribution_version
 
 import pytest
 
-import free_claude_code.core.version as version_module
+import code_relay.core.version as version_module
 
 
 def test_package_version_uses_installed_distribution_metadata() -> None:
-    assert version_module.package_version() == distribution_version("free-claude-code")
+    assert version_module.package_version() == distribution_version("code-relay")
 
 
 def test_package_version_has_explicit_uninstalled_source_fallback(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     def missing(_distribution_name: str) -> str:
-        raise PackageNotFoundError("free-claude-code")
+        raise PackageNotFoundError("code-relay")
 
     monkeypatch.setattr(version_module, "distribution_version", missing)
 

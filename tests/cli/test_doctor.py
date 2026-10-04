@@ -5,13 +5,13 @@ import sys
 
 import pytest
 
-from free_claude_code.cli import doctor
-from free_claude_code.config import paths
-from free_claude_code.config.loader import ManagedConfigStore
-from free_claude_code.config.server_urls import local_proxy_root_url
-from free_claude_code.config.settings import Settings
-from free_claude_code.providers.openai_codex import auth as openai_auth
-from free_claude_code.runtime import diagnostics
+from code_relay.cli import doctor
+from code_relay.config import paths
+from code_relay.config.loader import ManagedConfigStore
+from code_relay.config.server_urls import local_proxy_root_url
+from code_relay.config.settings import Settings
+from code_relay.providers.openai_codex import auth as openai_auth
+from code_relay.runtime import diagnostics
 
 
 def test_missing_configuration_still_produces_report(monkeypatch):
@@ -247,7 +247,7 @@ def test_probe_returns_only_version(monkeypatch, name, output, stderr, expected)
 
 
 def test_clipboard_adapter_maps_backend_failure(monkeypatch):
-    from free_claude_code.cli import clipboard
+    from code_relay.cli import clipboard
 
     def unavailable(text):
         raise clipboard.pyperclip.PyperclipException("no desktop")
@@ -258,7 +258,7 @@ def test_clipboard_adapter_maps_backend_failure(monkeypatch):
 
 
 def test_doctor_version_does_not_collect_or_copy(monkeypatch, capsys):
-    from free_claude_code.cli import entrypoints
+    from code_relay.cli import entrypoints
 
     def forbidden():
         pytest.fail("version must not collect or copy a report")
@@ -266,4 +266,4 @@ def test_doctor_version_does_not_collect_or_copy(monkeypatch, capsys):
     monkeypatch.setattr(doctor, "collect_report", forbidden)
     monkeypatch.setattr(entrypoints, "package_version", lambda: "1.2.3")
     entrypoints.doctor(["--version"])
-    assert capsys.readouterr().out == "free-claude-code 1.2.3\n"
+    assert capsys.readouterr().out == "code-relay 1.2.3\n"

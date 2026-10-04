@@ -13,9 +13,9 @@ from pathlib import Path
 import playwright
 import pytest
 
-from free_claude_code.application.model_catalog import CatalogModel, ModelCatalog
-from free_claude_code.harnesses import dsh_desktop_integration as desktop
-from free_claude_code.harnesses import dsh_files
+from code_relay.application.model_catalog import CatalogModel, ModelCatalog
+from code_relay.harnesses import dsh_desktop_integration as desktop
+from code_relay.harnesses import dsh_files
 from smoke.lib.config import SmokeConfig
 from smoke.lib.dsh_provider import DshProvider, dsh_provider
 from smoke.lib.e2e import SmokeServerDriver
@@ -107,9 +107,9 @@ def test_dsh_desktop_native_composition_e2e(
         ModelCatalog((model,), model.wire_slug),
         provider_progress_timeout=600,
     )
-    assert composed()["providers"] == ["free-claude-code", "native-user-provider"]
+    assert composed()["providers"] == ["code-relay", "native-user-provider"]
     assert composed()["default"] == {
-        "provider": "free-claude-code",
+        "provider": "code-relay",
         "model": "fixture/model",
     }
     rows = dsh_files.read_yaml(path, sequence=True)
@@ -155,7 +155,7 @@ try {
     python_contender = """
 import sys
 from pathlib import Path
-from free_claude_code.harnesses.dsh_files import file_lock
+from code_relay.harnesses.dsh_files import file_lock
 try:
     with file_lock(Path(sys.argv[1]), wait=0):
         sys.exit(1)
@@ -368,7 +368,7 @@ def test_dsh_desktop_live_catalog_credentials_and_restart_e2e(
             "DESKTOP_TOOL_WITNESS" in json.dumps(item["body"]) for item in requests
         )
     saved = (home / "profiles/desktop/cordis.patch.yml").read_text(encoding="utf-8")
-    assert "free-claude-code" not in saved
+    assert "code-relay" not in saved
     assert (
         "ui-settings-account" in saved
     )  # Native onboarding writes survived all FCC edits.

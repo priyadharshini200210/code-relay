@@ -5,9 +5,9 @@ from dataclasses import replace
 
 import pytest
 
-from free_claude_code.application.model_catalog import CatalogModel
-from free_claude_code.core.model_capabilities import ModelInputModality
-from free_claude_code.harnesses import vscode_chat_integration as vscode
+from code_relay.application.model_catalog import CatalogModel
+from code_relay.core.model_capabilities import ModelInputModality
+from code_relay.harnesses import vscode_chat_integration as vscode
 
 URL = "http://127.0.0.1:8082"
 MODEL = CatalogModel("nim/model", "nim/model", "NIM Model", None)
@@ -71,7 +71,7 @@ def test_invalid_document_is_never_overwritten(tmp_path, source):
 
 def test_conflict_does_not_claim_an_unmarked_group(tmp_path):
     path = tmp_path / "models.json"
-    source = '[{"name":"Free Claude Code","vendor":"customendpoint"}]'
+    source = '[{"name":"Code Relay","vendor":"customendpoint"}]'
     path.write_text(source)
     with pytest.raises(ValueError):
         vscode.configure(path, URL, "secret", (MODEL,))
@@ -200,7 +200,7 @@ def test_connect_and_unchanged_refresh_make_existing_file_private(
     ],
 )
 def test_native_config_paths(tmp_path, monkeypatch, platform, env, tail):
-    from free_claude_code.harnesses import claude_integration
+    from code_relay.harnesses import claude_integration
 
     monkeypatch.setattr(claude_integration.sys, "platform", platform)
     monkeypatch.setattr(claude_integration.Path, "home", lambda: tmp_path)
@@ -224,14 +224,14 @@ def test_native_config_paths(tmp_path, monkeypatch, platform, env, tail):
 def test_native_effort_uses_shared_routing_and_provider_encoders(
     effort, preference, no_thinking, expected
 ):
-    from free_claude_code.application.routing import ModelRouter
-    from free_claude_code.config.settings import Settings
-    from free_claude_code.core.anthropic.models import MessagesRequest
-    from free_claude_code.providers.anthropic_messages.request_policy import (
+    from code_relay.application.routing import ModelRouter
+    from code_relay.config.settings import Settings
+    from code_relay.core.anthropic.models import MessagesRequest
+    from code_relay.providers.anthropic_messages.request_policy import (
         MessagesModelCapabilities,
         resolve_messages_options,
     )
-    from free_claude_code.providers.nvidia_nim.request_options import (
+    from code_relay.providers.nvidia_nim.request_options import (
         build_nim_request_body,
     )
 

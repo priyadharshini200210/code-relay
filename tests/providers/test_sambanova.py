@@ -5,8 +5,8 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from free_claude_code.config.provider_catalog import SAMBANOVA_DEFAULT_BASE
-from free_claude_code.core.reasoning import ReasoningEffort, ReasoningPolicy
+from code_relay.config.provider_catalog import SAMBANOVA_DEFAULT_BASE
+from code_relay.core.reasoning import ReasoningEffort, ReasoningPolicy
 from tests.providers.request_factory import make_messages_request
 from tests.providers.support import (
     SDKStreamDouble,
@@ -41,7 +41,7 @@ def test_default_base_url_constant():
 
 def test_init_uses_default_base_url_and_api_key(sambanova_config):
     with patch(
-        "free_claude_code.providers.openai_chat.client.AsyncOpenAI"
+        "code_relay.providers.openai_chat.client.AsyncOpenAI"
     ) as mock_openai:
         provider = profiled_provider(
             "sambanova", sambanova_config, admission=immediate_admission()
@@ -55,7 +55,7 @@ def test_init_uses_default_base_url_and_api_key(sambanova_config):
 def test_init_strips_trailing_slash(sambanova_config):
     config = replace(sambanova_config, base_url=f"{SAMBANOVA_DEFAULT_BASE}/")
 
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         provider = profiled_provider(
             "sambanova", config, admission=immediate_admission()
         )

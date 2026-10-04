@@ -6,12 +6,12 @@ from pathlib import Path
 
 import pytest
 
-from free_claude_code.application.model_catalog import CatalogModel
-from free_claude_code.cli.launchers.cline_config import (
+from code_relay.application.model_catalog import CatalogModel
+from code_relay.cli.launchers.cline_config import (
     CLINE_PROVIDER_ID,
     build_cline_config,
 )
-from free_claude_code.core.model_capabilities import ModelInputModality
+from code_relay.core.model_capabilities import ModelInputModality
 
 
 def test_cline_config_uses_responses_and_only_known_metadata() -> None:
@@ -75,7 +75,7 @@ def test_cline_config_uses_responses_and_only_known_metadata() -> None:
         "providers": {
             "openai-native": {
                 "provider": {
-                    "name": "Free Claude Code",
+                    "name": "Code Relay",
                     "baseUrl": "http://127.0.0.1:9191/v1",
                     "defaultModelId": "nvidia_nim/vendor/model",
                     "protocol": "openai-responses",

@@ -1,7 +1,7 @@
 """Provider stream commit-boundary and recovery policy."""
 
-from free_claude_code.core.stream_delivery import StreamDeliveryState
-from free_claude_code.providers.stream_recovery import (
+from code_relay.core.stream_delivery import StreamDeliveryState
+from code_relay.providers.stream_recovery import (
     RecoveryController,
     RecoveryFailureAction,
     RecoveryHoldbackBuffer,

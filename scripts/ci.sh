@@ -106,7 +106,7 @@ should_run_check() {
 
 assert_uv_available() {
     if ! command -v uv >/dev/null 2>&1; then
-        fail "uv is required but was not found on PATH. Install uv first (see README or scripts/install.sh)."
+        fail "uv is required but was not found on PATH. Install uv first (see README)."
     fi
 }
 

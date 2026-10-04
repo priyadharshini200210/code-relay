@@ -5,9 +5,9 @@ from types import SimpleNamespace
 
 import pytest
 
-from free_claude_code.config.paths import claude_desktop_disconnect_path
-from free_claude_code.harnesses import claude_desktop_integration as desktop
-from free_claude_code.harnesses.claude_desktop_integration import (
+from code_relay.config.paths import claude_desktop_disconnect_path
+from code_relay.harnesses import claude_desktop_integration as desktop
+from code_relay.harnesses.claude_desktop_integration import (
     check_unmanaged,
     config_root,
 )

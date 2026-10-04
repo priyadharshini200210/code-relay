@@ -5,18 +5,18 @@ from collections.abc import Mapping, MutableMapping
 
 from fastapi import FastAPI
 
-from free_claude_code.api.app import create_app
-from free_claude_code.api.ports import ApiServices
-from free_claude_code.application.code_sessions import CodeApplicationPort
-from free_claude_code.application.connected_accounts import ConnectedAccountPort
-from free_claude_code.application.model_metadata import ProviderModelRefreshResult
-from free_claude_code.config.loader import ManagedConfigStore
-from free_claude_code.config.settings import Settings
-from free_claude_code.providers.base import BaseProvider
-from free_claude_code.providers.runtime import ProviderRuntime
-from free_claude_code.runtime.application import ApplicationRuntime, RestartCallback
-from free_claude_code.runtime.configuration import ConfigurationService
-from free_claude_code.runtime.provider_manager import ProviderRuntimeManager
+from code_relay.api.app import create_app
+from code_relay.api.ports import ApiServices
+from code_relay.application.code_sessions import CodeApplicationPort
+from code_relay.application.connected_accounts import ConnectedAccountPort
+from code_relay.application.model_metadata import ProviderModelRefreshResult
+from code_relay.config.loader import ManagedConfigStore
+from code_relay.config.settings import Settings
+from code_relay.providers.base import BaseProvider
+from code_relay.providers.runtime import ProviderRuntime
+from code_relay.runtime.application import ApplicationRuntime, RestartCallback
+from code_relay.runtime.configuration import ConfigurationService
+from code_relay.runtime.provider_manager import ProviderRuntimeManager
 from tests.web_tools_support import StubWebToolsClient
 
 

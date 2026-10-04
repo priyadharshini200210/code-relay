@@ -3,8 +3,8 @@ import json
 import pytest
 from fastapi.testclient import TestClient
 
-from free_claude_code.config.settings import Settings
-from free_claude_code.harnesses import vscode_chat_integration as vscode
+from code_relay.config.settings import Settings
+from code_relay.harnesses import vscode_chat_integration as vscode
 from tests.api.support import create_test_app, runtime_for_app
 
 ROOT = "/admin/api/integrations/vscode-chat"
@@ -22,7 +22,7 @@ def integration():
 
 
 def test_connect_disconnect_and_doctor_status(integration):
-    from free_claude_code.runtime.diagnostics import integration_report
+    from code_relay.runtime.diagnostics import integration_report
 
     client, path, runtime = integration
     result = client.get(ROOT)

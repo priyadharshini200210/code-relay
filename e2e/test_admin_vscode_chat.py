@@ -3,7 +3,7 @@ import json
 import pytest
 from playwright.sync_api import expect
 
-from free_claude_code.harnesses import vscode_chat_integration as vscode
+from code_relay.harnesses import vscode_chat_integration as vscode
 
 
 def test_connect_and_disconnect_native_chat(page, admin_base_url):

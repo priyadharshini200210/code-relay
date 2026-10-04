@@ -5,7 +5,7 @@ import uuid
 from dataclasses import dataclass
 from unittest.mock import AsyncMock
 
-from free_claude_code.application.code_sessions.models import (
+from code_relay.application.code_sessions.models import (
     CodeCatalog,
     CodeConflictError,
     CodeMode,
@@ -20,11 +20,11 @@ from free_claude_code.application.code_sessions.models import (
     PromptRequest,
     RunStatus,
 )
-from free_claude_code.application.code_sessions.ports import EventSink, HarnessSelection
-from free_claude_code.config.model_refs import split_provider_model_ref
-from free_claude_code.core.json_types import JsonObject
-from free_claude_code.runtime.codex_app_server import CodexAppServer
-from free_claude_code.runtime.codex_protocol import CodexProtocol
+from code_relay.application.code_sessions.ports import EventSink, HarnessSelection
+from code_relay.config.model_refs import split_provider_model_ref
+from code_relay.core.json_types import JsonObject
+from code_relay.runtime.codex_app_server import CodexAppServer
+from code_relay.runtime.codex_protocol import CodexProtocol
 
 
 class CodexPackets:
@@ -422,7 +422,7 @@ class FakeConnection:
 
 async def close_code_database(service):
     """Tests composing a service directly also own its injected database."""
-    from free_claude_code.runtime.code_sessions_sqlite import SQLiteCodeStore
+    from code_relay.runtime.code_sessions_sqlite import SQLiteCodeStore
 
     assert isinstance(service._store, SQLiteCodeStore)
     await service._store.database.close()

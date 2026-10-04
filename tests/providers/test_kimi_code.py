@@ -5,11 +5,11 @@ from unittest.mock import AsyncMock
 
 import pytest
 
-from free_claude_code.application.errors import InvalidRequestError
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.config.provider_catalog import KIMI_CODE_DEFAULT_BASE
-from free_claude_code.core.anthropic.models import MessagesRequest
-from free_claude_code.providers.openai_chat import OpenAIChatProvider
+from code_relay.application.errors import InvalidRequestError
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.config.provider_catalog import KIMI_CODE_DEFAULT_BASE
+from code_relay.core.anthropic.models import MessagesRequest
+from code_relay.providers.openai_chat import OpenAIChatProvider
 from tests.providers.support import (
     immediate_admission,
     make_provider_config,
@@ -44,7 +44,7 @@ def test_init_uses_subscription_endpoint_and_identifies_fcc(kimi_code_provider):
     assert kimi_code_provider._base_url == "https://api.kimi.com/coding/v1"
     assert kimi_code_provider._provider_name == "KIMI_CODE"
     assert kimi_code_provider._client.default_headers["User-Agent"] == (
-        "free-claude-code"
+        "code-relay"
     )
 
 

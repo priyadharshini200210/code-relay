@@ -6,7 +6,7 @@ import pytest
 
 @pytest.mark.parametrize("platform", ["linux", "darwin"])
 def test_other_platforms_do_not_load_windows_ui(monkeypatch, platform):
-    from free_claude_code.core import windows_dpi
+    from code_relay.core import windows_dpi
 
     def load_windows(*_args, **_kwargs):
         pytest.fail("Windows UI library loaded on another platform")
@@ -41,7 +41,7 @@ expected = -2 if sys.argv[1] == 'system' else -4
 if sys.argv[1] != 'none':
     assert user32.SetProcessDpiAwarenessContext(ctypes.c_void_p(expected))
 
-from free_claude_code.core.windows_dpi import enable_dpi_awareness
+from code_relay.core.windows_dpi import enable_dpi_awareness
 enable_dpi_awareness()
 enable_dpi_awareness()
 

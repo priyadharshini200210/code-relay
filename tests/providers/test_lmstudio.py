@@ -11,18 +11,18 @@ import httpx2
 import pytest
 from openai import AsyncOpenAI
 
-from free_claude_code.application.errors import InvalidRequestError
-from free_claude_code.application.execution import ProviderExecutor
-from free_claude_code.config.provider_catalog import LMSTUDIO_DEFAULT_BASE
-from free_claude_code.core.anthropic import MessagesRequest, get_token_count
-from free_claude_code.core.failures import ExecutionFailure, FailureKind
-from free_claude_code.core.openai_responses import (
+from code_relay.application.errors import InvalidRequestError
+from code_relay.application.execution import ProviderExecutor
+from code_relay.config.provider_catalog import LMSTUDIO_DEFAULT_BASE
+from code_relay.core.anthropic import MessagesRequest, get_token_count
+from code_relay.core.failures import ExecutionFailure, FailureKind
+from code_relay.core.openai_responses import (
     OpenAIResponsesRequest,
     estimate_responses_input_tokens,
 )
-from free_claude_code.core.reasoning import ReasoningEffort, ReasoningPolicy
-from free_claude_code.providers.admission import ProviderAdmissionController
-from free_claude_code.providers.lmstudio import LMStudioProvider
+from code_relay.core.reasoning import ReasoningEffort, ReasoningPolicy
+from code_relay.providers.admission import ProviderAdmissionController
+from code_relay.providers.lmstudio import LMStudioProvider
 from tests.application.test_execution import (
     FakeProvider,
     ResponsesFakeProvider,
@@ -82,7 +82,7 @@ async def provider_with_http(handler, *, base_url=LMSTUDIO_DEFAULT_BASE):
         http_client=httpx2.AsyncClient(transport=httpx2.MockTransport(handler)),
     )
     with patch(
-        "free_claude_code.providers.openai_chat.provider.create_chat_client",
+        "code_relay.providers.openai_chat.provider.create_chat_client",
         return_value=client,
     ):
         provider = LMStudioProvider(
@@ -157,7 +157,7 @@ def completion_response():
 def test_init(lmstudio_config):
     """Test provider initialization."""
     with patch(
-        "free_claude_code.providers.openai_chat.client.AsyncOpenAI"
+        "code_relay.providers.openai_chat.client.AsyncOpenAI"
     ) as mock_openai:
         provider = LMStudioProvider(lmstudio_config, admission=immediate_admission())
         assert provider._api_key == "lm-studio"
@@ -706,7 +706,7 @@ async def test_context_cache_expires_from_lookup_completion(monkeypatch):
         return metadata_response(4096 * calls)
 
     monkeypatch.setattr(
-        "free_claude_code.providers.lmstudio.client.time",
+        "code_relay.providers.lmstudio.client.time",
         SimpleNamespace(monotonic=lambda: now),
     )
     async with provider_with_http(handler) as provider:

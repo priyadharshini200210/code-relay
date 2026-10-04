@@ -8,14 +8,14 @@ from pathlib import Path
 import pytest
 from loguru import logger
 
-from free_claude_code.config import paths
-from free_claude_code.config.loader import ManagedConfigStore
-from free_claude_code.core.interprocess_lock import InterprocessFileLock
-from free_claude_code.providers.runtime import ProviderRuntime
-from free_claude_code.runtime.application import ApplicationRuntime
-from free_claude_code.runtime.configuration import ConfigurationService
-from free_claude_code.runtime.provider_manager import ProviderRuntimeManager
-from free_claude_code.runtime.retired_chat import remove_retired_chat_history
+from code_relay.config import paths
+from code_relay.config.loader import ManagedConfigStore
+from code_relay.core.interprocess_lock import InterprocessFileLock
+from code_relay.providers.runtime import ProviderRuntime
+from code_relay.runtime.application import ApplicationRuntime
+from code_relay.runtime.configuration import ConfigurationService
+from code_relay.runtime.provider_manager import ProviderRuntimeManager
+from code_relay.runtime.retired_chat import remove_retired_chat_history
 
 
 @pytest.fixture(autouse=True)

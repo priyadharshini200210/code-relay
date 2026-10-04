@@ -7,7 +7,7 @@ import sys
 import pytest
 from fastapi.testclient import TestClient
 
-from free_claude_code.config.loader import ManagedConfigStore
+from code_relay.config.loader import ManagedConfigStore
 from tests.api.support import create_test_app
 
 
@@ -34,9 +34,9 @@ def test_independent_codex_token_authenticates_with_server(
             sys.executable,
             "-c",
             "import sys; from pathlib import Path; "
-            "from free_claude_code.config import paths; "
+            "from code_relay.config import paths; "
             "paths.config_dir_path = lambda: Path(sys.argv[1]); "
-            "from free_claude_code.cli.launchers.codex import launch; "
+            "from code_relay.cli.launchers.codex import launch; "
             "launch(['--print-proxy-auth-token'])",
             str(store.path.parent),
         ],

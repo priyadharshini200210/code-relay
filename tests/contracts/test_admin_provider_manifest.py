@@ -1,13 +1,13 @@
 """Ensure admin UI manifest exposes every catalog credential/proxy binding."""
 
-from free_claude_code.config.admin.manifest import FIELD_BY_KEY, FIELDS
-from free_claude_code.config.admin.state import ConfigValueState
-from free_claude_code.config.provider_catalog import (
+from code_relay.config.admin.manifest import FIELD_BY_KEY, FIELDS
+from code_relay.config.admin.state import ConfigValueState
+from code_relay.config.provider_catalog import (
     PROVIDER_CATALOG,
     ProviderAuthKind,
 )
-from free_claude_code.config.settings import Settings
-from free_claude_code.core.json_types import JsonObject
+from code_relay.config.settings import Settings
+from code_relay.core.json_types import JsonObject
 
 
 def _test_value(value: str) -> ConfigValueState:
@@ -113,9 +113,9 @@ def test_openai_proxy_override_applies_to_catalog_proxy_field() -> None:
 
 
 def test_provider_catalog_display_names_are_admin_status_source() -> None:
-    from free_claude_code.config.admin.status import provider_config_status
-    from free_claude_code.config.admin.values import load_value_state
-    from free_claude_code.config.loader import ManagedConfigStore
+    from code_relay.config.admin.status import provider_config_status
+    from code_relay.config.admin.values import load_value_state
+    from code_relay.config.loader import ManagedConfigStore
 
     store = ManagedConfigStore()
     store.initialize()
@@ -167,7 +167,7 @@ def test_qwencloud_coding_key_is_a_distinct_admin_provider_field() -> None:
 
 
 def test_cline_pass_admin_fields_use_programmatic_key_and_fixed_endpoint() -> None:
-    from free_claude_code.config.admin.status import provider_config_status
+    from code_relay.config.admin.status import provider_config_status
 
     key = FIELD_BY_KEY["CLINE_API_KEY"]
     proxy = FIELD_BY_KEY["CLINE_PASS_PROXY"]
@@ -194,7 +194,7 @@ def test_cline_pass_admin_fields_use_programmatic_key_and_fixed_endpoint() -> No
 
 
 def test_zai_shared_key_configures_both_distinct_provider_surfaces() -> None:
-    from free_claude_code.config.admin.status import provider_config_status
+    from code_relay.config.admin.status import provider_config_status
 
     entry = FIELD_BY_KEY["ZAI_API_KEY"]
     statuses = {
@@ -216,7 +216,7 @@ def test_zai_shared_key_configures_both_distinct_provider_surfaces() -> None:
 
 
 def test_vertex_admin_status_uses_project_configuration_not_an_api_key() -> None:
-    from free_claude_code.config.admin.status import provider_config_status
+    from code_relay.config.admin.status import provider_config_status
 
     def vertex_status(project_id: str) -> JsonObject:
         statuses = provider_config_status(
@@ -235,7 +235,7 @@ def test_vertex_admin_status_uses_project_configuration_not_an_api_key() -> None
 
 
 def test_azure_openai_admin_status_distinguishes_key_and_url() -> None:
-    from free_claude_code.config.admin.status import provider_config_status
+    from code_relay.config.admin.status import provider_config_status
 
     def azure_status(api_key: str, base_url: str) -> JsonObject:
         statuses = provider_config_status(

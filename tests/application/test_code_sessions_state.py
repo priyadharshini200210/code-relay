@@ -1,6 +1,6 @@
 import pytest
 
-from free_claude_code.application.code_sessions.models import (
+from code_relay.application.code_sessions.models import (
     CodeConflictError,
     CodeItem,
     CodeRun,
@@ -11,7 +11,7 @@ from free_claude_code.application.code_sessions.models import (
     NativeTurn,
     PromptRequest,
 )
-from free_claude_code.application.code_sessions.state import (
+from code_relay.application.code_sessions.state import (
     SessionProgress,
     SessionState,
 )

@@ -7,7 +7,7 @@ from urllib.error import URLError
 
 import pytest
 
-from free_claude_code.cli.launchers import runner
+from code_relay.cli.launchers import runner
 from tests.cli.conftest import LaunchCapture
 from tests.cli.test_launcher_workflow import launch
 

@@ -6,12 +6,12 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from free_claude_code.application.errors import (
+from code_relay.application.errors import (
     ApplicationUnavailableError,
     UnknownProviderError,
 )
-from free_claude_code.config.nim import NimSettings
-from free_claude_code.config.provider_catalog import (
+from code_relay.config.nim import NimSettings
+from code_relay.config.provider_catalog import (
     AGNES_DEFAULT_BASE,
     BEDROCK_DEFAULT_BASE,
     CHEAPERINFERENCE_DEFAULT_BASE,
@@ -45,34 +45,34 @@ from free_claude_code.config.provider_catalog import (
     ZAI_CODING_DEFAULT_BASE,
     ZENMUX_DEFAULT_BASE,
 )
-from free_claude_code.providers.admission import ProviderAdmissionController
-from free_claude_code.providers.admission_policy import ProviderAdmissionLimits
-from free_claude_code.providers.admission_registry import ProviderAdmissionRegistry
-from free_claude_code.providers.alibaba_cloud import AlibabaCloudProvider
-from free_claude_code.providers.anthropic import AnthropicProvider
-from free_claude_code.providers.cloudflare import CloudflareProvider
-from free_claude_code.providers.deepseek import DeepSeekProvider
-from free_claude_code.providers.gemini import GeminiProvider
-from free_claude_code.providers.github_copilot.provider import GitHubCopilotProvider
-from free_claude_code.providers.groq import GroqProvider
-from free_claude_code.providers.kilo import KiloProvider
-from free_claude_code.providers.lmstudio import LMStudioProvider
-from free_claude_code.providers.mistral import MistralProvider
-from free_claude_code.providers.nvidia_nim import NvidiaNimProvider
-from free_claude_code.providers.open_router import OpenRouterProvider
-from free_claude_code.providers.openai_api import OpenAIAPIProvider
-from free_claude_code.providers.openai_chat import (
+from code_relay.providers.admission import ProviderAdmissionController
+from code_relay.providers.admission_policy import ProviderAdmissionLimits
+from code_relay.providers.admission_registry import ProviderAdmissionRegistry
+from code_relay.providers.alibaba_cloud import AlibabaCloudProvider
+from code_relay.providers.anthropic import AnthropicProvider
+from code_relay.providers.cloudflare import CloudflareProvider
+from code_relay.providers.deepseek import DeepSeekProvider
+from code_relay.providers.gemini import GeminiProvider
+from code_relay.providers.github_copilot.provider import GitHubCopilotProvider
+from code_relay.providers.groq import GroqProvider
+from code_relay.providers.kilo import KiloProvider
+from code_relay.providers.lmstudio import LMStudioProvider
+from code_relay.providers.mistral import MistralProvider
+from code_relay.providers.nvidia_nim import NvidiaNimProvider
+from code_relay.providers.open_router import OpenRouterProvider
+from code_relay.providers.openai_api import OpenAIAPIProvider
+from code_relay.providers.openai_chat import (
     OPENAI_CHAT_PROFILES,
     OpenAIChatProvider,
 )
-from free_claude_code.providers.openai_codex.provider import OpenAICodexProvider
-from free_claude_code.providers.opencode import OpenCodeProvider
-from free_claude_code.providers.runtime import (
+from code_relay.providers.openai_codex.provider import OpenAICodexProvider
+from code_relay.providers.opencode import OpenCodeProvider
+from code_relay.providers.runtime import (
     ProviderRuntime,
     build_provider_config,
     create_provider,
 )
-from free_claude_code.providers.vertex import VertexProvider
+from code_relay.providers.vertex import VertexProvider
 
 
 def _make_settings(**overrides):
@@ -217,8 +217,8 @@ def test_importing_runtime_does_not_eager_load_other_adapters() -> None:
     """Runtime metadata must not import every provider adapter up front."""
     code = (
         "import sys\n"
-        "import free_claude_code.providers.runtime\n"
-        "assert 'free_claude_code.providers.open_router' not in sys.modules\n"
+        "import code_relay.providers.runtime\n"
+        "assert 'code_relay.providers.open_router' not in sys.modules\n"
     )
     proc = subprocess.run(
         [sys.executable, "-c", code],
@@ -276,7 +276,7 @@ async def test_poolside_provider_config_uses_key_base_and_proxy() -> None:
     )
 
     config = build_provider_config(descriptor, settings)
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         provider = await create_provider(
             "poolside",
             settings,
@@ -305,7 +305,7 @@ async def test_llm7_provider_config_uses_key_base_and_proxy() -> None:
     )
 
     config = build_provider_config(descriptor, settings)
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         provider = await create_provider(
             "llm7",
             settings,
@@ -334,7 +334,7 @@ async def test_experiential_provider_config_uses_key_base_and_proxy() -> None:
     )
 
     config = build_provider_config(descriptor, settings)
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         provider = await create_provider(
             "experiential",
             settings,
@@ -366,7 +366,7 @@ async def test_cheaperinference_provider_config_uses_key_base_and_proxy() -> Non
     )
 
     config = build_provider_config(descriptor, settings)
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         provider = await create_provider(
             "cheaperinference",
             settings,
@@ -396,7 +396,7 @@ async def test_orcarouter_provider_config_uses_key_base_and_proxy() -> None:
     )
 
     config = build_provider_config(descriptor, settings)
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         provider = await create_provider(
             "orcarouter",
             settings,
@@ -425,7 +425,7 @@ async def test_xai_provider_config_uses_key_base_and_proxy() -> None:
     )
 
     config = build_provider_config(descriptor, settings)
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         provider = await create_provider(
             "xai",
             settings,
@@ -449,7 +449,7 @@ async def test_qwencloud_provider_config_uses_key_base_and_proxy() -> None:
     )
 
     config = build_provider_config(descriptor, settings)
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         provider = await create_provider(
             "qwencloud",
             settings,
@@ -473,7 +473,7 @@ async def test_cline_pass_provider_config_uses_key_base_and_proxy() -> None:
     )
 
     config = build_provider_config(descriptor, settings)
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         provider = await create_provider(
             "cline_pass",
             settings,
@@ -501,7 +501,7 @@ async def test_qwencloud_coding_provider_config_uses_key_base_and_proxy() -> Non
     )
 
     config = build_provider_config(descriptor, settings)
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         provider = await create_provider(
             "qwencloud_coding",
             settings,
@@ -525,7 +525,7 @@ async def test_together_provider_config_uses_key_base_and_proxy() -> None:
     )
 
     config = build_provider_config(descriptor, settings)
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         provider = await create_provider(
             "together",
             settings,
@@ -549,7 +549,7 @@ async def test_deepinfra_provider_config_uses_key_base_and_proxy() -> None:
     )
 
     config = build_provider_config(descriptor, settings)
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         provider = await create_provider(
             "deepinfra",
             settings,
@@ -573,7 +573,7 @@ async def test_siliconflow_provider_config_uses_key_base_and_proxy() -> None:
     )
 
     config = build_provider_config(descriptor, settings)
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         provider = await create_provider(
             "siliconflow",
             settings,
@@ -598,7 +598,7 @@ async def test_nebius_provider_config_uses_key_base_and_proxy() -> None:
     )
 
     config = build_provider_config(descriptor, settings)
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         provider = await create_provider(
             "nebius",
             settings,
@@ -626,7 +626,7 @@ async def test_scaleway_provider_config_uses_key_base_and_proxy() -> None:
     )
 
     config = build_provider_config(descriptor, settings)
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         provider = await create_provider(
             "scaleway",
             settings,
@@ -652,7 +652,7 @@ async def test_opper_provider_config_uses_key_base_and_proxy() -> None:
     )
 
     config = build_provider_config(descriptor, settings)
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         provider = await create_provider(
             "opper",
             settings,
@@ -678,7 +678,7 @@ async def test_chutes_provider_config_uses_key_base_and_proxy() -> None:
     )
 
     config = build_provider_config(descriptor, settings)
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         provider = await create_provider(
             "chutes",
             settings,
@@ -706,7 +706,7 @@ async def test_featherless_provider_config_uses_key_base_and_proxy() -> None:
     )
 
     config = build_provider_config(descriptor, settings)
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         provider = await create_provider(
             "featherless",
             settings,
@@ -732,7 +732,7 @@ async def test_agnes_provider_config_uses_key_base_and_proxy() -> None:
     )
 
     config = build_provider_config(descriptor, settings)
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         provider = await create_provider(
             "agnes",
             settings,
@@ -757,7 +757,7 @@ async def test_zenmux_provider_config_uses_key_base_and_proxy() -> None:
     )
 
     config = build_provider_config(descriptor, settings)
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         provider = await create_provider(
             "zenmux",
             settings,
@@ -782,7 +782,7 @@ async def test_wandb_provider_config_uses_key_base_and_proxy() -> None:
     )
 
     config = build_provider_config(descriptor, settings)
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         provider = await create_provider(
             "wandb",
             settings,
@@ -869,7 +869,7 @@ async def test_local_provider_factory_resolves_catalog_static_credential(
     settings = _make_settings()
 
     config = build_provider_config(descriptor, settings)
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         provider = await create_provider(
             provider_id,
             settings,
@@ -909,7 +909,7 @@ async def test_zai_api_provider_config_uses_shared_key_general_base_and_own_prox
     )
 
     config = build_provider_config(descriptor, settings)
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         provider = await create_provider(
             "zai_api",
             settings,
@@ -965,7 +965,7 @@ async def test_create_cloudflare_provider_uses_account_scoped_base_url():
         cloudflare_account_id="test-account",
     )
 
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         provider = await create_provider(
             "cloudflare",
             settings,
@@ -1095,7 +1095,7 @@ def test_build_provider_config_cohere_uses_api_key_and_proxy() -> None:
 
 @pytest.mark.asyncio
 async def test_create_provider_uses_openai_chat_openrouter_by_default():
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         provider = await create_provider(
             "open_router",
             _make_settings(),
@@ -1208,13 +1208,13 @@ async def test_create_provider_instantiates_each_builtin():
     }
 
     with (
-        patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"),
-        patch("free_claude_code.providers.github_copilot.provider.AsyncOpenAI"),
-        patch("free_claude_code.providers.openai_codex.provider.AsyncOpenAI"),
-        patch("free_claude_code.providers.openai_api.provider.AsyncOpenAI"),
+        patch("code_relay.providers.openai_chat.client.AsyncOpenAI"),
+        patch("code_relay.providers.github_copilot.provider.AsyncOpenAI"),
+        patch("code_relay.providers.openai_codex.provider.AsyncOpenAI"),
+        patch("code_relay.providers.openai_api.provider.AsyncOpenAI"),
         patch("httpx.AsyncClient"),
         patch(
-            "free_claude_code.providers.admission.ProviderAdmissionController",
+            "code_relay.providers.admission.ProviderAdmissionController",
             return_value=sentinel_admission,
         ) as admission_factory,
     ):
@@ -1257,7 +1257,7 @@ async def test_provider_runtime_caches_by_provider_id():
         ),
     )
 
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         first = await runtime.resolve_provider("nvidia_nim")
         second = await runtime.resolve_provider("nvidia_nim")
 
@@ -1494,7 +1494,7 @@ async def test_provider_runtime_provider_owns_one_admission_controller() -> None
         ),
     )
 
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         first = await runtime.resolve_provider("nvidia_nim")
         second = await runtime.resolve_provider("nvidia_nim")
 
@@ -1518,7 +1518,7 @@ async def test_separate_provider_runtimes_never_share_admission_controllers() ->
         ),
     )
 
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         first = await first_runtime.resolve_provider("nvidia_nim")
         second = await second_runtime.resolve_provider("nvidia_nim")
 
@@ -1537,7 +1537,7 @@ async def test_different_providers_have_independent_admission_controllers() -> N
         ),
     )
 
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         nim = await runtime.resolve_provider("nvidia_nim")
         open_router = await runtime.resolve_provider("open_router")
 
@@ -1677,7 +1677,7 @@ async def test_xkiro_provider_config_uses_key_base_and_proxy() -> None:
     )
 
     config = build_provider_config(descriptor, settings)
-    with patch("free_claude_code.providers.openai_chat.client.AsyncOpenAI"):
+    with patch("code_relay.providers.openai_chat.client.AsyncOpenAI"):
         provider = await create_provider(
             "xkiro",
             settings,

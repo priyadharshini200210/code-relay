@@ -2,9 +2,9 @@
 
 import pytest
 
-from free_claude_code.core.anthropic.stream_contracts import parse_sse_text
-from free_claude_code.core.history_replay import decode_replay
-from free_claude_code.providers.open_router import OpenRouterProvider
+from code_relay.core.anthropic.stream_contracts import parse_sse_text
+from code_relay.core.history_replay import decode_replay
+from code_relay.providers.open_router import OpenRouterProvider
 from tests.api.test_tool_call_buffer import _response
 from tests.providers.support import immediate_admission, make_provider_config
 from tests.providers.test_history_transports import _harness

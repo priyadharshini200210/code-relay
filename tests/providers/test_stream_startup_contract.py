@@ -2,10 +2,10 @@
 
 from unittest.mock import MagicMock
 
-from free_claude_code.core.anthropic import ReasoningReplayMode
-from free_claude_code.core.anthropic.models import Message, MessagesRequest
-from free_claude_code.core.reasoning import DEFAULT_REASONING_POLICY, ReasoningPolicy
-from free_claude_code.providers.openai_chat import (
+from code_relay.core.anthropic import ReasoningReplayMode
+from code_relay.core.anthropic.models import Message, MessagesRequest
+from code_relay.core.reasoning import DEFAULT_REASONING_POLICY, ReasoningPolicy
+from code_relay.providers.openai_chat import (
     NO_REASONING,
     OpenAIChatBehavior,
     OpenAIChatProfile,

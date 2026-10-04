@@ -11,46 +11,46 @@ import httpx
 import httpx2
 import pytest
 
-from free_claude_code.application.errors import InvalidRequestError
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.core.anthropic.models import MessagesRequest
-from free_claude_code.core.anthropic.stream_contracts import (
+from code_relay.application.errors import InvalidRequestError
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.core.anthropic.models import MessagesRequest
+from code_relay.core.anthropic.stream_contracts import (
     assert_anthropic_stream_contract,
     parse_sse_text,
     text_content,
 )
-from free_claude_code.core.failures import ExecutionFailure
-from free_claude_code.core.history_replay import (
+from code_relay.core.failures import ExecutionFailure
+from code_relay.core.history_replay import (
     ReplayOrigin,
     ReplayRecord,
     encode_replay,
 )
-from free_claude_code.core.json_types import JsonObject
-from free_claude_code.core.openai_responses import (
+from code_relay.core.json_types import JsonObject
+from code_relay.core.openai_responses import (
     OpenAIResponsesRequest,
 )
-from free_claude_code.core.reasoning import (
+from code_relay.core.reasoning import (
     DEFAULT_REASONING_POLICY,
     ReasoningCapability,
     ReasoningEffort,
     ReasoningPolicy,
 )
-from free_claude_code.providers.anthropic_messages.request_policy import (
+from code_relay.providers.anthropic_messages.request_policy import (
     MessagesModelCapabilities,
 )
-from free_claude_code.providers.anthropic_messages.transport import (
+from code_relay.providers.anthropic_messages.transport import (
     AnthropicMessagesTransport,
 )
-from free_claude_code.providers.endpoint_types import HttpEndpoint
-from free_claude_code.providers.github_copilot.auth import CopilotAuthManager
-from free_claude_code.providers.github_copilot.provider import GitHubCopilotProvider
-from free_claude_code.providers.github_copilot.types import (
+from code_relay.providers.endpoint_types import HttpEndpoint
+from code_relay.providers.github_copilot.auth import CopilotAuthManager
+from code_relay.providers.github_copilot.provider import GitHubCopilotProvider
+from code_relay.providers.github_copilot.types import (
     CopilotEgress,
     CopilotEndpoint,
     CopilotModel,
 )
-from free_claude_code.providers.openai_chat import OpenAIChatTransport
-from free_claude_code.providers.openai_responses.transport import (
+from code_relay.providers.openai_chat import OpenAIChatTransport
+from code_relay.providers.openai_responses.transport import (
     OpenAIResponsesTransport,
 )
 from tests.providers.copilot_support import FakeRuntime, FakeSession

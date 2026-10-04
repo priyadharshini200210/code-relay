@@ -9,8 +9,8 @@ import pytest
 import pytest_asyncio
 from ruamel.yaml import YAML
 
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.harnesses import dsh_desktop_integration as desktop
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.harnesses import dsh_desktop_integration as desktop
 from tests.runtime.test_integration_startup import runtime as runtime
 
 
@@ -35,7 +35,7 @@ def route():
         (desktop.config_home() / "profiles/desktop/cordis.patch.yml").read_text()
     )
     return next(
-        row["config"]["providers"]["free-claude-code"]
+        row["config"]["providers"]["code-relay"]
         for row in rows
         if row["id"] == "llm-pi-ai"
     )

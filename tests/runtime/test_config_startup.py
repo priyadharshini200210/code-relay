@@ -4,14 +4,14 @@ from unittest.mock import patch
 
 import pytest
 
-from free_claude_code.application.errors import ApplicationUnavailableError
-from free_claude_code.config import loader
-from free_claude_code.config.loader import ManagedConfigStore
-from free_claude_code.config.paths import config_lock_path
-from free_claude_code.core.interprocess_lock import InterprocessFileLock
-from free_claude_code.runtime.application import ApplicationRuntime
-from free_claude_code.runtime.configuration import ConfigurationService
-from free_claude_code.runtime.provider_manager import ProviderRuntimeManager
+from code_relay.application.errors import ApplicationUnavailableError
+from code_relay.config import loader
+from code_relay.config.loader import ManagedConfigStore
+from code_relay.config.paths import config_lock_path
+from code_relay.core.interprocess_lock import InterprocessFileLock
+from code_relay.runtime.application import ApplicationRuntime
+from code_relay.runtime.configuration import ConfigurationService
+from code_relay.runtime.provider_manager import ProviderRuntimeManager
 from tests.runtime.test_application_runtime import _settings
 
 

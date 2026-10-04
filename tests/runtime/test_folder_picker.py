@@ -9,8 +9,8 @@ from pathlib import Path
 
 import pytest
 
-from free_claude_code.application.errors import ApplicationUnavailableError
-from free_claude_code.runtime.folder_picker import NativeFolderPicker
+from code_relay.application.errors import ApplicationUnavailableError
+from code_relay.runtime.folder_picker import NativeFolderPicker
 
 
 async def _retained_handle_probe(directory, cancel):
@@ -140,7 +140,7 @@ async def _exec_identity_probe(directory, after_exec):
     command.chmod(0o700)
     child = DialogProcess(
         "import os, pathlib, time\n"
-        "from free_claude_code.runtime import native_folder_dialog as native\n"
+        "from code_relay.runtime import native_folder_dialog as native\n"
         f"pathlib.Path({str(helper_ready)!r}).write_text(str(os.getpid()))\n"
         f"while not pathlib.Path({str(proceed)!r}).exists(): time.sleep(0.01)\n"
         f"native.shutil.which = lambda _: {str(command)!r}\n"
@@ -226,7 +226,7 @@ async def test_selection_and_cancellation_return_after_child_exit(
 async def test_spawn_and_result_failures_close_captures_before_unregister(
     monkeypatch, spawn_fails
 ):
-    from free_claude_code.runtime import folder_picker
+    from code_relay.runtime import folder_picker
 
     picker = NativeFolderPicker()
     child = DialogProcess("print('invalid result')")

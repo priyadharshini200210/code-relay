@@ -5,8 +5,8 @@ import time
 import pytest
 from fastapi.testclient import TestClient
 
-from free_claude_code.config.settings import Settings
-from free_claude_code.harnesses import jetbrains_acp_integration as jb
+from code_relay.config.settings import Settings
+from code_relay.harnesses import jetbrains_acp_integration as jb
 from tests.api.support import create_test_app
 from tests.harnesses.test_jetbrains_acp_integration import install
 

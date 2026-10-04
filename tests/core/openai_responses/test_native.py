@@ -3,14 +3,14 @@ from copy import deepcopy
 
 import pytest
 
-from free_claude_code.core.failures import ExecutionFailure, FailureKind
-from free_claude_code.core.json_types import JsonObject, JsonValue
-from free_claude_code.core.openai_responses import OpenAIResponsesRequest
-from free_claude_code.core.openai_responses.native import (
+from code_relay.core.failures import ExecutionFailure, FailureKind
+from code_relay.core.json_types import JsonObject, JsonValue
+from code_relay.core.openai_responses import OpenAIResponsesRequest
+from code_relay.core.openai_responses.native import (
     NativeResponsesRelay,
     build_native_responses_request,
 )
-from free_claude_code.core.reasoning import ReasoningEffort, ReasoningPolicy
+from code_relay.core.reasoning import ReasoningEffort, ReasoningPolicy
 
 
 def _event_payload(frame: str) -> tuple[str, dict[str, object]]:

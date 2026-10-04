@@ -3,14 +3,14 @@ from unittest.mock import ANY, AsyncMock, MagicMock, patch
 
 import pytest
 
-from free_claude_code.messaging.command_context import StopOutcome
-from free_claude_code.messaging.models import IncomingMessage, MessageScope
-from free_claude_code.messaging.node_event_pipeline import process_parsed_cli_event
-from free_claude_code.messaging.rendering.telegram_markdown import (
+from code_relay.messaging.command_context import StopOutcome
+from code_relay.messaging.models import IncomingMessage, MessageScope
+from code_relay.messaging.node_event_pipeline import process_parsed_cli_event
+from code_relay.messaging.rendering.telegram_markdown import (
     escape_md_v2,
     render_markdown_to_mdv2,
 )
-from free_claude_code.messaging.trees import (
+from code_relay.messaging.trees import (
     CancellationReason,
     CancellationResult,
     CancellationUiOwner,
@@ -24,8 +24,8 @@ from free_claude_code.messaging.trees import (
     TreeIdentity,
     TreeSnapshot,
 )
-from free_claude_code.messaging.trees.transitions import CancellationEffect
-from free_claude_code.messaging.workflow import MessagingWorkflow
+from code_relay.messaging.trees.transitions import CancellationEffect
+from code_relay.messaging.workflow import MessagingWorkflow
 
 _SCOPE = MessageScope(platform="telegram", chat_id="c")
 
@@ -534,7 +534,7 @@ async def test_process_parsed_event_failed_complete_does_not_mark_success():
 )
 @pytest.mark.parametrize("save_fails", [False, True])
 async def test_terminal_status_waits_for_its_durable_outcome(event, save_fails):
-    from free_claude_code.messaging.trees import MessagingStorageError
+    from code_relay.messaging.trees import MessagingStorageError
 
     entered, release = asyncio.Event(), asyncio.Event()
     ui = AsyncMock()

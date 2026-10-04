@@ -13,8 +13,8 @@ import httpx2
 import openai
 import pytest
 
-from free_claude_code.core.failures import ExecutionFailure, FailureKind
-from free_claude_code.providers.admission import (
+from code_relay.core.failures import ExecutionFailure, FailureKind
+from code_relay.providers.admission import (
     UPSTREAM_TRANSIENT_TOTAL_ATTEMPTS,
     ProviderAdmissionController,
     ProviderAttempt,
@@ -24,8 +24,8 @@ from free_claude_code.providers.admission import (
     ProviderOperationKind,
     _retry_after_seconds,
 )
-from free_claude_code.providers.failure_policy import ProviderRecoveryExhausted
-from free_claude_code.providers.stream_recovery import TruncatedProviderStreamError
+from code_relay.providers.failure_policy import ProviderRecoveryExhausted
+from code_relay.providers.stream_recovery import TruncatedProviderStreamError
 
 
 def _controller(
@@ -144,7 +144,7 @@ async def test_attempt_outcome_and_close_are_idempotent() -> None:
     execution = controller.start_execution()
     error = _status_error(400)
 
-    with patch("free_claude_code.providers.admission.trace_event") as trace:
+    with patch("code_relay.providers.admission.trace_event") as trace:
         attempt = await _open(execution)
         first = await attempt.fail(error)
         repeated = await attempt.fail(_status_error(503))
@@ -353,7 +353,7 @@ async def test_recovery_traces_keep_the_logical_request_id() -> None:
             raise _status_error(503)
         return "recovered"
 
-    with patch("free_claude_code.providers.admission.trace_event") as trace:
+    with patch("code_relay.providers.admission.trace_event") as trace:
         result = await controller.start_execution(request_id="req_trace").run_call(
             recover,
             operation_kind=ProviderOperationKind.GENERATION,
@@ -388,7 +388,7 @@ async def test_each_physical_call_has_one_correlated_trace_pair() -> None:
             raise _status_error(503)
         return "ok"
 
-    with patch("free_claude_code.providers.admission.trace_event") as trace:
+    with patch("code_relay.providers.admission.trace_event") as trace:
         assert (
             await controller.start_execution(request_id="req_attempts").run_call(
                 recover,
@@ -431,7 +431,7 @@ async def test_direct_exhaustion_trace_keeps_the_logical_request_id() -> None:
         raise error
 
     with (
-        patch("free_claude_code.providers.admission.trace_event") as trace,
+        patch("code_relay.providers.admission.trace_event") as trace,
         pytest.raises(httpx.HTTPStatusError),
     ):
         await controller.start_execution(request_id="req_terminal").run_call(
@@ -496,8 +496,8 @@ async def test_openai_413_does_not_retry_sleep_or_open_recovery() -> None:
         raise error
 
     with (
-        patch("free_claude_code.providers.admission.asyncio.sleep") as sleep,
-        patch("free_claude_code.providers.admission.trace_event") as trace,
+        patch("code_relay.providers.admission.asyncio.sleep") as sleep,
+        patch("code_relay.providers.admission.trace_event") as trace,
         pytest.raises(openai.APIStatusError),
     ):
         await controller.start_execution(request_id="req_413").run_call(
@@ -615,7 +615,7 @@ async def test_one_leader_backs_off_while_followers_coalesce() -> None:
         await release_sleep.wait()
 
     with patch(
-        "free_claude_code.providers.admission.asyncio.sleep",
+        "code_relay.providers.admission.asyncio.sleep",
         side_effect=controlled_sleep,
     ):
         leader_probe_task = asyncio.create_task(_open(leader_execution))
@@ -696,7 +696,7 @@ async def test_cancelled_backoff_leader_transfers_to_a_waiter() -> None:
         await release_second_sleep.wait()
 
     with patch(
-        "free_claude_code.providers.admission.asyncio.sleep",
+        "code_relay.providers.admission.asyncio.sleep",
         side_effect=controlled_sleep,
     ):
         leader_task = asyncio.create_task(_open(leader_execution))
@@ -956,7 +956,7 @@ async def test_retry_after_is_a_minimum_backoff() -> None:
         return "ok"
 
     with patch(
-        "free_claude_code.providers.admission.asyncio.sleep",
+        "code_relay.providers.admission.asyncio.sleep",
         return_value=None,
     ) as sleep:
         assert (

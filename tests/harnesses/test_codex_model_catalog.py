@@ -1,8 +1,8 @@
 from collections.abc import Mapping
 from typing import Any, cast
 
-from free_claude_code.cli.launchers.catalog_http import catalog_models_from_response
-from free_claude_code.harnesses.codex_model_catalog import (
+from code_relay.cli.launchers.catalog_http import catalog_models_from_response
+from code_relay.harnesses.codex_model_catalog import (
     build_codex_model_catalog,
 )
 

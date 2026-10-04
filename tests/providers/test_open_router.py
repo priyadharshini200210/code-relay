@@ -8,21 +8,21 @@ import httpx2
 import openai
 import pytest
 
-from free_claude_code.application.errors import InvalidRequestError
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.config.constants import ANTHROPIC_DEFAULT_MAX_OUTPUT_TOKENS
-from free_claude_code.core.anthropic.models import MessagesRequest
-from free_claude_code.core.anthropic.stream_contracts import (
+from code_relay.application.errors import InvalidRequestError
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.config.constants import ANTHROPIC_DEFAULT_MAX_OUTPUT_TOKENS
+from code_relay.core.anthropic.models import MessagesRequest
+from code_relay.core.anthropic.stream_contracts import (
     parse_sse_text,
     text_content,
     thinking_content,
 )
-from free_claude_code.core.failures import FailureKind
-from free_claude_code.core.history_replay import decode_replay
-from free_claude_code.core.model_capabilities import ModelInputModality
-from free_claude_code.providers.failure_policy import classify_provider_failure
-from free_claude_code.providers.open_router import OpenRouterProvider
-from free_claude_code.providers.openai_chat import OpenAIChatProvider
+from code_relay.core.failures import FailureKind
+from code_relay.core.history_replay import decode_replay
+from code_relay.core.model_capabilities import ModelInputModality
+from code_relay.providers.failure_policy import classify_provider_failure
+from code_relay.providers.open_router import OpenRouterProvider
+from code_relay.providers.openai_chat import OpenAIChatProvider
 from tests.providers.request_factory import make_messages_request
 from tests.providers.support import (
     REASONING_OFF,

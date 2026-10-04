@@ -9,22 +9,22 @@ from openai.lib.streaming.responses._responses import ResponseStreamState
 from openai.types.responses import ResponseStreamEvent
 from pydantic import TypeAdapter
 
-from free_claude_code.core.anthropic import ReasoningReplayMode
-from free_claude_code.core.anthropic.stream_contracts import parse_sse_text
-from free_claude_code.core.json_types import JsonObject, JsonValue
-from free_claude_code.core.openai_responses import (
+from code_relay.core.anthropic import ReasoningReplayMode
+from code_relay.core.anthropic.stream_contracts import parse_sse_text
+from code_relay.core.json_types import JsonObject, JsonValue
+from code_relay.core.openai_responses import (
     OpenAIResponsesRequest,
     ResponsesConversionError,
     ResponsesToolAdapter,
     ResponsesToolPolicy,
     build_responses_chat_request,
 )
-from free_claude_code.core.openai_tool_names import encode_openai_chat_tool_names
-from free_claude_code.providers.openai_chat.stream_output import (
+from code_relay.core.openai_tool_names import encode_openai_chat_tool_names
+from code_relay.providers.openai_chat.stream_output import (
     ChatStreamUsage,
     ResponsesChatStreamOutput,
 )
-from free_claude_code.providers.openai_responses.presentation import (
+from code_relay.providers.openai_responses.presentation import (
     NativeResponsesPresenter,
 )
 from tests.providers.test_opencode import _responses_event_stream

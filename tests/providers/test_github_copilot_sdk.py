@@ -10,8 +10,8 @@ import pytest
 from copilot import CopilotClient, CopilotSession
 from copilot.rpc import Model, PermissionDecisionReject, ProviderEndpoint
 
-from free_claude_code.providers.github_copilot import native_cli, sdk
-from free_claude_code.providers.github_copilot.types import (
+from code_relay.providers.github_copilot import native_cli, sdk
+from code_relay.providers.github_copilot.types import (
     CopilotEgress,
     CopilotUnavailable,
 )

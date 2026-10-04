@@ -5,9 +5,9 @@ import asyncio
 import httpx
 import pytest
 
-from free_claude_code.config.provider_catalog import PROVIDER_CATALOG
-from free_claude_code.config.settings import Settings
-from free_claude_code.providers import credential_validation as validation
+from code_relay.config.provider_catalog import PROVIDER_CATALOG
+from code_relay.config.settings import Settings
+from code_relay.providers import credential_validation as validation
 
 # Minimal published response shapes, independent of the implementation registry.
 CASES = [

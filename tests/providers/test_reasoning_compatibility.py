@@ -4,9 +4,9 @@ import httpx2
 import pytest
 from openai import BadRequestError
 
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.core.reasoning import ReasoningCapability, ReasoningPolicy
-from free_claude_code.providers.reasoning_compatibility import (
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.core.reasoning import ReasoningCapability, ReasoningPolicy
+from code_relay.providers.reasoning_compatibility import (
     ReasoningCorrection,
     prepare_messages_reasoning,
 )

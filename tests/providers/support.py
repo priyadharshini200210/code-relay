@@ -6,13 +6,13 @@ from collections.abc import AsyncIterable, AsyncIterator, Awaitable, Callable
 import httpx2
 from openai import AsyncOpenAI
 
-from free_claude_code.application.reasoning import client_reasoning_policy
-from free_claude_code.core.anthropic.models import MessagesRequest
-from free_claude_code.core.async_iterators import AsyncCloseable
-from free_claude_code.core.reasoning import ReasoningPolicy
-from free_claude_code.providers.admission import ProviderAdmissionController
-from free_claude_code.providers.base import ProviderConfig
-from free_claude_code.providers.openai_chat import (
+from code_relay.application.reasoning import client_reasoning_policy
+from code_relay.core.anthropic.models import MessagesRequest
+from code_relay.core.async_iterators import AsyncCloseable
+from code_relay.core.reasoning import ReasoningPolicy
+from code_relay.providers.admission import ProviderAdmissionController
+from code_relay.providers.base import ProviderConfig
+from code_relay.providers.openai_chat import (
     OpenAIChatProvider,
     create_openai_chat_provider,
 )

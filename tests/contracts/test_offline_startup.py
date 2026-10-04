@@ -23,7 +23,7 @@ def fail(url, *args, **kwargs):
 with tempfile.TemporaryDirectory() as cache_dir:
     os.environ["TIKTOKEN_CACHE_DIR"] = cache_dir
     requests.get = fail
-    import free_claude_code.api.app
+    import code_relay.api.app
 
 assert calls == [], calls
 """

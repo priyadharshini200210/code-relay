@@ -7,8 +7,8 @@ from types import SimpleNamespace
 
 import pytest
 
-from free_claude_code.cli import desktop_entrypoint
-from free_claude_code.cli.desktop_assets import app_icon_bytes, export_app_icon
+from code_relay.cli import desktop_entrypoint
+from code_relay.cli.desktop_assets import app_icon_bytes, export_app_icon
 
 
 def test_packaged_icons_have_native_container_headers() -> None:
@@ -70,7 +70,7 @@ def test_desktop_sets_scaling_before_importing_native_tray(monkeypatch):
     original_import = builtins.__import__
 
     def import_module(name, *args, **kwargs):
-        if name == "free_claude_code.cli.desktop_tray":
+        if name == "code_relay.cli.desktop_tray":
             assert calls == ["scaling"]
             return SimpleNamespace(launch=lambda: calls.append("tray"))
         return original_import(name, *args, **kwargs)

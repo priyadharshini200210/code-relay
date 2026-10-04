@@ -2,11 +2,11 @@
 
 from unittest.mock import MagicMock, patch
 
-from free_claude_code.messaging.platforms.factory import (
+from code_relay.messaging.platforms.factory import (
     MessagingPlatformOptions,
     create_messaging_components,
 )
-from free_claude_code.messaging.platforms.ports import MessagingStartupNotice
+from code_relay.messaging.platforms.ports import MessagingStartupNotice
 
 
 class TestCreateMessagingComponents:
@@ -21,14 +21,14 @@ class TestCreateMessagingComponents:
         transcriber = MagicMock()
         with (
             patch(
-                "free_claude_code.messaging.platforms.factory.MessagingRateLimiter",
+                "code_relay.messaging.platforms.factory.MessagingRateLimiter",
                 return_value=limiter,
             ) as limiter_cls,
             patch(
-                "free_claude_code.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
+                "code_relay.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
             ),
             patch(
-                "free_claude_code.messaging.platforms.telegram.TelegramRuntime",
+                "code_relay.messaging.platforms.telegram.TelegramRuntime",
                 return_value=mock_runtime,
             ) as runtime_cls,
         ):
@@ -88,14 +88,14 @@ class TestCreateMessagingComponents:
         transcriber = MagicMock()
         with (
             patch(
-                "free_claude_code.messaging.platforms.factory.MessagingRateLimiter",
+                "code_relay.messaging.platforms.factory.MessagingRateLimiter",
                 return_value=limiter,
             ) as limiter_cls,
             patch(
-                "free_claude_code.messaging.platforms.discord.DISCORD_AVAILABLE", True
+                "code_relay.messaging.platforms.discord.DISCORD_AVAILABLE", True
             ),
             patch(
-                "free_claude_code.messaging.platforms.discord.DiscordRuntime",
+                "code_relay.messaging.platforms.discord.DiscordRuntime",
                 return_value=mock_runtime,
             ) as runtime_cls,
         ):
@@ -164,11 +164,11 @@ class TestCreateMessagingComponents:
         runtime.outbound = MagicMock()
         with (
             patch(
-                "free_claude_code.messaging.platforms.telegram.TelegramRuntime",
+                "code_relay.messaging.platforms.telegram.TelegramRuntime",
                 return_value=runtime,
             ) as runtime_cls,
             patch(
-                "free_claude_code.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
+                "code_relay.messaging.platforms.telegram.TELEGRAM_AVAILABLE", True
             ),
         ):
             first = create_messaging_components(

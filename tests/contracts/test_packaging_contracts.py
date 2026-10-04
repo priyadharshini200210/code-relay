@@ -15,7 +15,7 @@ def test_pyproject_first_party_packages_match_packaged_roots() -> None:
         for item in match.group("items").split(",")
         if item.strip()
     }
-    expected = {"free_claude_code", "smoke"}
+    expected = {"code_relay", "smoke"}
     assert configured == expected
 
 

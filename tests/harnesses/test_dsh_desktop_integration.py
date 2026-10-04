@@ -6,13 +6,13 @@ import json
 import pytest
 from ruamel.yaml import YAML
 
-from free_claude_code.application.model_catalog import CatalogModel, ModelCatalog
-from free_claude_code.harnesses import dsh_desktop_integration as desktop
-from free_claude_code.harnesses import dsh_files
+from code_relay.application.model_catalog import CatalogModel, ModelCatalog
+from code_relay.harnesses import dsh_desktop_integration as desktop
+from code_relay.harnesses import dsh_files
 
 URL = "http://127.0.0.1:8182"
 TOKEN = "desktop-test-token"
-ROUTE = "free-claude-code"
+ROUTE = "code-relay"
 REF = desktop.DSH_DESKTOP_API_KEY
 
 

@@ -8,9 +8,9 @@ import httpx
 import pytest
 from fastapi.testclient import TestClient
 
-from free_claude_code.config.settings import Settings
-from free_claude_code.core.anthropic.stream_contracts import parse_sse_text
-from free_claude_code.providers.admission import (
+from code_relay.config.settings import Settings
+from code_relay.core.anthropic.stream_contracts import parse_sse_text
+from code_relay.providers.admission import (
     ProviderAdmissionController,
     ProviderOperationKind,
 )
@@ -194,7 +194,7 @@ def test_count_generate_and_continue_native_tool_history_with_recovery():
     body = {**count_body(), "max_tokens": 512, "stream": True}
     with TestClient(app) as client:
         with patch(
-            "free_claude_code.runtime.provider_manager.ProviderGenerationLease.resolve_provider",
+            "code_relay.runtime.provider_manager.ProviderGenerationLease.resolve_provider",
             side_effect=AssertionError("local count"),
         ):
             initial_count = client.post("/v1/messages/count_tokens", json=body)
@@ -222,7 +222,7 @@ def test_count_generate_and_continue_native_tool_history_with_recovery():
             ],
         }
         with patch(
-            "free_claude_code.runtime.provider_manager.ProviderGenerationLease.resolve_provider",
+            "code_relay.runtime.provider_manager.ProviderGenerationLease.resolve_provider",
             side_effect=AssertionError("local count"),
         ):
             next_count = client.post("/v1/messages/count_tokens", json=continuation)

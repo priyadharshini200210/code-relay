@@ -3,7 +3,7 @@ import subprocess
 
 from playwright.sync_api import expect
 
-from free_claude_code.harnesses import jetbrains_acp_integration as jb
+from code_relay.harnesses import jetbrains_acp_integration as jb
 from tests.harnesses.test_jetbrains_acp_integration import install
 
 

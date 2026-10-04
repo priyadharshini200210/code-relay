@@ -13,7 +13,7 @@ class TestMessagingModels:
 
     def test_incoming_message_creation(self):
         """Test IncomingMessage dataclass."""
-        from free_claude_code.messaging.models import IncomingMessage
+        from code_relay.messaging.models import IncomingMessage
 
         msg = IncomingMessage(
             text="Hello",
@@ -29,7 +29,7 @@ class TestMessagingModels:
 
     def test_incoming_message_with_reply(self):
         """Test IncomingMessage as a reply."""
-        from free_claude_code.messaging.models import IncomingMessage
+        from code_relay.messaging.models import IncomingMessage
 
         msg = IncomingMessage(
             text="Reply text",
@@ -48,7 +48,7 @@ class TestMessagingPorts:
 
     def test_components_bundle_runtime_and_outbound(self):
         """Verify the factory handoff shape is explicit."""
-        from free_claude_code.messaging.platforms.ports import (
+        from code_relay.messaging.platforms.ports import (
             MessagingPlatformComponents,
         )
 
@@ -77,7 +77,7 @@ class TestTreeQueueManager:
     """Test TreeQueueManager."""
 
     def test_tree_queue_manager_init(self):
-        from free_claude_code.messaging.trees import TreeQueueManager
+        from code_relay.messaging.trees import TreeQueueManager
 
         async def process(_claim):
             return None
@@ -87,8 +87,8 @@ class TestTreeQueueManager:
 
     @pytest.mark.asyncio
     async def test_admit_creates_tree_and_claim(self):
-        from free_claude_code.messaging.models import IncomingMessage
-        from free_claude_code.messaging.trees import TreeQueueManager
+        from code_relay.messaging.models import IncomingMessage
+        from code_relay.messaging.trees import TreeQueueManager
 
         processed = asyncio.Event()
 
@@ -113,8 +113,8 @@ class TestTreeQueueManager:
 
     @pytest.mark.asyncio
     async def test_cancel_unknown_node_is_empty(self):
-        from free_claude_code.messaging.models import MessageScope
-        from free_claude_code.messaging.trees import TreeQueueManager
+        from code_relay.messaging.models import MessageScope
+        from code_relay.messaging.trees import TreeQueueManager
 
         async def process(_claim):
             return None

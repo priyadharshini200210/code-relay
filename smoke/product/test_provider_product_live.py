@@ -3,9 +3,9 @@ from typing import Any
 import httpx
 import pytest
 
-from free_claude_code.application.routing import ModelRouter
-from free_claude_code.config.reasoning import ReasoningPreference
-from free_claude_code.core.anthropic.stream_contracts import (
+from code_relay.application.routing import ModelRouter
+from code_relay.config.reasoning import ReasoningPreference
+from code_relay.core.anthropic.stream_contracts import (
     SSEEvent,
     parse_sse_lines,
 )

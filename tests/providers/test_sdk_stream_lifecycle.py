@@ -9,28 +9,28 @@ import pytest
 from openai import AsyncOpenAI
 from starlette.responses import StreamingResponse
 
-from free_claude_code.api.response_streams import (
+from code_relay.api.response_streams import (
     anthropic_sse_streaming_response,
     openai_responses_sse_streaming_response,
 )
-from free_claude_code.config.nim import NimSettings
-from free_claude_code.core.async_iterators import AsyncCloseable
-from free_claude_code.core.openai_responses import OpenAIResponsesRequest
-from free_claude_code.core.reasoning import DEFAULT_REASONING_POLICY
-from free_claude_code.providers.admission import (
+from code_relay.config.nim import NimSettings
+from code_relay.core.async_iterators import AsyncCloseable
+from code_relay.core.openai_responses import OpenAIResponsesRequest
+from code_relay.core.reasoning import DEFAULT_REASONING_POLICY
+from code_relay.providers.admission import (
     ProviderAdmissionController,
     ProviderOperationKind,
 )
-from free_claude_code.providers.mistral import MistralProvider
-from free_claude_code.providers.mistral.reasoning import normalize_mistral_stream
-from free_claude_code.providers.nvidia_nim import NvidiaNimProvider
-from free_claude_code.providers.nvidia_nim.native_tool_stream import (
+from code_relay.providers.mistral import MistralProvider
+from code_relay.providers.mistral.reasoning import normalize_mistral_stream
+from code_relay.providers.nvidia_nim import NvidiaNimProvider
+from code_relay.providers.nvidia_nim.native_tool_stream import (
     NimNativeToolProtocolError,
     normalize_nim_native_tool_stream,
 )
-from free_claude_code.providers.openai_responses import OpenAIResponsesTransport
-from free_claude_code.providers.openai_stream import OpenAIStreamAdapter
-from free_claude_code.providers.request_recovery import RequestRecovery
+from code_relay.providers.openai_responses import OpenAIResponsesTransport
+from code_relay.providers.openai_stream import OpenAIStreamAdapter
+from code_relay.providers.request_recovery import RequestRecovery
 from tests.api.test_response_streams import _json_error, _serve
 from tests.providers.request_factory import make_messages_request
 from tests.providers.support import make_provider_config, profiled_provider
@@ -127,7 +127,7 @@ async def _harness(kind, handler):
         with (
             patch.object(endpoint, "create", side_effect=retain_stream),
             patch(
-                "free_claude_code.providers.openai_chat.provider.create_chat_client",
+                "code_relay.providers.openai_chat.provider.create_chat_client",
                 return_value=client,
             ),
         ):
@@ -295,10 +295,10 @@ async def test_mistral_cleanup_preserves_normalization_error():
     try:
         with (
             patch(
-                "free_claude_code.providers.mistral.reasoning.normalize_mistral_chunk",
+                "code_relay.providers.mistral.reasoning.normalize_mistral_chunk",
                 side_effect=original,
             ),
-            patch("free_claude_code.providers.http.trace_event") as trace,
+            patch("code_relay.providers.http.trace_event") as trace,
             pytest.raises(ValueError) as caught,
         ):
             await anext(stream)

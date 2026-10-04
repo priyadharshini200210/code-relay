@@ -10,7 +10,7 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
 
-from free_claude_code.harnesses.claude import build_claude_proxy_env
+from code_relay.harnesses.claude import build_claude_proxy_env
 from smoke.lib.child_process import run_captured_text
 from smoke.lib.config import ProviderModel, SmokeConfig, redacted
 from smoke.lib.outcomes import is_upstream_unavailable_text
@@ -680,7 +680,7 @@ def _has_proxy_request(log_delta: str) -> bool:
     return (
         "POST /v1/messages" in log_delta
         or "API_REQUEST:" in log_delta
-        or '"event": "free_claude_code.api.request.received"' in log_delta
+        or '"event": "code_relay.api.request.received"' in log_delta
         or (
             '"http_method": "POST"' in log_delta
             and '"http_path": "/v1/messages"' in log_delta
@@ -738,7 +738,7 @@ def _request_count(log_delta: str) -> int:
     access_log_count = log_delta.count("POST /v1/messages")
     service_log_count = log_delta.count("API_REQUEST:")
     structured_log_count = log_delta.count(
-        '"event": "free_claude_code.api.request.received"'
+        '"event": "code_relay.api.request.received"'
     )
     return max(access_log_count, service_log_count, structured_log_count)
 

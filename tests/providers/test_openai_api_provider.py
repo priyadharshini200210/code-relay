@@ -7,14 +7,14 @@ from typing import Any
 import httpx2
 import pytest
 
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.core.anthropic.models import MessagesRequest
-from free_claude_code.core.anthropic.stream_contracts import (
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.core.anthropic.models import MessagesRequest
+from code_relay.core.anthropic.stream_contracts import (
     parse_sse_text,
     text_content,
 )
-from free_claude_code.core.openai_responses import OpenAIResponsesRequest
-from free_claude_code.providers.openai_api.provider import OpenAIAPIProvider
+from code_relay.core.openai_responses import OpenAIResponsesRequest
+from code_relay.providers.openai_api.provider import OpenAIAPIProvider
 from tests.providers.support import immediate_admission, make_provider_config
 
 

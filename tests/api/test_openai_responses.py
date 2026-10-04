@@ -6,21 +6,21 @@ import httpx
 import pytest
 from fastapi.testclient import TestClient
 
-from free_claude_code.application.errors import InvalidRequestError
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.config.constants import DEFAULT_MODEL
-from free_claude_code.config.settings import Settings
-from free_claude_code.core.anthropic import ReasoningReplayMode
-from free_claude_code.core.anthropic.stream_contracts import parse_sse_text
-from free_claude_code.core.failures import ExecutionFailure, FailureKind
-from free_claude_code.core.json_types import JsonObject
-from free_claude_code.core.openai_responses import OpenAIResponsesRequest
-from free_claude_code.core.reasoning import (
+from code_relay.application.errors import InvalidRequestError
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.config.constants import DEFAULT_MODEL
+from code_relay.config.settings import Settings
+from code_relay.core.anthropic import ReasoningReplayMode
+from code_relay.core.anthropic.stream_contracts import parse_sse_text
+from code_relay.core.failures import ExecutionFailure, FailureKind
+from code_relay.core.json_types import JsonObject
+from code_relay.core.openai_responses import OpenAIResponsesRequest
+from code_relay.core.reasoning import (
     ReasoningControl,
     ReasoningEffort,
     ReasoningPolicy,
 )
-from free_claude_code.providers.openai_chat import (
+from code_relay.providers.openai_chat import (
     NO_REASONING,
     OpenAIChatProfile,
     OpenAIChatProvider,
@@ -114,7 +114,7 @@ def responses_client():
     provider = FakeProvider(_responses_text_stream("Hello from provider"))
     app = create_test_app(Settings())
     with (
-        patch("free_claude_code.api.routes.resolve_provider", return_value=provider),
+        patch("code_relay.api.routes.resolve_provider", return_value=provider),
         TestClient(app) as client,
     ):
         yield client, provider
@@ -180,7 +180,7 @@ def test_create_response_stream_preserves_output_limit_as_incomplete() -> None:
     provider = FakeProvider(_responses_text_stream("partial output", incomplete=True))
     app = create_test_app()
     with (
-        patch("free_claude_code.api.routes.resolve_provider", return_value=provider),
+        patch("code_relay.api.routes.resolve_provider", return_value=provider),
         TestClient(app) as client,
     ):
         response = client.post(
@@ -208,7 +208,7 @@ def test_create_response_startup_rejection_stays_an_ordinary_http_error() -> Non
     app = create_test_app()
 
     with (
-        patch("free_claude_code.api.routes.resolve_provider", return_value=provider),
+        patch("code_relay.api.routes.resolve_provider", return_value=provider),
         TestClient(app) as client,
     ):
         response = client.post(
@@ -229,7 +229,7 @@ def test_create_response_startup_rejection_stays_an_ordinary_http_error() -> Non
 
 def test_create_response_rejects_unportable_image_as_invalid_request() -> None:
     with patch(
-        "free_claude_code.providers.openai_chat.client.AsyncOpenAI",
+        "code_relay.providers.openai_chat.client.AsyncOpenAI",
         return_value=MagicMock(),
     ):
         provider = OpenAIChatProvider(
@@ -248,7 +248,7 @@ def test_create_response_rejects_unportable_image_as_invalid_request() -> None:
         )
     app = create_test_app()
     with (
-        patch("free_claude_code.api.routes.resolve_provider", return_value=provider),
+        patch("code_relay.api.routes.resolve_provider", return_value=provider),
         TestClient(app) as client,
     ):
         response = client.post(
@@ -286,8 +286,8 @@ def test_create_response_pre_start_provider_error_returns_openai_error() -> None
     provider = PreStartFailingProvider()
     app = create_test_app()
     with (
-        patch("free_claude_code.api.routes.resolve_provider", return_value=provider),
-        patch("free_claude_code.api.response_streams.trace_event") as trace,
+        patch("code_relay.api.routes.resolve_provider", return_value=provider),
+        patch("code_relay.api.response_streams.trace_event") as trace,
         TestClient(app) as client,
     ):
         response = client.post(
@@ -307,7 +307,7 @@ def test_create_response_pre_start_provider_error_returns_openai_error() -> None
         call.kwargs
         for call in trace.call_args_list
         if call.kwargs.get("event")
-        == "free_claude_code.api.response.terminal_execution_error"
+        == "code_relay.api.response.terminal_execution_error"
     )
     assert terminal_trace["wire_api"] == "responses"
     assert terminal_trace["request_id"] == request_id
@@ -335,7 +335,7 @@ def test_create_response_relays_provider_owned_post_start_failure() -> None:
     )
     app = create_test_app()
     with (
-        patch("free_claude_code.api.routes.resolve_provider", return_value=provider),
+        patch("code_relay.api.routes.resolve_provider", return_value=provider),
         TestClient(app) as client,
     ):
         response = client.post(
@@ -355,9 +355,9 @@ def test_create_response_stream_bypasses_local_message_optimizations() -> None:
     provider = FakeProvider(_responses_text_stream("Provider response"))
     app = create_test_app()
     with (
-        patch("free_claude_code.api.routes.resolve_provider", return_value=provider),
+        patch("code_relay.api.routes.resolve_provider", return_value=provider),
         patch(
-            "free_claude_code.api.handlers.messages.try_optimizations",
+            "code_relay.api.handlers.messages.try_optimizations",
             side_effect=AssertionError("Responses must not use message optimizations"),
         ),
         TestClient(app) as client,
@@ -436,7 +436,7 @@ def test_create_response_relays_interleaved_reasoning_order() -> None:
     )
     app = create_test_app()
     with (
-        patch("free_claude_code.api.routes.resolve_provider", return_value=provider),
+        patch("code_relay.api.routes.resolve_provider", return_value=provider),
         TestClient(app) as client,
     ):
         response = client.post(
@@ -471,7 +471,7 @@ def test_create_response_relays_function_call() -> None:
     )
     app = create_test_app()
     with (
-        patch("free_claude_code.api.routes.resolve_provider", return_value=provider),
+        patch("code_relay.api.routes.resolve_provider", return_value=provider),
         TestClient(app) as client,
     ):
         response = client.post(
@@ -516,7 +516,7 @@ def test_create_response_preserves_namespace_and_passive_tools() -> None:
     provider = FakeProvider(_responses_text_stream("done"))
     app = create_test_app()
     with (
-        patch("free_claude_code.api.routes.resolve_provider", return_value=provider),
+        patch("code_relay.api.routes.resolve_provider", return_value=provider),
         TestClient(app) as client,
     ):
         response = client.post(
@@ -563,7 +563,7 @@ def test_create_response_preserves_muse_code_request_shape() -> None:
     provider = FakeProvider(_responses_text_stream("done"))
     app = create_test_app()
     with (
-        patch("free_claude_code.api.routes.resolve_provider", return_value=provider),
+        patch("code_relay.api.routes.resolve_provider", return_value=provider),
         TestClient(app) as client,
     ):
         response = client.post("/v1/responses", json=request)
@@ -593,7 +593,7 @@ def test_create_response_preserves_custom_tool_request() -> None:
     provider = FakeProvider(_responses_text_stream("done"))
     app = create_test_app()
     with (
-        patch("free_claude_code.api.routes.resolve_provider", return_value=provider),
+        patch("code_relay.api.routes.resolve_provider", return_value=provider),
         TestClient(app) as client,
     ):
         response = client.post(
@@ -621,7 +621,7 @@ def test_create_response_relays_provider_error_lifecycle() -> None:
     provider = FakeProvider([_created_event(), _terminal_event("failed", error=error)])
     app = create_test_app()
     with (
-        patch("free_claude_code.api.routes.resolve_provider", return_value=provider),
+        patch("code_relay.api.routes.resolve_provider", return_value=provider),
         TestClient(app) as client,
     ):
         response = client.post(
@@ -662,7 +662,7 @@ def test_create_response_preserves_prior_reasoning_and_tool_history() -> None:
     provider = FakeProvider(_responses_text_stream("done"))
     app = create_test_app()
     with (
-        patch("free_claude_code.api.routes.resolve_provider", return_value=provider),
+        patch("code_relay.api.routes.resolve_provider", return_value=provider),
         TestClient(app) as client,
     ):
         response = client.post(
@@ -692,7 +692,7 @@ def test_create_response_preserves_malformed_prior_function_call() -> None:
     provider = FakeProvider(_responses_text_stream("done"))
     app = create_test_app()
     with (
-        patch("free_claude_code.api.routes.resolve_provider", return_value=provider),
+        patch("code_relay.api.routes.resolve_provider", return_value=provider),
         TestClient(app) as client,
     ):
         response = client.post(
@@ -724,7 +724,7 @@ def test_create_response_preserves_and_resolves_reasoning_effort(
     provider = FakeProvider(_responses_text_stream("done"))
     app = create_test_app()
     with (
-        patch("free_claude_code.api.routes.resolve_provider", return_value=provider),
+        patch("code_relay.api.routes.resolve_provider", return_value=provider),
         TestClient(app) as client,
     ):
         response = client.post(
@@ -755,7 +755,7 @@ def test_create_response_relays_encrypted_reasoning() -> None:
     )
     app = create_test_app()
     with (
-        patch("free_claude_code.api.routes.resolve_provider", return_value=provider),
+        patch("code_relay.api.routes.resolve_provider", return_value=provider),
         TestClient(app) as client,
     ):
         response = client.post(

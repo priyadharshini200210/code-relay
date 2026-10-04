@@ -8,7 +8,7 @@ from dataclasses import dataclass, field
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Literal
 
-from free_claude_code.core.json_types import JsonObject
+from code_relay.core.json_types import JsonObject
 
 
 @dataclass

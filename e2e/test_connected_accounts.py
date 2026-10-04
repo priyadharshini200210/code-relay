@@ -6,12 +6,12 @@ import pytest
 from playwright.sync_api import Dialog, Page, Route, expect
 
 from e2e.provider_support import open_provider
-from free_claude_code.application.connected_accounts import (
+from code_relay.application.connected_accounts import (
     ConnectedAccountLoginMode,
     ConnectedAccountState,
     ConnectedAccountStatus,
 )
-from free_claude_code.core.json_types import JsonObject
+from code_relay.core.json_types import JsonObject
 
 
 def _status(provider_id: str, *, connected: bool = False) -> JsonObject:

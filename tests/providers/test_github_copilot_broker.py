@@ -6,15 +6,15 @@ from dataclasses import replace
 
 import pytest
 
-from free_claude_code.application.errors import InvalidRequestError
-from free_claude_code.providers.github_copilot.broker import CopilotBroker
-from free_claude_code.providers.github_copilot.types import (
+from code_relay.application.errors import InvalidRequestError
+from code_relay.providers.github_copilot.broker import CopilotBroker
+from code_relay.providers.github_copilot.types import (
     CopilotAuthenticationRequired,
     CopilotEgress,
     CopilotIdentity,
     CopilotUnavailable,
 )
-from free_claude_code.providers.history_replay import replay_origin
+from code_relay.providers.history_replay import replay_origin
 from tests.providers.copilot_support import FakeRuntime, model
 
 

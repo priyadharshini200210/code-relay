@@ -44,7 +44,7 @@ def test_connect_disconnect_preserves_native_settings(page, admin_base_url, tmp_
     expect(opener).to_have_text("Disconnect")
     expect(opener).to_have_css("color", "rgb(239, 68, 68)")
     page.screenshot(path=str(tmp_path / "dsh-integrations.png"), full_page=True)
-    assert "free-claude-code" in patch.read_text()
+    assert "code-relay" in patch.read_text()
     page.reload()
     expect(opener).to_have_text("Disconnect")
     opener.click()
@@ -53,7 +53,7 @@ def test_connect_disconnect_preserves_native_settings(page, admin_base_url, tmp_
     )
     dialog.get_by_role("button", name="Disconnect", exact=True).click()
     expect(opener).to_have_text("Connect")
-    assert "free-claude-code" not in patch.read_text()
+    assert "code-relay" not in patch.read_text()
     rows = YAML().load(patch.read_text())
     assert rows[0] == {"id": "unrelated", "config": {"keep": "unchanged"}}
     expect(page.locator("#dirtyState")).to_have_text("No changes")
@@ -77,7 +77,7 @@ def test_setup_error_and_retry_remain_in_dialog(page, admin_base_url, tmp_path):
 def test_superseded_connect_notice_matches_real_disconnect(
     page, admin_base_url, tmp_path, monkeypatch
 ):
-    from free_claude_code.runtime.provider_manager import ProviderRuntimeManager
+    from code_relay.runtime.provider_manager import ProviderRuntimeManager
 
     home = install(tmp_path)
     page.goto(admin_base_url + "/admin/integrations")

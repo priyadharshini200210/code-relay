@@ -7,34 +7,34 @@ from unittest.mock import patch
 import pytest
 from pydantic import ValidationError
 
-from free_claude_code.application.routing import ModelRouter
-from free_claude_code.config import loader
-from free_claude_code.config.constants import (
+from code_relay.application.routing import ModelRouter
+from code_relay.config import loader
+from code_relay.config.constants import (
     ANTHROPIC_DEFAULT_MAX_OUTPUT_TOKENS,
     DEFAULT_MODEL,
     HTTP_CONNECT_TIMEOUT_DEFAULT,
 )
-from free_claude_code.config.env_files import dotenv_values_from_file
-from free_claude_code.config.loader import (
+from code_relay.config.env_files import dotenv_values_from_file
+from code_relay.config.loader import (
     ConfigSource,
     ManagedConfigStore,
     clear_settings_cache,
     compose_settings_snapshot,
     get_settings,
 )
-from free_claude_code.config.model_refs import (
+from code_relay.config.model_refs import (
     configured_chat_model_refs,
     parse_model_name,
     parse_provider_type,
 )
-from free_claude_code.config.nim import NimSettings
-from free_claude_code.config.paths import (
+from code_relay.config.nim import NimSettings
+from code_relay.config.paths import (
     managed_env_path,
     messaging_state_dir_path,
     server_log_path,
 )
-from free_claude_code.config.reasoning import ReasoningPreference
-from free_claude_code.config.settings import Settings
+from code_relay.config.reasoning import ReasoningPreference
+from code_relay.config.settings import Settings
 
 
 @pytest.mark.parametrize("source", [ConfigSource.MANAGED, ConfigSource.PROCESS])

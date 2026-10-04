@@ -1,7 +1,7 @@
 import re
 
-from free_claude_code.core.anthropic.models import MessagesRequest
-from free_claude_code.core.openai_tool_names import OpenAIToolNameCodec
+from code_relay.core.anthropic.models import MessagesRequest
+from code_relay.core.openai_tool_names import OpenAIToolNameCodec
 
 _PORTABLE_NAME = re.compile(r"^[A-Za-z0-9_-]{1,64}$")
 

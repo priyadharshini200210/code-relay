@@ -1,11 +1,11 @@
 import pytest
 
-from free_claude_code.core.anthropic import ReasoningReplayMode
-from free_claude_code.core.openai_responses.chat_request import (
+from code_relay.core.anthropic import ReasoningReplayMode
+from code_relay.core.openai_responses.chat_request import (
     build_responses_chat_request,
 )
-from free_claude_code.core.openai_responses.errors import ResponsesConversionError
-from free_claude_code.core.openai_responses.models import OpenAIResponsesRequest
+from code_relay.core.openai_responses.errors import ResponsesConversionError
+from code_relay.core.openai_responses.models import OpenAIResponsesRequest
 
 
 def _request(**overrides: object) -> OpenAIResponsesRequest:

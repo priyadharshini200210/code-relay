@@ -3,13 +3,13 @@ from unittest.mock import MagicMock, patch
 import pytest
 from fastapi.testclient import TestClient
 
-from free_claude_code.config.constants import DEFAULT_MODEL
-from free_claude_code.config.settings import Settings
-from free_claude_code.core.anthropic import ReasoningReplayMode
-from free_claude_code.core.failures import ExecutionFailure, FailureKind
-from free_claude_code.core.reasoning import ReasoningPolicy
-from free_claude_code.providers.nvidia_nim import NvidiaNimProvider
-from free_claude_code.providers.openai_chat import (
+from code_relay.config.constants import DEFAULT_MODEL
+from code_relay.config.settings import Settings
+from code_relay.core.anthropic import ReasoningReplayMode
+from code_relay.core.failures import ExecutionFailure, FailureKind
+from code_relay.core.reasoning import ReasoningPolicy
+from code_relay.providers.nvidia_nim import NvidiaNimProvider
+from code_relay.providers.openai_chat import (
     NO_REASONING,
     OpenAIChatProfile,
     OpenAIChatProvider,
@@ -98,7 +98,7 @@ def client(app):
     """HTTP client with provider resolution stubbed; patch only for this file."""
     with (
         patch(
-            "free_claude_code.api.routes.resolve_provider",
+            "code_relay.api.routes.resolve_provider",
             return_value=mock_provider,
         ),
         TestClient(app) as test_client,
@@ -211,7 +211,7 @@ def test_create_message_ingress_error_has_request_id_without_terminal_header(
 
 def test_create_message_rejects_unportable_image_as_invalid_request() -> None:
     with patch(
-        "free_claude_code.providers.openai_chat.client.AsyncOpenAI",
+        "code_relay.providers.openai_chat.client.AsyncOpenAI",
         return_value=MagicMock(),
     ):
         provider = OpenAIChatProvider(
@@ -230,7 +230,7 @@ def test_create_message_rejects_unportable_image_as_invalid_request() -> None:
         )
     test_app = create_test_app()
     with (
-        patch("free_claude_code.api.routes.resolve_provider", return_value=provider),
+        patch("code_relay.api.routes.resolve_provider", return_value=provider),
         TestClient(test_app) as test_client,
     ):
         response = test_client.post(
@@ -284,8 +284,8 @@ def test_create_message_pre_start_provider_error_returns_terminal_json(
     }
 
     with (
-        patch("free_claude_code.api.response_streams.trace_event") as trace,
-        patch("free_claude_code.application.execution.trace_event") as execution_trace,
+        patch("code_relay.api.response_streams.trace_event") as trace,
+        patch("code_relay.application.execution.trace_event") as execution_trace,
     ):
         response = client.post("/v1/messages", json=payload)
 
@@ -296,18 +296,18 @@ def test_create_message_pre_start_provider_error_returns_terminal_json(
     route_trace = next(
         call.kwargs
         for call in execution_trace.call_args_list
-        if call.kwargs.get("event") == "free_claude_code.api.route.resolved"
+        if call.kwargs.get("event") == "code_relay.api.route.resolved"
     )
     assert route_trace["request_id"] == request_id
     terminal_trace = next(
         call.kwargs
         for call in trace.call_args_list
         if call.kwargs.get("event")
-        == "free_claude_code.api.response.terminal_execution_error"
+        == "code_relay.api.response.terminal_execution_error"
     )
     assert terminal_trace == {
         "stage": "egress",
-        "event": "free_claude_code.api.response.terminal_execution_error",
+        "event": "code_relay.api.response.terminal_execution_error",
         "source": "api",
         "wire_api": "messages",
         "request_id": request_id,

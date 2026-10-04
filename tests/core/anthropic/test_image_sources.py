@@ -1,6 +1,6 @@
 import pytest
 
-from free_claude_code.core.anthropic.image_sources import (
+from code_relay.core.anthropic.image_sources import (
     AnthropicImageSourceError,
     portable_anthropic_image_url,
 )

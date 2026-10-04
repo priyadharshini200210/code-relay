@@ -8,15 +8,15 @@ from concurrent.futures import ThreadPoolExecutor
 import httpx
 import pytest
 
-from free_claude_code.api.app import create_app
-from free_claude_code.api.ports import ApiServices
-from free_claude_code.cli import commands
-from free_claude_code.config.loader import ManagedConfigStore
-from free_claude_code.providers.runtime import ProviderRuntime
-from free_claude_code.runtime.application import ApplicationRuntime
-from free_claude_code.runtime.asgi import RuntimeASGIApp
-from free_claude_code.runtime.configuration import ConfigurationService
-from free_claude_code.runtime.provider_manager import ProviderRuntimeManager
+from code_relay.api.app import create_app
+from code_relay.api.ports import ApiServices
+from code_relay.cli import commands
+from code_relay.config.loader import ManagedConfigStore
+from code_relay.providers.runtime import ProviderRuntime
+from code_relay.runtime.application import ApplicationRuntime
+from code_relay.runtime.asgi import RuntimeASGIApp
+from code_relay.runtime.configuration import ConfigurationService
+from code_relay.runtime.provider_manager import ProviderRuntimeManager
 from tests.web_tools_support import StubWebToolsClient
 
 
@@ -61,7 +61,7 @@ def test_supervised_http_apply_finishes_and_reconnects(monkeypatch, stop_during_
             runtime,
         )
 
-    monkeypatch.setattr("free_claude_code.runtime.bootstrap.build_asgi_app", build)
+    monkeypatch.setattr("code_relay.runtime.bootstrap.build_asgi_app", build)
     monkeypatch.setattr(commands, "kill_all_best_effort", lambda: None)
     supervisor = commands.ServerSupervisor(console_logging=False)
     errors = []

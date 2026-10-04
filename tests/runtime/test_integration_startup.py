@@ -7,28 +7,28 @@ from unittest.mock import AsyncMock, MagicMock
 import httpx
 import pytest
 
-from free_claude_code.api.app import create_app
-from free_claude_code.api.ports import ApiServices
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.application.readiness import InitializationWait
-from free_claude_code.config.loader import ManagedConfigStore
-from free_claude_code.config.paths import claude_desktop_disconnect_path
-from free_claude_code.config.settings import Settings
-from free_claude_code.harnesses import (
+from code_relay.api.app import create_app
+from code_relay.api.ports import ApiServices
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.application.readiness import InitializationWait
+from code_relay.config.loader import ManagedConfigStore
+from code_relay.config.paths import claude_desktop_disconnect_path
+from code_relay.config.settings import Settings
+from code_relay.harnesses import (
     claude_desktop_integration as desktop,
 )
-from free_claude_code.harnesses import (
+from code_relay.harnesses import (
     claude_integration,
     codex_integration,
 )
-from free_claude_code.harnesses import (
+from code_relay.harnesses import (
     jetbrains_acp_integration as jb,
 )
-from free_claude_code.providers.base import BaseProvider
-from free_claude_code.providers.runtime.runtime import ProviderRuntime
-from free_claude_code.runtime.application import ApplicationRuntime
-from free_claude_code.runtime.configuration import ConfigurationService
-from free_claude_code.runtime.provider_manager import ProviderRuntimeManager
+from code_relay.providers.base import BaseProvider
+from code_relay.providers.runtime.runtime import ProviderRuntime
+from code_relay.runtime.application import ApplicationRuntime
+from code_relay.runtime.configuration import ConfigurationService
+from code_relay.runtime.provider_manager import ProviderRuntimeManager
 from tests.harnesses.test_integration_refresh import OLD_CLAUDE, OLD_CODEX, TOKEN
 from tests.harnesses.test_jetbrains_acp_integration import install, write
 from tests.web_tools_support import StubWebToolsClient

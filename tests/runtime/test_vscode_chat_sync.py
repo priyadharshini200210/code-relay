@@ -6,15 +6,15 @@ from unittest.mock import AsyncMock, MagicMock
 import pytest
 import pytest_asyncio
 
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.config.loader import ManagedConfigStore
-from free_claude_code.config.settings import Settings
-from free_claude_code.harnesses import vscode_chat_integration as vscode
-from free_claude_code.providers.base import BaseProvider
-from free_claude_code.providers.runtime.runtime import ProviderRuntime
-from free_claude_code.runtime.application import ApplicationRuntime
-from free_claude_code.runtime.configuration import ConfigurationService
-from free_claude_code.runtime.provider_manager import ProviderRuntimeManager
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.config.loader import ManagedConfigStore
+from code_relay.config.settings import Settings
+from code_relay.harnesses import vscode_chat_integration as vscode
+from code_relay.providers.base import BaseProvider
+from code_relay.providers.runtime.runtime import ProviderRuntime
+from code_relay.runtime.application import ApplicationRuntime
+from code_relay.runtime.configuration import ConfigurationService
+from code_relay.runtime.provider_manager import ProviderRuntimeManager
 
 
 @pytest_asyncio.fixture

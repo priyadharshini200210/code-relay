@@ -2,8 +2,8 @@
 
 import pytest
 
-from free_claude_code.core.failures import ExecutionFailure
-from free_claude_code.core.reasoning import ReasoningEffort, ReasoningPolicy
+from code_relay.core.failures import ExecutionFailure
+from code_relay.core.reasoning import ReasoningEffort, ReasoningPolicy
 from tests.providers.test_history_transports import _harness, _saved_reply
 from tests.providers.test_nvidia_nim import _alias_provider, _alias_request
 

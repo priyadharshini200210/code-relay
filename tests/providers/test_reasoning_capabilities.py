@@ -1,6 +1,6 @@
 import pytest
 
-from free_claude_code.providers.model_listing import (
+from code_relay.providers.model_listing import (
     extract_openai_model_infos,
     extract_tool_capable_model_infos,
 )

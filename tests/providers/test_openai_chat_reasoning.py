@@ -1,5 +1,5 @@
-from free_claude_code.core.reasoning import ReasoningEffort, ReasoningPolicy
-from free_claude_code.providers.openai_chat.reasoning import (
+from code_relay.core.reasoning import ReasoningEffort, ReasoningPolicy
+from code_relay.providers.openai_chat.reasoning import (
     ChatTemplateReasoning,
     LlamaCppReasoning,
     NamedEffortReasoning,

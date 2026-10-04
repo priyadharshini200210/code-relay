@@ -1,7 +1,7 @@
 from dataclasses import replace
 
-from free_claude_code.application.model_metadata import ProviderModelInfo
-from free_claude_code.core.model_capabilities import ModelInputModality
+from code_relay.application.model_metadata import ProviderModelInfo
+from code_relay.core.model_capabilities import ModelInputModality
 
 
 def test_provider_model_info_preserves_capabilities_when_identity_is_replaced() -> None:

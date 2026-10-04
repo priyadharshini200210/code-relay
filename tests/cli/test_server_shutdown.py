@@ -8,11 +8,11 @@ from pathlib import Path
 import httpx
 import pytest
 
-from free_claude_code.cli import commands
-from free_claude_code.config.settings import Settings
-from free_claude_code.runtime.application import RestartCallback
-from free_claude_code.runtime.asgi import RuntimeASGIApp
-from free_claude_code.runtime.bootstrap import build_asgi_app
+from code_relay.cli import commands
+from code_relay.config.settings import Settings
+from code_relay.runtime.application import RestartCallback
+from code_relay.runtime.asgi import RuntimeASGIApp
+from code_relay.runtime.bootstrap import build_asgi_app
 
 
 @pytest.mark.asyncio
@@ -50,10 +50,10 @@ async def test_supervisor_drains_admin_event_feed_without_forced_cancellation(
 
     monkeypatch.setattr(commands, "load_server_settings", lambda: settings)
     monkeypatch.setattr(
-        "free_claude_code.runtime.bootstrap.configure_logging",
+        "code_relay.runtime.bootstrap.configure_logging",
         lambda *args, **kwargs: None,
     )
-    monkeypatch.setattr("free_claude_code.runtime.bootstrap.build_asgi_app", create_app)
+    monkeypatch.setattr("code_relay.runtime.bootstrap.build_asgi_app", create_app)
     monkeypatch.setattr(commands, "kill_all_best_effort", lambda: None)
     monkeypatch.setattr(commands, "SERVER_GRACEFUL_SHUTDOWN_SECONDS", 0.2)
     supervisor = commands.ServerSupervisor(console_logging=False)

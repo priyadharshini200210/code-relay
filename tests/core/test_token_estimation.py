@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from free_claude_code.core import token_estimation
+from code_relay.core import token_estimation
 
 
 class _RecordingEncoder:

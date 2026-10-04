@@ -6,14 +6,14 @@ import httpx
 import pytest
 from fastapi.testclient import TestClient
 
-from free_claude_code.application.errors import (
+from code_relay.application.errors import (
     ApplicationError,
     ApplicationUnavailableError,
     InvalidRequestError,
     UnknownProviderError,
 )
-from free_claude_code.config.settings import Settings
-from free_claude_code.providers.open_router import OpenRouterProvider
+from code_relay.config.settings import Settings
+from code_relay.providers.open_router import OpenRouterProvider
 from tests.api.support import create_test_app
 from tests.providers.support import immediate_admission, make_provider_config
 
@@ -69,7 +69,7 @@ def test_conversion_error_returns_http_400_without_generation(mode):
         path = "/v1/messages"
     sdk = MagicMock()
     with patch(
-        "free_claude_code.providers.openai_chat.client.AsyncOpenAI", return_value=sdk
+        "code_relay.providers.openai_chat.client.AsyncOpenAI", return_value=sdk
     ):
         provider = OpenRouterProvider(
             make_provider_config(
@@ -78,7 +78,7 @@ def test_conversion_error_returns_http_400_without_generation(mode):
             admission=immediate_admission(),
         )
     with (
-        patch("free_claude_code.api.routes.resolve_provider", return_value=provider),
+        patch("code_relay.api.routes.resolve_provider", return_value=provider),
         TestClient(create_test_app(_settings())) as client,
     ):
         response = client.post(path, json=payload)
@@ -212,7 +212,7 @@ def test_unknown_provider_is_protocol_specific_400_without_terminal_header(
 
     with (
         patch(
-            "free_claude_code.api.routes.resolve_provider",
+            "code_relay.api.routes.resolve_provider",
             side_effect=UnknownProviderError(message),
         ),
         TestClient(app) as client,
@@ -250,7 +250,7 @@ def test_startup_rejection_is_protocol_specific_400_without_terminal_header(
 
     with (
         patch(
-            "free_claude_code.api.routes.resolve_provider",
+            "code_relay.api.routes.resolve_provider",
             return_value=provider,
         ),
         TestClient(app) as client,

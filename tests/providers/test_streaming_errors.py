@@ -10,38 +10,38 @@ import httpx2
 import openai
 import pytest
 
-from free_claude_code.config.nim import NimSettings
-from free_claude_code.core.anthropic.stream_contracts import (
+from code_relay.config.nim import NimSettings
+from code_relay.core.anthropic.stream_contracts import (
     assert_anthropic_stream_contract,
     parse_sse_text,
 )
-from free_claude_code.core.anthropic.streaming import (
+from code_relay.core.anthropic.streaming import (
     make_response_recovery_body,
     make_text_recovery_body,
     tool_schemas_by_name,
 )
-from free_claude_code.core.failures import ExecutionFailure, FailureKind
-from free_claude_code.core.openai_responses import OpenAIResponsesRequest
-from free_claude_code.core.openai_tool_names import OpenAIToolNameCodec
-from free_claude_code.core.reasoning import DEFAULT_REASONING_POLICY, ReasoningPolicy
-from free_claude_code.providers.admission import (
+from code_relay.core.failures import ExecutionFailure, FailureKind
+from code_relay.core.openai_responses import OpenAIResponsesRequest
+from code_relay.core.openai_tool_names import OpenAIToolNameCodec
+from code_relay.core.reasoning import DEFAULT_REASONING_POLICY, ReasoningPolicy
+from code_relay.providers.admission import (
     UPSTREAM_TRANSIENT_TOTAL_ATTEMPTS,
     ProviderOperationKind,
 )
-from free_claude_code.providers.nvidia_nim import NvidiaNimProvider
-from free_claude_code.providers.openai_chat.stream_output import (
+from code_relay.providers.nvidia_nim import NvidiaNimProvider
+from code_relay.providers.openai_chat.stream_output import (
     AnthropicChatStreamOutput,
 )
-from free_claude_code.providers.openai_chat.tool_calls import (
+from code_relay.providers.openai_chat.tool_calls import (
     OpenAIToolCallAssembler,
     OpenAIToolCallCollector,
 )
-from free_claude_code.providers.openai_chat.transport import (
+from code_relay.providers.openai_chat.transport import (
     _OpenAIChatStreamRunner,
     _reserved_anthropic_tool_ids,
 )
-from free_claude_code.providers.request_recovery import RequestRecovery
-from free_claude_code.providers.stream_recovery import TruncatedProviderStreamError
+from code_relay.providers.request_recovery import RequestRecovery
+from code_relay.providers.stream_recovery import TruncatedProviderStreamError
 from tests.providers.request_factory import make_messages_request
 from tests.providers.support import (
     REASONING_OFF,
@@ -1623,7 +1623,7 @@ class TestStreamingExceptionHandling:
                 new_callable=AsyncMock,
                 side_effect=[*primary_streams, continuation],
             ) as create,
-            patch("free_claude_code.providers.admission.trace_event") as attempt_trace,
+            patch("code_relay.providers.admission.trace_event") as attempt_trace,
         ):
             events = await _collect_stream(provider, request)
 
