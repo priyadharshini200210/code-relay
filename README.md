@@ -138,11 +138,11 @@ uv run ruff check . && uv run ruff format --check .
 ## Credits And License
 
 Code Relay is built on the open-source
-[Free Claude Code](https://github.com/Alishahryar1/free-claude-code) project,
+Free claude code project,
 which provides the base multi-provider gateway. Code Relay adds
 the usage dashboard, cost estimates, free-quota tracking and smart routing.
 
-Licensed under the [GNU AGPL v3](LICENSE).
+Licensed under the [GNU AGPL v3]
 
 Not affiliated with or endorsed by Anthropic. Claude and Claude Code are
 trademarks of Anthropic.
